@@ -1,7 +1,7 @@
 {
     "name": "ns-element-ui",
     "version": "0.1.0",
-    "private": true,
+    "private": false,
     "license": "MIT",
     "main": "lib/nsElementUi.common.js",
     "author": "liuchihanxiang <1450551498@qq.com>",
