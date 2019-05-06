@@ -5,11 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "lib": "vue-cli-service build --target lib --name nsElementUi --dest lib packages/index.js",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@tinymce/tinymce-vue": "^2.0.0",
     "core-js": "^2.6.5",
+    "lodash": "^4.17.11",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3"
   },
