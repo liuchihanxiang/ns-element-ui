@@ -17,7 +17,7 @@ export function isExist (a) {
  * @returns
  */
 export function filterDic (dicData, dicItem) {
-  return notEmptyArray(dicData) ? dicData : dicItem
+  return notEmptyArray(dicData) ? dicData : notEmptyArray(dicItem) ? dicItem : []
 }
 /**
  *判断是否为el-input组件
