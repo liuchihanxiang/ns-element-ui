@@ -47,16 +47,16 @@ export default {
     handleLabel (name) {
       let editor = this.$refs.nsEditor
       let currentEditor = editor.$children[0].editor
-      let currentImg = this.labelBaseUrl + name.toLowerCase() + '.png'
+      let currentImg = require('@/assets/form/' + name.toLowerCase() + '.png')
       currentEditor.insertContent(`<img class="img-mark" data-txt="${name}" src="${currentImg}">`)
     },
 
     /**
     * 获取内容时 需要将img标签转化为span标签 方便后台替换span内的标识
     */
-    imgTotxt () {
+    formatterImgToText (content) {
       let contentCon = document.createElement('div')
-      contentCon.innerHTML = this.content
+      contentCon.innerHTML = content
       let imgList = contentCon.querySelectorAll('.img-mark')
       imgList.forEach(ele => {
         let placeholderText = ele.getAttribute('data-txt')
@@ -73,17 +73,19 @@ export default {
     /**
      * 回显数据时 需要将span标签转化为img标签 在页面显示
      */
-    txtToImg (str) {
+    formatterTextToImg (content) {
       let contentCon = document.createElement('div')
-      contentCon.innerHTML = str
+      contentCon.innerHTML = content
       let imgList = contentCon.querySelectorAll('span.img-mark')
       imgList.forEach(ele => {
         let imgName = ele.getAttribute('data-txt')
-        let currentImg = this.labelBaseUrl + imgName.toLowerCase() + '.png'
-        let img = `<img class="img-mark" data-txt="${name}" src="${currentImg}">`
+        let currentImg = require('@/assets/form/' + imgName.toLowerCase() + '.png')
+        let img = `<img class="img-mark" data-txt="${imgName}" src="${currentImg}">`
+        let tempNode = document.createElement('div')
+        tempNode.innerHTML = img
+        let imgNode = tempNode.firstChild
         let pNode = ele.parentNode
-        pNode.insertBefore(img, ele)
-        pNode.removeChild(ele)
+        pNode.replaceChild(imgNode, ele)
       })
       return contentCon.innerHTML
     }
