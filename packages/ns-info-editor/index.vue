@@ -9,7 +9,7 @@
                  @click="handleLabel(item.value)"
                  class="editor-label-item">{{item.label}}</el-button>
     </div>
-    <ns-editor :value="value"
+    <ns-editor :value="content"
                v-bind="$attrs"
                v-on="$listeners"
                ref="nsEditor" />
@@ -42,6 +42,11 @@ export default {
     }
 
   },
+  data () {
+    return {
+      content: ''
+    }
+  },
   methods: {
     // 点击标签 插入对应标签图片
     handleLabel (name) {
@@ -58,16 +63,18 @@ export default {
       let contentCon = document.createElement('div')
       contentCon.innerHTML = content
       let imgList = contentCon.querySelectorAll('.img-mark')
-      imgList.forEach(ele => {
-        let placeholderText = ele.getAttribute('data-txt')
-        let txtNode = document.createElement('span')
-        txtNode.innerHTML = placeholderText
-        txtNode.className = 'img-mark'
-        txtNode.setAttribute('data-txt', placeholderText)
-        let pNode = ele.parentNode
-        pNode.insertBefore(txtNode, ele)
-        pNode.removeChild(ele)
-      })
+      if (imgList.length) {
+        imgList.forEach(ele => {
+          let placeholderText = ele.getAttribute('data-txt')
+          let txtNode = document.createElement('span')
+          txtNode.innerHTML = placeholderText
+          txtNode.className = 'img-mark'
+          txtNode.setAttribute('data-txt', placeholderText)
+          let pNode = ele.parentNode
+          pNode.insertBefore(txtNode, ele)
+          pNode.removeChild(ele)
+        })
+      }
       return contentCon.innerHTML
     },
     /**
@@ -77,19 +84,31 @@ export default {
       let contentCon = document.createElement('div')
       contentCon.innerHTML = content
       let imgList = contentCon.querySelectorAll('span.img-mark')
-      imgList.forEach(ele => {
-        let imgName = ele.getAttribute('data-txt')
-        let currentImg = require('@/assets/form/' + imgName.toLowerCase() + '.png')
-        let img = `<img class="img-mark" data-txt="${imgName}" src="${currentImg}">`
-        let tempNode = document.createElement('div')
-        tempNode.innerHTML = img
-        let imgNode = tempNode.firstChild
-        let pNode = ele.parentNode
-        pNode.replaceChild(imgNode, ele)
-      })
-      return contentCon.innerHTML
+      if (imgList.length) {
+        imgList.forEach(ele => {
+          let imgName = ele.getAttribute('data-txt')
+          let currentImg = require('@/assets/form/' + imgName.toLowerCase() + '.png')
+          let img = `<img class="img-mark" data-txt="${imgName}" src="${currentImg}">`
+          let tempNode = document.createElement('div')
+          tempNode.innerHTML = img
+          let imgNode = tempNode.firstChild
+          let pNode = ele.parentNode
+          pNode.replaceChild(imgNode, ele)
+        })
+        return contentCon.innerHTML
+      } else {
+        return content
+      }
     }
 
+  },
+  watch: {
+    value: {
+      handler (val, oldVal) {
+        this.content = this.formatterTextToImg(val)
+      },
+      immediate: true
+    }
   }
 
 }
