@@ -155,9 +155,6 @@
                          :inactive-color="column.inactiveColor"
                          @change="column.change?column.change($event):''"
                          :inactive-text="getInternationalValue(column.inactiveText)" />
-              <span v-else-if="column.type==='slot'">
-                <slot :name="column.slotName" />
-              </span>
               <ns-info-editor v-else-if="column.type==='infoTextarea'"
                               ref="infoTextarea"
                               :label-list="column.labelList"
@@ -165,6 +162,14 @@
                               :init='column.init'
                               :disabled='column.disabled'
                               v-model="formModel[column.prop]" />
+              <span v-else-if="column.type==='slot'">
+                <slot :name="column.slotName" />
+              </span>
+              <ns-editor v-else-if="column.type==='editor'"
+                         ref="nsEditor"
+                         :disabled='column.disabled'
+                         v-model="formModel[column.prop]"></ns-editor>
+
             </el-form-item>
 
             <template v-else-if="column.type==='outItemSlot'">
@@ -203,11 +208,12 @@ import * as utils from './utils.js'
 import formMixins from './mixins.js'
 import props from './props.js'
 import NsInfoEditor from '../../ns-info-editor'
+import NsEditor from './../../ns-tinymce'
 export default {
   name: 'NsForm',
   mixins: [formMixins],
   components: {
-    NsInfoEditor
+    NsInfoEditor, NsEditor
   },
   props,
   data () {

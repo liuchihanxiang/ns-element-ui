@@ -4,17 +4,29 @@ import NsDialog from './ns-dialog'
 import SwitchLanguage from './switch-language'
 import Breadcrumb from './breadcrumb'
 import ScrollPane from './scroll-pane'
-const components = [NsForm, NsTable, NsDialog, SwitchLanguage, Breadcrumb, ScrollPane]
+const components = [
+  NsForm,
+  NsTable,
+  NsDialog,
+  SwitchLanguage,
+  Breadcrumb,
+  ScrollPane
+]
 
 const install = function (Vue, opts = {}) {
   components.map(component => {
     Vue.component(component.name, component)
   })
-  Vue.prototype.$NS = {
-    isInternational: opts.isInternational || false,
-    operationsOnlyShowIcon: opts.operationsOnlyShowIcon || true,
-    showSearchForm: opts.showSearchForm || true
+  let defaultOpts = {
+    isInternational: false,
+    operationsOnlyShowIcon: true,
+    showSearchForm: true,
+    listField: 'data.data',
+    pageSizeKey: 'pageSize',
+    pageIndexKey: 'currentPage',
+    totalField: 'data.total'
   }
+  Vue.prototype.$NS = Object.assign({}, defaultOpts, opts)
 }
 
 export default install

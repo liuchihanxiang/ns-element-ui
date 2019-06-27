@@ -6,18 +6,7 @@ export const tableProps = {
     type: Object,
     default: () => {}
   }, // 查询表单
-  treeTable: {
-    type: Boolean,
-    default: false
-  },
-  treeChildrenKey: {
-    type: String,
-    default: 'children'
-  },
-  expandAll: {
-    type: Boolean,
-    default: false
-  },
+
   collapsedIcon: {
     type: String,
     default: 'el-icon-caret-right'
@@ -43,10 +32,6 @@ export const tableProps = {
     default: true
   },
   fetch: Function,
-  pagination: {
-    type: Boolean,
-    default: true
-  },
   isMobile: {
     type: Boolean,
     default: false
@@ -79,13 +64,8 @@ export const tableProps = {
     default: '更多'
   },
   operations: Array,
-  operationsOnlyShowIcon: {
-    type: Boolean
-  },
-  operationsAutoDropdown: {
-    type: Boolean,
-    default: true
-  },
+  operationsOnlyShowIcon: Boolean,
+  operationsAutoDropdown: Boolean,
   operationsAutoDropdownMaxNum: {
     type: Number,
     default: 4
@@ -106,35 +86,44 @@ export const tableProps = {
   responseHandler: Function,
   loadSuccess: Function,
   url: String,
-  listField: {
-    type: String,
-    default: 'data.data'
-  },
-  totalField: {
-    type: String,
-    default: 'data.total'
-  },
   queryParams: [Function, Object],
+
+  // 分页相关
+  pagination: {
+    type: Boolean,
+    default: true
+  },
   pageList: {
     type: Array,
     default: () => [10, 20, 50, 100]
   },
+  pageSizeKey: String,
+  listField: String,
+  totalField: String,
+  pageIndexKey: String,
   paginationLayout: {
     type: String,
     default: 'total, prev, pager, next, jumper, sizes'
   },
-  pageIndexKey: {
+
+  // 树形表格相关
+  treeTable: {
+    type: Boolean,
+    default: false
+  },
+  treeChildrenKey: {
     type: String,
-    default: 'currentPage'
+    default: 'children'
+  },
+  expandAll: {
+    type: Boolean,
+    default: false
   },
   treeCtrlIndex: {
     type: Number,
     default: 0
   },
-  pageSizeKey: {
-    type: String,
-    default: 'pageSize'
-  },
+
   uniqueId: {
     type: String,
     default: 'id'

@@ -8,7 +8,7 @@
         <ns-form ref="serchForm"
                  type="searchForm"
                  v-model="searchFormModel"
-                 :is-international="isTableInternational"
+                 :is-international="realIsInternational"
                  :is-column-mixins="isColumnMixins"
                  :form-list="formList"
                  :label-position="formOptions&&formOptions.labelPosition"
@@ -285,7 +285,7 @@
           <template v-if="isOutMax(scope,operations)">
             <template v-for="(operationItem,operationIndex) in  scope.scopeOperation">
               <!-- 操作按钮只显示文字 -->
-              <el-button v-if="!isOperationsOnlyShowIcon"
+              <el-button v-if="!realOperationsOnlyShowIcon"
                          @click="operationItem.click(scope.row,$event,operationItem.type)"
                          :class="operationItem.class||''"
                          :key="operationIndex"
@@ -295,7 +295,7 @@
                 {{getInternationalValue(operationItem.text)}}
               </el-button>
               <!-- 操作按钮只显示图标 -->
-              <el-tooltip v-else-if="isOperationsOnlyShowIcon && operationItem.icon"
+              <el-tooltip v-else-if="realOperationsOnlyShowIcon && operationItem.icon"
                           class="item"
                           :key="operationIndex"
                           effect="dark"
@@ -314,7 +314,7 @@
             <!-- 前两个按钮 -->
             <template v-for="(n,numIndex) in 2">
               <!-- 操作按钮只显示文字 -->
-              <template v-if="!isOperationsOnlyShowIcon"
+              <template v-if="!realOperationsOnlyShowIcon"
                         :class="operation-text">
                 <el-button class="operation-text no-choose-row"
                            :class="scope.scopeOperation[n-1].class"
@@ -326,7 +326,7 @@
                 </el-button>
               </template>
               <!-- 操作按钮只显示图标 -->
-              <template v-if="isOperationsOnlyShowIcon &&  scope.scopeOperation[n-1].icon">
+              <template v-if="realOperationsOnlyShowIcon &&  scope.scopeOperation[n-1].icon">
                 <el-tooltip class="item"
                             effect="dark"
                             :key="numIndex"
@@ -441,7 +441,6 @@ export default {
     emitEventHandler (event) {
       this.$emit(event, ...Array.from(arguments).splice(1))
     },
-
     // 切换每页显示
     handleSizeChange (size) {
       this.pageSize = size
@@ -515,12 +514,12 @@ export default {
         $http,
         pagination,
         sidePagination,
-        listField,
-        pageIndexKey,
-        pageSizeKey,
+        realListField,
+        realPageIndexKey,
+        realPageSizeKey,
         page,
         pageSize,
-        totalField,
+        realTotalField,
         queryParams,
         ajaxOptions
       } = this
@@ -536,8 +535,8 @@ export default {
       // 分页参数
       if (pagination) {
         params = Object.assign(params, {
-          [pageIndexKey]: page,
-          [pageSizeKey]: pageSize
+          [realPageIndexKey]: page,
+          [realPageSizeKey]: pageSize
         })
       }
       // 请求数据的函数处理
@@ -558,12 +557,12 @@ export default {
       uestObject
         .then(res => {
           if (res) {
-            let list = res.data && res.data instanceof Array ? res.data : getValueByPath(res, listField)
+            let list = res.data && res.data instanceof Array ? res.data : getValueByPath(res, realListField)
             // 前端分页 要处理数据
             if (pagination && sidePagination === 'client') {
               this.paginationData(list)
             } else if (pagination && sidePagination === 'server') {
-              let totalValue = getValueByPath(res, totalField)// 总页数
+              let totalValue = getValueByPath(res, realTotalField)// 总页数
               this.total = totalValue || 0
               let maxPage = Math.ceil(this.total / this.pageSize)
               if (this.page > maxPage && maxPage !== 0) {
@@ -639,20 +638,35 @@ export default {
       }
       return tmp
     },
-    // 是否国际化
-    isTableInternational () {
-      return isExist(this.isInternational) ? this.isInternational : this.$NS.isInternational
+    realIsInternational () {
+      let { isInternational } = this.$NS
+      return isExist(this.isInternational) ? this.isInternational : isInternational
     },
-
-    // 是否操作只显示图标
-    isOperationsOnlyShowIcon () {
-      return isExist(this.operationsOnlyShowIcon) ? this.operationsOnlyShowIcon : this.$NS.operationsOnlyShowIcon
+    realOperationsOnlyShowIcon () {
+      let { operationsOnlyShowIcon } = this.$NS
+      return isExist(this.operationsOnlyShowIcon) ? this.operationsOnlyShowIcon : operationsOnlyShowIcon
     },
-
-    // 是否显示表格上方查询form表单
-    isShowSearchForm () {
-      return isExist(this.showSearchForm) ? this.showSearchForm : this.$NS.showSearchForm
+    realShowSearchForm () {
+      let { showSearchForm } = this.$NS
+      return isExist(this.showSearchForm) ? this.showSearchForm : showSearchForm
+    },
+    realListField () {
+      let { listField } = this.$NS
+      return isExist(this.listField) ? this.listField : listField
+    },
+    realPageSizeKey () {
+      let { pageSizeKey } = this.$NS
+      return isExist(this.pageSizeKey) ? this.pageSizeKey : pageSizeKey
+    },
+    realPageIndexKey () {
+      let { pageIndexKey } = this.$NS
+      return isExist(this.pageIndexKey) ? this.pageIndexKey : pageIndexKey
+    },
+    realTotalField () {
+      let { totalField } = this.$NS
+      return isExist(this.totalField) ? this.totalField : totalField
     }
+
   },
   watch: {
     maxHeight (val) {
@@ -674,7 +688,7 @@ export default {
       },
       immediate: true
     },
-    isShowSearchForm: {
+    realShowSearchForm: {
       handler (val) {
         this.isShow = val
       },
