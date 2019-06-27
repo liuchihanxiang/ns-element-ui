@@ -2,12 +2,11 @@
   <div class="hello">
     <el-button type="tetx"
                @click="getData">看看</el-button>
-    <ns-form :form-list="form"
-             ref="baseForm"
-             :is-international='false'
-             :is-column-mixins="true"
-             v-model="baseForm"
-             :label-width='110' />
+    <ns-table ref="dataTable"
+              :tableData="tableData"
+              :columns='columns'
+              :operations="operation">
+    </ns-table>
   </div>
 </template>
 
@@ -20,7 +19,7 @@ export default {
   data () {
     return {
       baseForm: {},
-      form: [{
+      columns: [{
         prop: 'sd1',
         label: '是的'
       }, {
@@ -30,6 +29,30 @@ export default {
         type: 'editor',
         prop: 'sd3',
         label: '是的we'
+      }],
+      operation: [{
+        text: '添加'
+      },
+      {
+        text: '添加1'
+      }],
+      tableData: [{
+        sd1: '0是的撒1',
+        sd2: '0是的撒2',
+        sd3: '0是的撒3'
+      },
+      {
+        sd1: '1是的撒1',
+        sd2: '1是的撒2',
+        sd3: '1是的撒3'
+      }, {
+        sd1: '2是的撒1',
+        sd2: '2是的撒2',
+        sd3: '2是的撒3'
+      }, {
+        sd1: '3是的撒1',
+        sd2: '3是的撒2',
+        sd3: '3是的撒3'
       }]
     }
   },

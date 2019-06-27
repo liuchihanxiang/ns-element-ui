@@ -65,7 +65,10 @@ export const tableProps = {
   },
   operations: Array,
   operationsOnlyShowIcon: Boolean,
-  operationsAutoDropdown: Boolean,
+  operationsAutoDropdown: {
+    type: Boolean,
+    default: true
+  },
   operationsAutoDropdownMaxNum: {
     type: Number,
     default: 4

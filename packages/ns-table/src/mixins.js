@@ -52,11 +52,12 @@ export default {
         return isRight
       })
 
-      return ((
-        scope.scopeOperation.length &&
-                this.operationsAutoDropdown &&
-                scope.scopeOperation.length <= this.operationsAutoDropdownMaxNum
-      ) || scope.scopeOperation.length === 0)
+      return (
+        (scope.scopeOperation.length &&
+                    this.operationsAutoDropdown &&
+                    scope.scopeOperation.length <= this.operationsAutoDropdownMaxNum) ||
+                scope.scopeOperation.length === 0
+      )
     },
 
     // 保存树形状态
@@ -79,14 +80,25 @@ export default {
 
     // 图标显示
     iconShow (index, record) {
-      return index === this.treeCtrlIndex && record[this.treeChildrenKey] && record[this.treeChildrenKey].length > 0
+      return (
+        index === this.treeCtrlIndex &&
+                record[this.treeChildrenKey] &&
+                record[this.treeChildrenKey].length > 0
+      )
     },
 
     // 显示子级
     showRow: function (row) {
-      const show = row.row.parent ? row.row.parent._expanded && row.row.parent._show : true
+      let show = true
+      if (row.row.parent) {
+        show = row.row.parent._expanded && row.row.parent._show
+      }
       row.row._show = show
-      return show ? 'animation:treeTableShow 0.5s;-webkit-animation:treeTableShow 0.5s;' : 'display:none;'
+      if (show) {
+        return 'animation:treeTableShow 0.5s;-webkit-animation:treeTableShow 0.5s;'
+      } else {
+        return 'display:none;'
+      }
     },
 
     // 获取所选数据 跨分页
