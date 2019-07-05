@@ -195,8 +195,7 @@
                            :filter-multiple="column.filterMultiple"
                            :filter-method="column.filterMethod"
                            :filtered-value="column.filteredValue">
-            <template slot="header"
-                      slot-scope="scope">
+            <template slot="header">
               <span v-if="column.headerSlotName">
                 <slot :name='column.headerSlotName'
                       :row="column" />
@@ -233,8 +232,7 @@
                            :min-width="column.minWidth"
                            :label="getInternationalValue(column.label)"
                            :width="column.width">
-            <template slot="header"
-                      slot-scope="scope">
+            <template slot="header">
               <span v-if="column.headerSlotName">
                 <slot :name='column.headerSlotName'
                       :row="column" />
@@ -544,9 +542,10 @@ export default {
       if (fetch) {
         uestObject = fetch(params)
       } else {
+        let defaultMethod = this.$NS.ajaxMethod
         let method = ajaxOptions.method
           ? ajaxOptions.method.toLowerCase()
-          : 'post'
+          : defaultMethod
         if (method === 'get') {
           uestObject = $http[method](url, { params })
         } else {

@@ -24,7 +24,8 @@ const install = function (Vue, opts = {}) {
     listField: 'data.data',
     pageSizeKey: 'pageSize',
     pageIndexKey: 'currentPage',
-    totalField: 'data.total'
+    totalField: 'data.total',
+    ajaxMethod: 'post'
   }
   Vue.prototype.$NS = Object.assign({}, defaultOpts, opts)
 }
