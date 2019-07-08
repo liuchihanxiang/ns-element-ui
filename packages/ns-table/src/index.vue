@@ -415,7 +415,7 @@ export default {
   name: 'NsTable',
   mixins: [tableMixins],
   props: tableProps,
-  data () {
+  data() {
     return {
       total: 0,
       page: 1,
@@ -436,23 +436,23 @@ export default {
   },
   methods: {
     isEmptyObject,
-    emitEventHandler (event) {
+    emitEventHandler(event) {
       this.$emit(event, ...Array.from(arguments).splice(1))
     },
     // 切换每页显示
-    handleSizeChange (size) {
+    handleSizeChange(size) {
       this.pageSize = size
       this.initData(this.searchFormModel)
     },
 
     // 切换分页
-    handleCurrentChange (page) {
+    handleCurrentChange(page) {
       this.page = page
       this.initData(this.searchFormModel)
     },
 
     // 处理查询
-    handlerSearch (resetPage = true) {
+    handlerSearch(resetPage = true) {
       if (resetPage) {
         this.page = 1
       }
@@ -465,7 +465,7 @@ export default {
        * 后面点击分页时 tableData不为0直接进到localDataHandler方法里面
        * 若是后台分页 则不存数据到tableData 直接赋值给currentData
        */
-    initData () {
+    initData() {
       let { tableData, url, fetch } = this
       //  数据从哪里拿 前台还是后台
       if (!tableData.length && (url || fetch)) {
@@ -477,7 +477,7 @@ export default {
     },
 
     // 处理传来的静态数据
-    handleLocalData () {
+    handleLocalData() {
       let {
         pagination,
         tableData
@@ -490,7 +490,7 @@ export default {
       }
     },
 
-    delSelection (ids) {
+    delSelection(ids) {
       if (!Array.isArray(ids)) {
         ids = [ids]
       }
@@ -504,7 +504,7 @@ export default {
     },
 
     // 请求数据
-    initServe (formParams = {}) {
+    initServe(formParams = {}) {
       this.loading = true
       let {
         fetch,
@@ -595,7 +595,7 @@ export default {
         })
     },
     // 处理前端分页
-    paginationData (data) {
+    paginationData(data) {
       let { pageSize, page } = this
       let totalValue = data.length // 这里不必判断总页数为0 能进到这个函数就必须有数据
       this.total = totalValue
@@ -608,7 +608,7 @@ export default {
   },
   computed: {
     // 表格数据
-    formatData () {
+    formatData() {
       // 不是树形表格 直接返回
       if (!this.treeTable) {
         return this.currentData
@@ -637,42 +637,42 @@ export default {
       }
       return tmp
     },
-    realIsInternational () {
+    realIsInternational() {
       let { isInternational } = this.$NS
       return isExist(this.isInternational) ? this.isInternational : isInternational
     },
-    realOperationsOnlyShowIcon () {
+    realOperationsOnlyShowIcon() {
       let { operationsOnlyShowIcon } = this.$NS
       return isExist(this.operationsOnlyShowIcon) ? this.operationsOnlyShowIcon : operationsOnlyShowIcon
     },
-    realShowSearchForm () {
+    realShowSearchForm() {
       let { showSearchForm } = this.$NS
       return isExist(this.showSearchForm) ? this.showSearchForm : showSearchForm
     },
-    realListField () {
+    realListField() {
       let { listField } = this.$NS
       return isExist(this.listField) ? this.listField : listField
     },
-    realPageSizeKey () {
+    realPageSizeKey() {
       let { pageSizeKey } = this.$NS
       return isExist(this.pageSizeKey) ? this.pageSizeKey : pageSizeKey
     },
-    realPageIndexKey () {
+    realPageIndexKey() {
       let { pageIndexKey } = this.$NS
       return isExist(this.pageIndexKey) ? this.pageIndexKey : pageIndexKey
     },
-    realTotalField () {
+    realTotalField() {
       let { totalField } = this.$NS
       return isExist(this.totalField) ? this.totalField : totalField
     }
 
   },
   watch: {
-    maxHeight (val) {
+    maxHeight(val) {
     },
     // 监控表格数据
     formatData: {
-      handler (value, oldValue) {
+      handler(value, oldValue) {
         // 每次展开或收起数据时 保存当前数据状态
         this.saveTreeStateToCookies(value)
       },
@@ -680,7 +680,7 @@ export default {
       immediate: true
     },
     tableData: {
-      handler (val, oldVal) {
+      handler(val, oldVal) {
         if (typeof oldVal !== 'undefined') {
           this.initData(this.searchFormModel)
         }
@@ -688,19 +688,19 @@ export default {
       immediate: true
     },
     realShowSearchForm: {
-      handler (val) {
+      handler(val) {
         this.isShow = val
       },
       immediate: true
     }
 
   },
-  mounted () {
+  mounted() {
     this.isTreeStatus = false // 刷新页面不保存 状态 病移除cookies
     window.sessionStorage.removeItem(this.tableId)
     this.initData(this.searchFormModel)
   },
-  created () {
+  created() {
     this.showClomnuInit()
   }
 }
