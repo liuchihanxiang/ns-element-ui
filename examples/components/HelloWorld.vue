@@ -3,6 +3,7 @@
     <el-button type="tetx"
                @click="getData">看看</el-button>
     <ns-table ref="dataTable"
+              :pagination="false"
               :tableData="tableData"
               :columns='columns'
               :operations="operation">
@@ -11,6 +12,7 @@
 </template>
 
 <script>
+import { data } from './json'
 export default {
   name: 'HelloWorld',
   props: {
@@ -20,39 +22,41 @@ export default {
     return {
       baseForm: {},
       columns: [{
-        prop: 'sd1',
+        prop: 'name',
         label: '是的'
       }, {
-        prop: 'sd2',
-        label: '是的ds'
+        label: '总的',
+        children: [{
+          prop: 'routerName',
+          label: '路由'
+        },
+        {
+          prop: 'isChangeMenu',
+          label: '是否隐藏'
+        },
+        {
+          prop: 'hidden',
+          label: '所0得到的'
+        },
+        {
+          prop: 'redirectName',
+          label: '所得'
+        },
+        {
+          prop: 'redirectName',
+          label: '所得11'
+        }]
       }, {
-        type: 'editor',
-        prop: 'sd3',
+        prop: 'permissionCode',
         label: '是的we'
       }],
+      tableData: data,
       operation: [{
-        text: '添加'
-      },
-      {
-        text: '添加1'
-      }],
-      tableData: [{
-        sd1: '0是的撒1',
-        sd2: '0是的撒2',
-        sd3: '0是的撒3'
-      },
-      {
-        sd1: '1是的撒1',
-        sd2: '1是的撒2',
-        sd3: '1是的撒3'
+        text: '阿萨德',
+        judges: 'row.type==="0"'
       }, {
-        sd1: '2是的撒1',
-        sd2: '2是的撒2',
-        sd3: '2是的撒3'
-      }, {
-        sd1: '3是的撒1',
-        sd2: '3是的撒2',
-        sd3: '3是的撒3'
+        text: 'dsd',
+        click: this.handleClick
       }]
     }
   },
@@ -64,6 +68,9 @@ export default {
         'sd2': '撒大声地',
         'sd3': '<p>撒打算打算大所多所多</p>'
       }
+    },
+    handleClick (a, b, c) {
+      console.log(a, b, c)
     }
   }
 }

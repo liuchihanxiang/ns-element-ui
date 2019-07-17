@@ -136,6 +136,7 @@
               :summary-method="summaryMethod"
               :span-method="spanMethod"
               :select-on-indeterminate="selectOnIndeterminate"
+              :tree-props="{children: 'childrenas', hasChildren: 'hasChildren'}"
               style="width: 100%"
               @select="(selection, row) => emitEventHandler('select', selection, row)"
               @select-all="selection => emitEventHandler('select-all', selection)"
@@ -168,9 +169,8 @@
                     :label="scope.$index">&nbsp;</el-radio>
         </template>
       </el-table-column>
-      <!-- 不是树形表格 -->
-      <template v-if="!treeTable">
-        <template v-for="(column,columnIndex) in columns">
+      <template v-for="(column,columnIndex) in columns">
+        <template v-if="!column.children||!column.children.length">
           <el-table-column v-if="!column.type&&showClomnuIndex.indexOf(columnIndex)!=-1&&(typeof column.show==='undefined'||column.show)"
                            :key="columnIndex"
                            :column-key="column.columnKey"
@@ -184,8 +184,8 @@
                            :sort-method="column.sortMethod"
                            :resizable="column.resizable"
                            :show-overflow-tooltip="typeof column.showOverflowTooltip==='undefined'?true:column.showOverflowTooltip"
-                           :align="column.align?column.align:'center'"
-                           :header-align="column.headerAlign?column.align:'center'"
+                           :align="getAlignStyle(column.align,columnIndex)"
+                           :header-align="getAlignStyle(column.headerAlign,columnIndex)"
                            :class-name="column.className"
                            :label-class-name="column.labelClassName"
                            :selectable='column.selectable'
@@ -203,6 +203,21 @@
               <span v-else>{{column.label}}</span>
             </template>
             <template slot-scope="scope">
+              <template v-if="treeTable">
+                <template v-if="columnIndex === treeCtrlIndex">
+                  <span v-for="space in scope.row._level"
+                        class="ms-tree-space"
+                        :key="space" />
+                </template>
+                <span class="tree-ctrl"
+                      v-if="iconShow(columnIndex,scope.row)"
+                      @click="toggleExpanded(scope.$index,$event)">
+                  <i v-if="!scope.row._expanded"
+                     :class="collapsedIcon" />
+                  <i v-else
+                     :class="expandedIcon" />
+                </span>
+              </template>
               <span v-if="column.filter">
                 {{ Vue.filter(column['filter'])(scope.row[column.prop]) }}
               </span>
@@ -221,53 +236,59 @@
             </template>
           </el-table-column>
         </template>
-      </template>
-      <!-- 树形表格 -->
-      <template v-else>
-        <template v-for="(column, index) in columns">
-          <el-table-column v-if="!column.type&&showClomnuIndex.indexOf(index)!=-1"
-                           :key="index"
-                           :show-overflow-tooltip="typeof column.showOverflowTooltip==='undefined'?true:column.showOverflowTooltip"
-                           :class-name="column.className"
-                           :min-width="column.minWidth"
-                           :label="getInternationalValue(column.label)"
-                           :width="column.width">
-            <template slot="header">
-              <span v-if="column.headerSlotName">
-                <slot :name='column.headerSlotName'
-                      :row="column" />
-              </span>
-              <span v-else>{{column.label}}</span>
-            </template>
-            <template slot-scope="scope">
-              <template v-if="index === treeCtrlIndex">
-                <span v-for="space in scope.row._level"
-                      class="ms-tree-space"
-                      :key="space" />
-              </template>
-              <span class="tree-ctrl"
-                    v-if="iconShow(index,scope.row)"
-                    @click="toggleExpanded(scope.$index,$event)">
-                <i v-if="!scope.row._expanded"
-                   :class="collapsedIcon" />
-                <i v-else
-                   :class="expandedIcon" />
-              </span>
-              <span v-if="column.filter">
-                {{ Vue.filter(column['filter'])(scope.row[column.prop]) }}
-              </span>
-              <span v-else-if="column.slotName">
-                <slot :name="column.slotName"
-                      :row="scope.row"
-                      :$index="scope.$index" />
-              </span>
-              <!-- <span v-else-if="column.htmlFormatter">
+        <template v-else>
+          <el-table-column :label="column.label"
+                           header-align="center"
+                           :key="columnIndex">
+            <template v-for="(cColumn,cIndex) in column.children">
+              <el-table-column :key="cIndex"
+                               :column-key="cColumn.columnKey"
+                               :prop="cColumn.prop"
+                               :label="getInternationalValue(cColumn.label)"
+                               :width="cColumn.width"
+                               :min-width="cColumn.minWidth"
+                               :fixed="cColumn.fixed"
+                               :render-header="cColumn.renderHeader"
+                               :sortable="cColumn.sortable"
+                               :sort-method="cColumn.sortMethod"
+                               :resizable="cColumn.resizable"
+                               :show-overflow-tooltip="typeof cColumn.showOverflowTooltip==='undefined'?true:cColumn.showOverflowTooltip"
+                               :align="getAlignStyle(cColumn.align,columnIndex)"
+                               :header-align="getAlignStyle(cColumn.headerAlign,columnIndex)"
+                               :class-name="cColumn.className"
+                               :label-class-name="cColumn.labelClassName"
+                               :selectable='cColumn.selectable'
+                               :reserve-selection='cColumn.reserveSelection'
+                               :filters="cColumn.filters"
+                               :filter-placement="cColumn.filterPlacement"
+                               :filter-multiple="cColumn.filterMultiple"
+                               :filter-method="cColumn.filterMethod"
+                               :filtered-value="cColumn.filteredValue">
+                <template slot="header">
+                  <span v-if="cColumn.headerSlotName">
+                    <slot :name='cColumn.headerSlotName'
+                          :row="cColumn" />
+                  </span>
+                  <span v-else>{{cColumn.label}}</span>
+                </template>
+                <template slot-scope="scope">
+                  <span v-if="cColumn.filter">
+                    {{ Vue.filter(cColumn['filter'])(scope.row[cColumn.prop]) }}
+                  </span>
+                  <span v-else-if="cColumn.slotName">
+                    <slot :name="cColumn.slotName"
+                          :row="scope.row"
+                          :$index="scope.$index" />
+                  </span>
+                  <!-- <span v-else-if="column.htmlFormatter">
                 {{column.htmlFormatter(scope.row,scope.row[column.prop])}}
               </span> -->
-              <template v-else-if="column.formatter">
-                <span v-html="column.formatter(scope.row,scope.row[column.prop]) " />
-              </template>
-              <span v-else>{{scope.row[column.prop]}}</span>
+                  <template v-else-if="cColumn.formatter">
+                    <span v-html="cColumn.formatter(scope.row,scope.row[cColumn.prop]) " />
+                  </template>
+                  <span v-else>{{scope.row[cColumn.prop]}}</span>
+                </template>
+              </el-table-column>
             </template>
           </el-table-column>
         </template>
@@ -279,115 +300,15 @@
                        v-if="operations&&operations instanceof Array&&operations.length&&!isMobile"
                        class-name="operation-list no-choose-row">
         <template slot-scope="scope">
-          <!-- 操作列个数小于等于最大个数时 全部显示 -->
-          <template v-if="isOutMax(scope,operations)">
-            <template v-for="(operationItem,operationIndex) in  scope.scopeOperation">
-              <!-- 操作按钮只显示文字 -->
-              <el-button v-if="!realOperationsOnlyShowIcon"
-                         @click="operationItem.click(scope.row,$event,operationItem.type)"
-                         :class="operationItem.class||''"
-                         :key="operationIndex"
-                         class="operation-text no-choose-row"
-                         type="text"
-                         size="small">
-                {{getInternationalValue(operationItem.text)}}
-              </el-button>
-              <!-- 操作按钮只显示图标 -->
-              <el-tooltip v-else-if="realOperationsOnlyShowIcon && operationItem.icon"
-                          class="item"
-                          :key="operationIndex"
-                          effect="dark"
-                          :content="getInternationalValue(operationItem.text)"
-                          placement="top-start">
-                <a class="operation-icon no-choose-row"
-                   @click="operationItem.click(scope.row,$event,operationItem.type)">
-                  <i v-if="operationItem.icon"
-                     :class="operationItem.icon+' '+(operationItem.class||'')" />
-                </a>
-              </el-tooltip>
-            </template>
-          </template>
-          <!-- 操作列个数大于最大个数时 会显示前两个按钮 其他为下拉显示 -->
-          <template v-else>
-            <!-- 前两个按钮 -->
-            <template v-for="(n,numIndex) in 2">
-              <!-- 操作按钮只显示文字 -->
-              <template v-if="!realOperationsOnlyShowIcon"
-                        :class="operation-text">
-                <el-button class="operation-text no-choose-row"
-                           :class="scope.scopeOperation[n-1].class"
-                           @click="scope.scopeOperation[n-1].click(scope.row,$event,scope.scopeOperation[n-1].type)"
-                           :key="numIndex"
-                           type="text"
-                           size="small">
-                  {{getInternationalValue( scope.scopeOperation[n-1].text)}}
-                </el-button>
-              </template>
-              <!-- 操作按钮只显示图标 -->
-              <template v-if="realOperationsOnlyShowIcon &&  scope.scopeOperation[n-1].icon">
-                <el-tooltip class="item"
-                            effect="dark"
-                            :key="numIndex"
-                            :content="getInternationalValue( scope.scopeOperation[n-1].text)"
-                            placement="top-start">
-                  <a class="operation-icon no-choose-row"
-                     @click=" scope.scopeOperation[n-1].click(scope.row,$event, scope.scopeOperation[n-1].type)">
-                    <i v-if=" scope.scopeOperation[n-1].icon"
-                       :class=" scope.scopeOperation[n-1].icon+' '+ scope.scopeOperation[n-1].class" />
-                  </a>
-                </el-tooltip>
-              </template>
+          <table-operations :row="scope.row"
+                            :operationMore="operationMore"
+                            :realOperationsOnlyShowIcon='realOperationsOnlyShowIcon'
+                            :operations="operations"
+                            :operationsAutoDropdownMaxNum="operationsAutoDropdownMaxNum"></table-operations>
 
-            </template>
-            <!-- 超出最大按钮个数 下拉部分 显示 图标+按钮 -->
-            <el-dropdown class="operation-dropdown"
-                         :show-timeout='80'
-                         :hide-on-click="false">
-              <span class="el-dropdown-link">
-                {{getInternationalValue(operationMore)}}
-                <i class="el-icon-arrow-down el-icon--right" />
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <template v-for="(operationItem,operationIndex) in  scope.scopeOperation">
-                  <el-dropdown-item class="no-choose-row"
-                                    :class="operationItem.class||''"
-                                    @click.native="operationItem.click(scope.row,$event,operationItem.type)"
-                                    :key="operationIndex"
-                                    v-if="operationIndex>=2">
-                    <i v-if="operationItem.icon"
-                       :class="operationItem.icon" /> {{getInternationalValue(operationItem.text)}}
-                  </el-dropdown-item>
-                </template>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </template>
         </template>
       </el-table-column>
-      <el-table-column fixed="right"
-                       :label="getInternationalValue(operationText)"
-                       width="40"
-                       v-else-if="operations&&operations instanceof Array&&operations.length&&isMobile"
-                       class-name="operation-list no-choose-row">
-        <template slot-scope="scope">
-          <el-dropdown class="operation-dropdown"
-                       :show-timeout='80'
-                       :hide-on-click="false">
-            <span class="el-dropdown-link">
-              <i class="el-icon-arrow-down el-icon--right" />
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="(operationItem,operationIndex) in  scope.scopeOperation"
-                                class="no-choose-row"
-                                :class="operationItem.class||''"
-                                @click.native="operationItem.click(scope.row,$event,operationItem.type)"
-                                :key="operationIndex">
-                <i v-if="operationItem.icon"
-                   :class="operationItem.icon" /> {{getInternationalValue(operationItem.text)}}
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>
+
     </el-table>
     <!-- 表格分页 -->
     <div v-if="pagination"
@@ -406,16 +327,17 @@
 
 <script>
 import { tableProps } from './props'
+import TableOperations from './operations'
 import { isExist, isEmptyObject, isJsonString, getValueByPath } from './utils.js'
 import tableMixins from './mixins.js'
 import treeToArray from './tree-table.js'
 import NsForm from '../../ns-form/src/index.vue'
 export default {
-  components: { NsForm },
+  components: { NsForm, TableOperations },
   name: 'NsTable',
   mixins: [tableMixins],
   props: tableProps,
-  data() {
+  data () {
     return {
       total: 0,
       page: 1,
@@ -436,23 +358,23 @@ export default {
   },
   methods: {
     isEmptyObject,
-    emitEventHandler(event) {
+    emitEventHandler (event) {
       this.$emit(event, ...Array.from(arguments).splice(1))
     },
     // 切换每页显示
-    handleSizeChange(size) {
+    handleSizeChange (size) {
       this.pageSize = size
       this.initData(this.searchFormModel)
     },
 
     // 切换分页
-    handleCurrentChange(page) {
+    handleCurrentChange (page) {
       this.page = page
       this.initData(this.searchFormModel)
     },
 
     // 处理查询
-    handlerSearch(resetPage = true) {
+    handlerSearch (resetPage = true) {
       if (resetPage) {
         this.page = 1
       }
@@ -465,7 +387,7 @@ export default {
        * 后面点击分页时 tableData不为0直接进到localDataHandler方法里面
        * 若是后台分页 则不存数据到tableData 直接赋值给currentData
        */
-    initData() {
+    initData () {
       let { tableData, url, fetch } = this
       //  数据从哪里拿 前台还是后台
       if (!tableData.length && (url || fetch)) {
@@ -477,7 +399,7 @@ export default {
     },
 
     // 处理传来的静态数据
-    handleLocalData() {
+    handleLocalData () {
       let {
         pagination,
         tableData
@@ -490,7 +412,7 @@ export default {
       }
     },
 
-    delSelection(ids) {
+    delSelection (ids) {
       if (!Array.isArray(ids)) {
         ids = [ids]
       }
@@ -504,7 +426,7 @@ export default {
     },
 
     // 请求数据
-    initServe(formParams = {}) {
+    initServe (formParams = {}) {
       this.loading = true
       let {
         fetch,
@@ -595,7 +517,7 @@ export default {
         })
     },
     // 处理前端分页
-    paginationData(data) {
+    paginationData (data) {
       let { pageSize, page } = this
       let totalValue = data.length // 这里不必判断总页数为0 能进到这个函数就必须有数据
       this.total = totalValue
@@ -608,7 +530,7 @@ export default {
   },
   computed: {
     // 表格数据
-    formatData() {
+    formatData () {
       // 不是树形表格 直接返回
       if (!this.treeTable) {
         return this.currentData
@@ -630,49 +552,49 @@ export default {
       // 树形数据状态 不为空  并且 isTreeStatus为true时 格式化数据状态
       if (this.isTreeStatus && cookiesStatus && cookiesStatus.length) {
         tmp.forEach(v => {
-          if (cookiesStatus.indexOf(v.id) >= 0) {
+          if (cookiesStatus.indexOf(v[this.rowKey]) >= 0) {
             v._expanded = true
           }
         })
       }
       return tmp
     },
-    realIsInternational() {
+    realIsInternational () {
       let { isInternational } = this.$NS
       return isExist(this.isInternational) ? this.isInternational : isInternational
     },
-    realOperationsOnlyShowIcon() {
+    realOperationsOnlyShowIcon () {
       let { operationsOnlyShowIcon } = this.$NS
       return isExist(this.operationsOnlyShowIcon) ? this.operationsOnlyShowIcon : operationsOnlyShowIcon
     },
-    realShowSearchForm() {
+    realShowSearchForm () {
       let { showSearchForm } = this.$NS
       return isExist(this.showSearchForm) ? this.showSearchForm : showSearchForm
     },
-    realListField() {
+    realListField () {
       let { listField } = this.$NS
       return isExist(this.listField) ? this.listField : listField
     },
-    realPageSizeKey() {
+    realPageSizeKey () {
       let { pageSizeKey } = this.$NS
       return isExist(this.pageSizeKey) ? this.pageSizeKey : pageSizeKey
     },
-    realPageIndexKey() {
+    realPageIndexKey () {
       let { pageIndexKey } = this.$NS
       return isExist(this.pageIndexKey) ? this.pageIndexKey : pageIndexKey
     },
-    realTotalField() {
+    realTotalField () {
       let { totalField } = this.$NS
       return isExist(this.totalField) ? this.totalField : totalField
     }
 
   },
   watch: {
-    maxHeight(val) {
+    maxHeight (val) {
     },
     // 监控表格数据
     formatData: {
-      handler(value, oldValue) {
+      handler (value, oldValue) {
         // 每次展开或收起数据时 保存当前数据状态
         this.saveTreeStateToCookies(value)
       },
@@ -680,7 +602,7 @@ export default {
       immediate: true
     },
     tableData: {
-      handler(val, oldVal) {
+      handler (val, oldVal) {
         if (typeof oldVal !== 'undefined') {
           this.initData(this.searchFormModel)
         }
@@ -688,19 +610,19 @@ export default {
       immediate: true
     },
     realShowSearchForm: {
-      handler(val) {
+      handler (val) {
         this.isShow = val
       },
       immediate: true
     }
 
   },
-  mounted() {
+  mounted () {
     this.isTreeStatus = false // 刷新页面不保存 状态 病移除cookies
     window.sessionStorage.removeItem(this.tableId)
     this.initData(this.searchFormModel)
   },
-  created() {
+  created () {
     this.showClomnuInit()
   }
 }
@@ -755,6 +677,35 @@ export default {
   .el-card__body {
     padding: 10px;
   }
+  .operation-list {
+    text-align: left;
+    .operation-text {
+      font-size: 14px;
+    }
+    .el-button {
+      margin-left: 0px;
+      margin-right: 5px;
+    }
+    .operation-icon {
+      margin-right: 5px;
+      color: #409eff;
+      font-size: 14px;
+      i {
+        font-size: 18px;
+      }
+      svg {
+        font-size: 12px;
+        position: relative;
+        top: -3px;
+      }
+    }
+    .operation-dropdown {
+      cursor: pointer;
+      .el-icon--right {
+        margin-left: 0px;
+      }
+    }
+  }
 }
 </style>
 <style lang='scss' scoped>
@@ -790,35 +741,6 @@ $space-width: 18px;
   }
 }
 
-.operation-list {
-  text-align: left;
-  .operation-text {
-    font-size: 14px;
-  }
-  .el-button {
-    margin-left: 0px;
-    margin-right: 5px;
-  }
-  .operation-icon {
-    margin-right: 5px;
-    color: #409eff;
-    font-size: 14px;
-    i {
-      font-size: 18px;
-    }
-    svg {
-      font-size: 12px;
-      position: relative;
-      top: -3px;
-    }
-  }
-  .operation-dropdown {
-    cursor: pointer;
-    .el-icon--right {
-      margin-left: 0px;
-    }
-  }
-}
 .pull-right {
   float: right;
 }

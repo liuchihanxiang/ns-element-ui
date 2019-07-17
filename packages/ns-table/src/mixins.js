@@ -40,32 +40,12 @@ export default {
       })
     },
 
-    // 过滤操作list 得到每行相对应的list 并判断其是否超出操作列设置的最大值
-    isOutMax (scope, operationList = []) {
-            let row = scope.row /*eslint-disable-line*/
-      scope.scopeOperation = operationList.filter(item => {
-        let isRight = true
-        let judgesObj = item.judges
-        if (judgesObj) {
-                    return eval(judgesObj) /*eslint-disable-line*/
-        }
-        return isRight
-      })
-
-      return (
-        (scope.scopeOperation.length &&
-                    this.operationsAutoDropdown &&
-                    scope.scopeOperation.length <= this.operationsAutoDropdownMaxNum) ||
-                scope.scopeOperation.length === 0
-      )
-    },
-
     // 保存树形状态
     saveTreeStateToCookies (data) {
       let cookiesArr = []
       data.forEach(v => {
         if (v._expanded) {
-          cookiesArr.push(v.id)
+          cookiesArr.push(v[this.rowKey])
         }
       })
       window.sessionStorage.setItem(this.tableId, JSON.stringify(cookiesArr))
@@ -87,6 +67,15 @@ export default {
       )
     },
 
+    getAlignStyle (align, columnIndex) {
+      if (this.treeTable && !align) {
+        return 'left'
+      } else if (!this.treeTable && !align) {
+        return 'center'
+      } else {
+        return align
+      }
+    },
     // 显示子级
     showRow: function (row) {
       let show = true
@@ -127,9 +116,9 @@ export default {
     },
 
     /**
-         *触发表格选中行
-         *@param {*} list 要选中的行唯一标识的list
-         */
+                                *触发表格选中行
+                                *@param {*} list 要选中的行唯一标识的list
+                                */
     toggleRowSelection (list) {
       let key = this.rowKey || 'id'
       if (!(list instanceof Array)) {
