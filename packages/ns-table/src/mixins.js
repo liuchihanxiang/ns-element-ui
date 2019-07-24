@@ -25,7 +25,7 @@ export default {
     // 过滤要展示的列
     showClomnuInit: function () {
       this.columns.forEach((ele, index) => {
-        if (ele.prop && (ele.show || typeof ele.show === 'undefined')) {
+        if ((ele.show || typeof ele.show === 'undefined')) {
           if (typeof ele.hide === 'undefined' || ele.hide) {
             this.showClomnuIndex.push(index)
           }
@@ -62,8 +62,8 @@ export default {
     iconShow (index, record) {
       return (
         index === this.treeCtrlIndex &&
-                record[this.treeChildrenKey] &&
-                record[this.treeChildrenKey].length > 0
+        record[this.treeChildrenKey] &&
+        record[this.treeChildrenKey].length > 0
       )
     },
 

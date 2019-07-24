@@ -347,6 +347,7 @@ export default {
       searchFormModel: {},
       isTreeStatus: false,
       currentData: [],
+      cachData: [],
       selection: [],
       type: ['selection', 'index', 'expand'],
       radio: false,
@@ -378,7 +379,66 @@ export default {
       if (resetPage) {
         this.page = 1
       }
-      this.initData(this.searchFormModel)
+      if (this.url && this.search === 'server') {
+        this.initData(this.searchFormModel)
+      } else {
+        this.filterData()
+      }
+    },
+    filterData () {
+      const serchFormKeyList = Object.keys(this.searchFormModel)
+      const searchFormListKey = serchFormKeyList.filter(key => this.searchFormModel[key] !== '')
+      if (!searchFormListKey.length) {
+        this.currentData = JSON.parse(JSON.stringify(this.cachData))
+      } else {
+        let data = JSON.parse(JSON.stringify(this.cachData))
+        if (this.treeTable) {
+          this.currentData = this.treeFilter(this.filterTree(data, searchFormListKey))
+        } else {
+          this.currentData = data.filter(item => {
+            return this.isIncludesObj(item, searchFormListKey)
+          })
+        }
+      }
+    },
+    isIncludesObj (obj, keyList) {
+      return keyList.every(key => {
+        let val = this.searchFormModel[key]
+        const itemVal = obj[key]
+        return itemVal && itemVal.includes(val)
+      })
+    },
+    isNeedBranch (item, keyList) {
+      let flag1 = false
+      let flag2 = false
+      if (this.isIncludesObj(item, keyList)) {
+        flag1 = true
+      } else if (item.children && item.children.length) {
+        item.children.forEach(child => {
+          if (this.isNeedBranch(child, keyList)) {
+            flag2 = true
+          }
+        })
+      }
+      return flag1 || flag2
+    },
+    filterTree (data, keyList) {
+      return data.map(item => {
+        item.isNeed = this.isNeedBranch(item, keyList)
+        if (item.children && item.children.length) {
+          this.filterTree(item.children, keyList)
+        }
+        return item
+      })
+    },
+    treeFilter (data) {
+      return data.filter((item, index) => {
+        if (item && item.children && item.children.length) {
+          item._expanded = true
+          item.children = this.treeFilter(item.children)
+        }
+        return item.isNeed
+      })
     },
 
     /**
@@ -405,6 +465,7 @@ export default {
         tableData
       } = this
       let cachData = JSON.parse(JSON.stringify(tableData))
+      this.cachData = JSON.parse(JSON.stringify(tableData))
       if (pagination) {
         this.paginationData(cachData)
       } else {
@@ -490,19 +551,13 @@ export default {
                 this.handleCurrentChange(maxPage)
                 return false
               }
-              if (this.responseHandler) {
-                this.currentData = this.responseHandler(list)
-              } else {
-                this.currentData = list
-              }
-            } else {
-              if (this.responseHandler) {
-                this.currentData = this.responseHandler(list)
-              } else {
-                this.currentData = list
-              }
             }
-
+            if (this.responseHandler) {
+              this.currentData = this.responseHandler(list)
+            } else {
+              this.currentData = list
+            }
+            if (this.search === 'client') { this.cachData = JSON.parse(JSON.stringify(this.currentData)) }
             if (this.loadSuccess) {
               this.$nextTick(() => {
                 this.loadSuccess(res)
@@ -590,7 +645,25 @@ export default {
 
   },
   watch: {
-    maxHeight (val) {
+    columns: {
+      handler (val) {
+        val.forEach((ele, index) => {
+          if ((ele.show || typeof ele.show === 'undefined')) {
+            if (typeof ele.hide === 'undefined' || ele.hide) {
+              this.showClomnuIndex.push(index)
+            }
+            if (ele.isCloumnSwitch !== false) {
+              let obj = {
+                label: ele.label,
+                index: index
+              }
+              this.showClomnuList.push(Object.assign({}, obj))
+            }
+          }
+        })
+      },
+      deep: true,
+      immediate: true
     },
     // 监控表格数据
     formatData: {
@@ -623,7 +696,7 @@ export default {
     this.initData(this.searchFormModel)
   },
   created () {
-    this.showClomnuInit()
+    // this.showClomnuInit()
   }
 }
 </script>

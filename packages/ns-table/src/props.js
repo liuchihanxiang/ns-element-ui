@@ -4,7 +4,7 @@ export const tableProps = {
   },
   formOptions: {
     type: Object,
-    default: () => {}
+    default: () => { }
   }, // 查询表单
 
   collapsedIcon: {
@@ -37,6 +37,13 @@ export const tableProps = {
     default: false
   },
   sidePagination: {
+    type: String,
+    default: 'server',
+    validator: function (value) {
+      return ['client', 'server'].indexOf(value) !== -1
+    }
+  },
+  search: {
     type: String,
     default: 'server',
     validator: function (value) {
