@@ -13,7 +13,7 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lib": "vue-cli-service build --target lib --name nsElementUi --dest lib packages/index.js",
-        "lint": "vue-cli-service lint",
+        "lint": "vue-cli-service lint --target",
         "test:unit": "vue-cli-service test:unit"
     },
     "dependencies": {
