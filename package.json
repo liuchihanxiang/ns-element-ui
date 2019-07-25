@@ -18,6 +18,7 @@
     },
     "dependencies": {
         "@tinymce/tinymce-vue": "^2.0.0",
+        "babel-polyfill": "^6.26.0",
         "core-js": "^2.6.5",
         "element-ui": "^2.6.3",
         "lodash": "^4.17.11",

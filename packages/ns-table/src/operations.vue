@@ -95,7 +95,9 @@ export default {
   props: {
     row: {
       type: Object,
-      default: () => { }
+      default: function () {
+        return {}
+      }
     },
     operationsAutoDropdownMaxNum: {
       type: Number,

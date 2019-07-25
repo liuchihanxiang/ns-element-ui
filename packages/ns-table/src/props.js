@@ -4,7 +4,9 @@ export const tableProps = {
   },
   formOptions: {
     type: Object,
-    default: () => { }
+    default: function () {
+      return {}
+    }
   }, // 查询表单
 
   collapsedIcon: {
@@ -89,7 +91,7 @@ export const tableProps = {
   },
   ajaxOptions: {
     type: Object,
-    default: () => {
+    default: function () {
       return {}
     }
   },

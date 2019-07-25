@@ -30,7 +30,9 @@ export default {
     value: String,
     editorInit: {
       type: Object,
-      default: () => { }
+      default: function () {
+        return {}
+      }
     },
     labelList: {
       type: Array,

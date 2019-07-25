@@ -6,7 +6,9 @@ export default {
   },
   value: {
     type: Object,
-    default: () => {}
+    default: function () {
+      return {}
+    }
   },
   // 用于控制该表单内组件的尺寸
   size: {
@@ -71,11 +73,15 @@ export default {
   },
   submitBtn: {
     type: Object,
-    default: () => {}
+    default: function () {
+      return {}
+    }
   },
   dicData: {
     type: Object,
-    default: () => {}
+    default: function () {
+      return {}
+    }
   },
   dicUrl: String,
   searchSize: {
@@ -87,11 +93,15 @@ export default {
   },
   resetBtn: {
     type: Object,
-    default: () => {}
+    default: function () {
+      return {}
+    }
   },
   searchBtn: {
     type: Object,
-    default: () => {}
+    default: function () {
+      return {}
+    }
   },
   // 提交前 处理form表单数据的钩子
   formFormat: Function,
