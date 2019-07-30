@@ -1,34 +1,9 @@
 <template>
   <div class="hello">
-    <el-button type="tetx"
-               @click="getData">看看</el-button>
-    <ns-table ref="dataTable"
-              treeTable
-              :pagination="false"
-              :tableData="tableData"
-              :columns='columns'
-              :operations="operation">
-    </ns-table>
+    <span>{{baseForm.kk}}</span>
+    <ns-form v-model="baseForm"
+             :form-list="formList"></ns-form>
 
-    <el-table :data="tableData"
-              style="width: 100%;margin-bottom: 20px;"
-              row-key="id"
-              border
-              :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column prop="name"
-                       label="日期"
-                       sortable
-                       width="180">
-      </el-table-column>
-      <el-table-column prop="routerName"
-                       label="姓名"
-                       sortable
-                       width="180">
-      </el-table-column>
-      <el-table-column prop="isChangeMenu"
-                       label="地址">
-      </el-table-column>
-    </el-table>
   </div>
 </template>
 
@@ -41,7 +16,28 @@ export default {
   },
   data () {
     return {
-      baseForm: {},
+      baseForm: {
+        kk: [{ 'id': 1, 'label': '111' }, { 'id': 2, 'label': '222' }]
+      },
+      formList: [{
+        prop: 'kk',
+        label: '还是',
+        multiple: true,
+        isValueObject: true,
+        type: 'select',
+        valueKey: 'id',
+        labelKey: 'label',
+        dicData: [{
+          id: 1,
+          label: '111'
+        }, {
+          id: 2,
+          label: '222'
+        }, {
+          id: 3,
+          label: '333'
+        }]
+      }],
       list: [{
         'id': '22532967539410944',
         'deleteFlag': '0',

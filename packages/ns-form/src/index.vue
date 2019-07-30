@@ -56,7 +56,7 @@
                              :indeterminate="item.indeterminate||column.indeterminate"
                              :disabled="item.disabled"
                              :name="column.prop"
-                             :label="getValue(item,column.valueKey)">{{getLabel(item,column.labelKey)}}</el-checkbox>
+                             :label="getValue(item,column)">{{getLabel(item,column.labelKey)}}</el-checkbox>
               </el-checkbox-group>
               <!-- 单选按钮 -->
               <el-radio-group v-else-if="column.type==='radio'"
@@ -68,7 +68,7 @@
                               :disabled="column.disabled&&type!=='searchForm'">
                 <el-radio v-for="(item,index) in filterDic(column.dicData,dicList[column.dicData||column.prop])"
                           :key="index"
-                          :label="getValue(item,column.valueKey)"
+                          :label="getValue(item,column)"
                           :border="column.border">{{getLabel(item,column.labelKey)}}</el-radio>
               </el-radio-group>
               <!-- 下拉 -->
@@ -88,7 +88,7 @@
                            :key="index"
                            :disabled="handleDisabled(item,column)"
                            :label="getLabel(item,column.labelKey)"
-                           :value="getValue(item,column.valueKey)" />
+                           :value="getValue(item,column)" />
               </el-select>
               <!-- 时间选择器 -->
               <el-time-picker v-else-if="column.type==='timePicker'"

@@ -4,9 +4,14 @@ export default {
       let key = item.labelkey || labelKey || 'label'
       return this.getInternationalValue(item[key])
     },
-    getValue (item, valuekey) {
-      let key = item.valuekey || valuekey || 'value'
-      return item[key]
+    getValue (item, column) {
+      let { isValueObject, valueKey } = column
+      valueKey = valueKey || 'value'
+      if (isValueObject) {
+        return item
+      } else {
+        return item[valueKey]
+      }
     },
     // 处理国际化
     getInternationalValue (value) {
