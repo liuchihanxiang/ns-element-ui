@@ -1,6 +1,6 @@
 <template>
-  <span>
-    <template v-for="(column,columnIndex) in columnList">
+  <el-table-column :label="columnOption.label">
+    <template v-for="(column,columnIndex) in columnOption.children">
       <template v-if="column.children&&column.children.length">
         <column :column-option="column"
                 :key="columnIndex"></column>
@@ -49,39 +49,26 @@
             <template v-else-if="column.formatter">
               <span v-html="column.formatter(scope.row,scope.row[column.prop]) " />
             </template>
-            <span v-else>{{scope.row[column.prop]}}66</span>
+            <span v-else>{{scope.row[column.prop]}}</span>
           </template>
         </el-table-column>
       </template>
     </template>
 
-  </span>
+  </el-table-column>
 </template>
 
 <script>
 import { getInternationalValue } from './../../utils'
-import Column from './column'
 export default {
-  name: 'NsTableColumn',
+  name: 'Column',
   inject: ['table'],
-  components: { Column },
-  provide () {
-    return {
-      tableColumn: this
-    }
-  },
   props: {
-    columnList: Array
-  },
-  data () {
-    return {
-
-    }
+    columnOption: Object
   },
   methods: {
     getInternationalValue
   },
-  computed: {},
   watch: {},
   created () { },
   mounted () {
@@ -89,6 +76,3 @@ export default {
   update () { }
 }
 </script>
-
-<style lang='scss' scoped>
-</style>

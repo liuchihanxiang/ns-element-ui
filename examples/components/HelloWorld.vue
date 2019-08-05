@@ -1,9 +1,16 @@
 <template>
   <div class="hello">
-    <span>{{baseForm.kk}}</span>
-    <ns-form v-model="baseForm"
-             :form-list="formList"></ns-form>
-
+    <el-button type="tetx"
+               @click="getData">看看</el-button>
+    <ns-table ref="dataTable"
+              :pagination="false"
+              treeTable
+              :form-list="form"
+              :tableData="tableData"
+              :columns='columns'
+              search='client'
+              :operations="operation">
+    </ns-table>
   </div>
 </template>
 
@@ -16,98 +23,36 @@ export default {
   },
   data () {
     return {
-      baseForm: {
-        kk: [{ 'id': 1, 'label': '111' }, { 'id': 2, 'label': '222' }]
-      },
-      formList: [{
-        prop: 'kk',
-        label: '还是',
-        multiple: true,
-        isValueObject: true,
-        type: 'select',
-        valueKey: 'id',
-        labelKey: 'label',
-        dicData: [{
-          id: 1,
-          label: '111'
-        }, {
-          id: 2,
-          label: '222'
-        }, {
-          id: 3,
-          label: '333'
-        }]
-      }],
-      list: [{
-        'id': '22532967539410944',
-        'deleteFlag': '0',
-        'enableFlag': '1',
-        'createUserId': '20775871662393344',
-        'createUserName': 'zc',
-        'createTime': '2019-06-13 17:34:59',
-        'updateUserId': '20775871662393344',
-        'updateUserName': 'zc',
-        'updateTime': '2019-06-13 17:34:59',
-        'sn': '0',
-        'name': '测试菜单可以随意删除和修改',
-        'type': '0',
-        'url': '瓦哒哒',
-        'permissionCode': '啊我的哇',
-        'parentId': '0',
-        'icon': 'home',
-        'routerName': '瓦大我',
-        'redirectName': '瓦大我',
-        'isChangeMenu': false,
-        'menuMoudle': '啊我的哇',
-        'hidden': false,
-        'children': [
-          {
-            'id': '22532973007079424',
-            'deleteFlag': '0',
-            'enableFlag': '1',
-            'createUserId': '20775871662393344',
-            'createUserName': 'zc',
-            'createTime': '2019-06-13 17:35:41',
-            'updateUserId': '20615556512614400',
-            'updateUserName': '诺姆四达',
-            'updateTime': '2019-06-17 10:50:02',
-            'sn': '0',
-            'name': '瓦大费网费123',
-            'type': '0',
-            'url': '瓦大',
-            'permissionCode': '瓦大',
-            'parentId': '22532967539410944',
-            'icon': '瓦大',
-            'routerName': '瓦大的哇大',
-            'redirectName': '大唔大',
-            'isChangeMenu': false,
-            'menuMoudle': '瓦大a',
-            'hidden': false
-          }
-        ]
+      baseForm: {},
+      form: [{
+        prop: 'name',
+        label: '是的'
+      }, {
+        prop: 'permissionCode',
+        label: '是的we'
       }],
       columns: [{
         prop: 'name',
         label: '是的'
       }, {
-        prop: 'routerName',
-        label: '路由'
-      },
-      {
-        prop: 'isChangeMenu',
-        label: '是否隐藏'
-      },
-      {
-        prop: 'hidden',
-        label: '所0得到的'
-      },
-      {
-        prop: 'redirectName',
-        label: '所得'
-      },
-      {
-        prop: 'redirectName',
-        label: '所得11'
+        label: '总的',
+        children: [
+          {
+            prop: 'isChangeMenu',
+            label: '是否隐藏'
+          },
+          {
+            prop: 'hidden',
+            label: '所0得到的'
+          },
+          {
+            prop: 'permissionCode',
+            label: '所得'
+          },
+          {
+            prop: 'name',
+            label: '所得11'
+          }]
       }, {
         prop: 'permissionCode',
         label: '是的we'
@@ -124,7 +69,6 @@ export default {
   },
   methods: {
     getData () {
-      console.log(this.baseForm)
       this.baseForm = {
         'sd1': '多岁的',
         'sd2': '撒大声地',

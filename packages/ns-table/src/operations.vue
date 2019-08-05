@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- 操作列个数小于等于最大个数时 全部显示 -->
-    <template v-if="rowOperation.length<operationsAutoDropdownMaxNum">
+    <template v-if="rowOperation.length<table.operationsAutoDropdownMaxNum">
       <template v-for="(operationItem,operationIndex) in  rowOperation">
         <!-- 操作按钮只显示文字 -->
-        <el-button v-if="!realOperationsOnlyShowIcon"
+        <el-button v-if="!table.realOperationsOnlyShowIcon"
                    @click="operationItem.click(row,$event,operationItem.type)"
                    :class="operationItem.class||''"
                    :key="operationIndex"
@@ -14,7 +14,7 @@
           {{getInternationalValue(operationItem.text)}}
         </el-button>
         <!-- 操作按钮只显示图标 -->
-        <el-tooltip v-else-if="realOperationsOnlyShowIcon && operationItem.icon"
+        <el-tooltip v-else-if="table.realOperationsOnlyShowIcon && operationItem.icon"
                     class="item"
                     :key="operationIndex"
                     effect="dark"
@@ -33,7 +33,7 @@
       <!-- 前两个按钮 -->
       <template v-for="(n,numIndex) in 2">
         <!-- 操作按钮只显示文字 -->
-        <template v-if="!realOperationsOnlyShowIcon"
+        <template v-if="!table.realOperationsOnlyShowIcon"
                   :class="operation-text">
           <el-button class="operation-text no-choose-row"
                      :class="rowOperation[n-1].class"
@@ -45,7 +45,7 @@
           </el-button>
         </template>
         <!-- 操作按钮只显示图标 -->
-        <template v-if="realOperationsOnlyShowIcon &&  rowOperation[n-1].icon">
+        <template v-if="table.realOperationsOnlyShowIcon &&  rowOperation[n-1].icon">
           <el-tooltip class="item"
                       effect="dark"
                       :key="numIndex"
@@ -65,7 +65,7 @@
                    :show-timeout='80'
                    :hide-on-click="false">
         <span class="el-dropdown-link">
-          {{getInternationalValue(operationMore)}}
+          {{getInternationalValue(table.operationMore)}}
           <i class="el-icon-arrow-down el-icon--right" />
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -89,27 +89,13 @@
 import { getInternationalValue } from './../../utils'
 export default {
   name: 'TableOperations',
-  components: {
-
-  },
+  inject: ['table'],
   props: {
     row: {
       type: Object,
       default: function () {
         return {}
       }
-    },
-    operationsAutoDropdownMaxNum: {
-      type: Number,
-      default: 4
-    },
-    operationMore: String,
-    operations: Array,
-    realOperationsOnlyShowIcon: Boolean
-  },
-  data () {
-    return {
-
     }
   },
   methods: {
@@ -118,7 +104,7 @@ export default {
   computed: {
     rowOperation () {
       const row = this.row /*eslint-disable-line*/
-      return this.operations.filter(item => {
+      return this.table.operations.filter(item => {
         let isRight = true
         let judgesObj = item.judges
         if (judgesObj) {
@@ -127,10 +113,6 @@ export default {
         return isRight
       })
     }
-  },
-  watch: {},
-  created () { },
-  mounted () { },
-  update () { }
+  }
 }
 </script>

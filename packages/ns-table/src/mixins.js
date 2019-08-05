@@ -51,22 +51,6 @@ export default {
       window.sessionStorage.setItem(this.tableId, JSON.stringify(cookiesArr))
     },
 
-    // 切换下级是否展开
-    toggleExpanded: function (trIndex) {
-      this.isTreeStatus = false
-      const record = this.formatData[trIndex]
-      record._expanded = !record._expanded
-    },
-
-    // 图标显示
-    iconShow (index, record) {
-      return (
-        index === this.treeCtrlIndex &&
-        record[this.treeChildrenKey] &&
-        record[this.treeChildrenKey].length > 0
-      )
-    },
-
     getAlignStyle (align, columnIndex) {
       if (this.treeTable && !align) {
         return 'left'
@@ -74,19 +58,6 @@ export default {
         return 'center'
       } else {
         return align
-      }
-    },
-    // 显示子级
-    showRow: function (row) {
-      let show = true
-      if (row.row.parent) {
-        show = row.row.parent._expanded && row.row.parent._show
-      }
-      row.row._show = show
-      if (show) {
-        return 'animation:treeTableShow 0.5s;-webkit-animation:treeTableShow 0.5s;'
-      } else {
-        return 'display:none;'
       }
     },
 
@@ -101,10 +72,6 @@ export default {
       this.emitEventHandler('selection-change', selection)
     },
 
-    setSelect (data) {
-      // this.selectData = data
-    },
-
     // 清空所选
     clearSelect () {
       this.$refs['elBaseTable'].clearSelection()
@@ -113,41 +80,6 @@ export default {
     // 清空表格数据
     clearTableData () {
       this.currentData = []
-    },
-
-    /**
-                                *触发表格选中行
-                                *@param {*} list 要选中的行唯一标识的list
-                                */
-    toggleRowSelection (list) {
-      let key = this.rowKey || 'id'
-      if (!(list instanceof Array)) {
-        list = [list]
-      }
-      if (list.length > 0) {
-        this.$nextTick(() => {
-          this.formatData.forEach(item => {
-            if (list.includes(item[key])) {
-              this.$refs.elBaseTable.toggleRowSelection(item)
-            }
-          })
-        })
-      }
-    },
-
-    // 展开当前节点所有的父节点
-    expandAllParents (tem, parentIds) {
-      parentIds.forEach(v => {
-        for (let i = 0; i < tem.length; i++) {
-          if (tem[i].id === v) {
-            tem[i]._expanded = true
-            if (tem[i].parentId && tem[i].parentId !== 0) {
-              this.expandAllParents(tem, [tem[i].parentId])
-            }
-            break
-          }
-        }
-      })
     }
   }
 }

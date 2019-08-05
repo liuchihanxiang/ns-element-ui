@@ -41,7 +41,6 @@
                        @click="btnItem.click?btnItem.click($event):''"
                        :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(btnItem.text)}}</el-button>
           </template>
-
         </el-button-group>
 
         <el-button-group class="table-right-btnList pull-right">
@@ -72,7 +71,8 @@
           <i class="el-icon-search" />
         </el-button>
 
-        <el-dropdown :hide-on-click="false"
+        <el-dropdown v-if="!isComplexHeader"
+                     :hide-on-click="false"
                      class="cloumns-switch">
           <span class="el-dropdown-link">
             <el-button size='small'
@@ -111,7 +111,7 @@
               element-loading-text="拼命加载中..."
               element-loading-spinner="el-icon-loading"
               element-loading-background="rgba(0, 0, 0, 0.8)"
-              :data="formatData"
+              :data="currentData"
               :height="height"
               :max-height="maxHeight"
               :stripe="stripe"
@@ -122,7 +122,7 @@
               :highlight-current-row="highlightCurrentRow"
               :current-row-key="currentRowKey"
               :row-class-name="rowClassName"
-              :row-style="treeTable?showRow:rowStyle"
+              :row-style="rowStyle"
               :cell-class-name="cellClassName"
               :cell-style="cellStyle"
               :header-row-style="headerRowStyle"
@@ -136,7 +136,7 @@
               :summary-method="summaryMethod"
               :span-method="spanMethod"
               :select-on-indeterminate="selectOnIndeterminate"
-              :tree-props="{children: 'childrenas', hasChildren: 'hasChildren'}"
+              :tree-props="treeProps"
               style="width: 100%"
               @select="(selection, row) => emitEventHandler('select', selection, row)"
               @select-all="selection => emitEventHandler('select-all', selection)"
@@ -170,7 +170,11 @@
         </template>
       </el-table-column>
       <template v-for="(column,columnIndex) in columns">
-        <template v-if="!column.children||!column.children.length">
+        <template v-if="column.children&&column.children.length">
+          <column :column-option="column"
+                  :key="columnIndex"></column>
+        </template>
+        <template v-else>
           <el-table-column v-if="!column.type&&showClomnuIndex.indexOf(columnIndex)!=-1&&(typeof column.show==='undefined'||column.show)"
                            :key="columnIndex"
                            :column-key="column.columnKey"
@@ -184,8 +188,8 @@
                            :sort-method="column.sortMethod"
                            :resizable="column.resizable"
                            :show-overflow-tooltip="typeof column.showOverflowTooltip==='undefined'?true:column.showOverflowTooltip"
-                           :align="getAlignStyle(column.align,columnIndex)"
-                           :header-align="getAlignStyle(column.headerAlign,columnIndex)"
+                           :align="column.align"
+                           :header-align="column.headerAlign"
                            :class-name="column.className"
                            :label-class-name="column.labelClassName"
                            :selectable='column.selectable'
@@ -203,21 +207,6 @@
               <span v-else>{{column.label}}</span>
             </template>
             <template slot-scope="scope">
-              <template v-if="treeTable">
-                <template v-if="columnIndex === treeCtrlIndex">
-                  <span v-for="space in scope.row._level"
-                        class="ms-tree-space"
-                        :key="space" />
-                </template>
-                <span class="tree-ctrl"
-                      v-if="iconShow(columnIndex,scope.row)"
-                      @click="toggleExpanded(scope.$index,$event)">
-                  <i v-if="!scope.row._expanded"
-                     :class="collapsedIcon" />
-                  <i v-else
-                     :class="expandedIcon" />
-                </span>
-              </template>
               <span v-if="column.filter">
                 {{ Vue.filter(column['filter'])(scope.row[column.prop]) }}
               </span>
@@ -226,69 +215,10 @@
                       :row="scope.row"
                       :$index="scope.$index" />
               </span>
-              <!-- <span v-else-if="column.htmlFormatter">
-                {{column.htmlFormatter(scope.row,scope.row[column.prop])}}
-              </span> -->
               <template v-else-if="column.formatter">
                 <span v-html="column.formatter(scope.row,scope.row[column.prop]) " />
               </template>
-              <span v-else>{{scope.row[column.prop]}}</span>
-            </template>
-          </el-table-column>
-        </template>
-        <template v-else>
-          <el-table-column :label="column.label"
-                           header-align="center"
-                           :key="columnIndex">
-            <template v-for="(cColumn,cIndex) in column.children">
-              <el-table-column :key="cIndex"
-                               :column-key="cColumn.columnKey"
-                               :prop="cColumn.prop"
-                               :label="getInternationalValue(cColumn.label)"
-                               :width="cColumn.width"
-                               :min-width="cColumn.minWidth"
-                               :fixed="cColumn.fixed"
-                               :render-header="cColumn.renderHeader"
-                               :sortable="cColumn.sortable"
-                               :sort-method="cColumn.sortMethod"
-                               :resizable="cColumn.resizable"
-                               :show-overflow-tooltip="typeof cColumn.showOverflowTooltip==='undefined'?true:cColumn.showOverflowTooltip"
-                               :align="getAlignStyle(cColumn.align,columnIndex)"
-                               :header-align="getAlignStyle(cColumn.headerAlign,columnIndex)"
-                               :class-name="cColumn.className"
-                               :label-class-name="cColumn.labelClassName"
-                               :selectable='cColumn.selectable'
-                               :reserve-selection='cColumn.reserveSelection'
-                               :filters="cColumn.filters"
-                               :filter-placement="cColumn.filterPlacement"
-                               :filter-multiple="cColumn.filterMultiple"
-                               :filter-method="cColumn.filterMethod"
-                               :filtered-value="cColumn.filteredValue">
-                <template slot="header">
-                  <span v-if="cColumn.headerSlotName">
-                    <slot :name='cColumn.headerSlotName'
-                          :row="cColumn" />
-                  </span>
-                  <span v-else>{{cColumn.label}}</span>
-                </template>
-                <template slot-scope="scope">
-                  <span v-if="cColumn.filter">
-                    {{ Vue.filter(cColumn['filter'])(scope.row[cColumn.prop]) }}
-                  </span>
-                  <span v-else-if="cColumn.slotName">
-                    <slot :name="cColumn.slotName"
-                          :row="scope.row"
-                          :$index="scope.$index" />
-                  </span>
-                  <!-- <span v-else-if="column.htmlFormatter">
-                {{column.htmlFormatter(scope.row,scope.row[column.prop])}}
-              </span> -->
-                  <template v-else-if="cColumn.formatter">
-                    <span v-html="cColumn.formatter(scope.row,scope.row[cColumn.prop]) " />
-                  </template>
-                  <span v-else>{{scope.row[cColumn.prop]}}</span>
-                </template>
-              </el-table-column>
+              <span v-else>{{scope.row[column.prop]}}66</span>
             </template>
           </el-table-column>
         </template>
@@ -300,12 +230,7 @@
                        v-if="operations&&operations instanceof Array&&operations.length&&!isMobile"
                        class-name="operation-list no-choose-row">
         <template slot-scope="scope">
-          <table-operations :row="scope.row"
-                            :operationMore="operationMore"
-                            :realOperationsOnlyShowIcon='realOperationsOnlyShowIcon'
-                            :operations="operations"
-                            :operationsAutoDropdownMaxNum="operationsAutoDropdownMaxNum"></table-operations>
-
+          <table-operations :row="scope.row"></table-operations>
         </template>
       </el-table-column>
 
@@ -327,16 +252,21 @@
 
 <script>
 import { tableProps } from './props'
+import Column from './column'
 import TableOperations from './operations'
-import { isExist, isEmptyObject, isJsonString, getValueByPath } from './utils.js'
+import { isExist, isEmptyObject, getValueByPath } from './utils.js'
 import tableMixins from './mixins.js'
-import treeToArray from './tree-table.js'
 import NsForm from '../../ns-form/src/index.vue'
 export default {
-  components: { NsForm, TableOperations },
+  components: { NsForm, TableOperations, Column },
   name: 'NsTable',
   mixins: [tableMixins],
   props: tableProps,
+  provide () {
+    return {
+      table: this
+    }
+  },
   data () {
     return {
       total: 0,
@@ -354,6 +284,7 @@ export default {
       isShow: true,
       showClomnuIndex: [],
       showClomnuList: [],
+      isComplexHeader: false, // 判断是否是复合表头
       tableId: new Date().getTime()
     }
   },
@@ -408,6 +339,7 @@ export default {
         return itemVal && itemVal.includes(val)
       })
     },
+
     isNeedBranch (item, keyList) {
       let flag1 = false
       let flag2 = false
@@ -422,6 +354,7 @@ export default {
       }
       return flag1 || flag2
     },
+
     filterTree (data, keyList) {
       return data.map(item => {
         item.isNeed = this.isNeedBranch(item, keyList)
@@ -431,6 +364,7 @@ export default {
         return item
       })
     },
+
     treeFilter (data) {
       return data.filter((item, index) => {
         if (item && item.children && item.children.length) {
@@ -584,36 +518,6 @@ export default {
     }
   },
   computed: {
-    // 表格数据
-    formatData () {
-      // 不是树形表格 直接返回
-      if (!this.treeTable) {
-        return this.currentData
-      }
-      let tmp // 表格数据
-      // let parentIds = []
-      if (!Array.isArray(this.currentData)) {
-        tmp = [this.currentData]
-      } else {
-        tmp = this.currentData
-      }
-      // 获取树形表格展开状态
-      let cookiesStatusString = window.sessionStorage.getItem(this.tableId) || '[]'
-      let cookiesStatus = isJsonString(cookiesStatusString) ? JSON.parse(cookiesStatusString) : []
-      // 格式化表格数据 加上必要标识字段
-      const func = treeToArray
-      const args = [tmp, this.expandAll]
-      tmp = func.apply(this, args)
-      // 树形数据状态 不为空  并且 isTreeStatus为true时 格式化数据状态
-      if (this.isTreeStatus && cookiesStatus && cookiesStatus.length) {
-        tmp.forEach(v => {
-          if (cookiesStatus.indexOf(v[this.rowKey]) >= 0) {
-            v._expanded = true
-          }
-        })
-      }
-      return tmp
-    },
     realIsInternational () {
       let { isInternational } = this.$NS
       return isExist(this.isInternational) ? this.isInternational : isInternational
@@ -641,8 +545,15 @@ export default {
     realTotalField () {
       let { totalField } = this.$NS
       return isExist(this.totalField) ? this.totalField : totalField
+    },
+    treeProps () {
+      const { treeTable, treeChildrenKey, hasChildrenKey } = this
+      if (treeTable) {
+        return { children: treeChildrenKey, hasChildren: hasChildrenKey }
+      } else {
+        return { children: 'childrenNull', hasChildren: 'hasChildren' }
+      }
     }
-
   },
   watch: {
     columns: {
@@ -652,24 +563,17 @@ export default {
             if (typeof ele.hide === 'undefined' || ele.hide) {
               this.showClomnuIndex.push(index)
             }
-            if (ele.isCloumnSwitch !== false) {
-              let obj = {
+            if (ele.children && ele.children.length) {
+              this.isComplexHeader = true
+            }
+            if (ele.isCloumnSwitch !== false && (!ele.children || !ele.children.length)) {
+              this.showClomnuList.push({
                 label: ele.label,
                 index: index
-              }
-              this.showClomnuList.push(Object.assign({}, obj))
+              })
             }
           }
         })
-      },
-      deep: true,
-      immediate: true
-    },
-    // 监控表格数据
-    formatData: {
-      handler (value, oldValue) {
-        // 每次展开或收起数据时 保存当前数据状态
-        this.saveTreeStateToCookies(value)
       },
       deep: true,
       immediate: true
@@ -701,22 +605,6 @@ export default {
 }
 </script>
 <style rel="stylesheet/css" lang="scss">
-@keyframes treeTableShow {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@-webkit-keyframes treeTableShow {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 .ns-table-container {
   .el-table__header th.operation-list {
     text-align: left;
@@ -787,31 +675,10 @@ $space-width: 18px;
 .alert-selection-tips {
   padding: 0;
 }
-.ms-tree-space {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1;
-  width: $space-width;
-  height: 14px;
-  &::before {
-    content: "";
-  }
-}
+
 .processContainer {
   width: 100%;
   height: 100%;
-}
-.tree-ctrl {
-  position: relative;
-  cursor: pointer;
-  color: $color-blue;
-  margin-left: -$space-width;
-  i {
-    font-size: 16px;
-  }
 }
 
 .pull-right {
