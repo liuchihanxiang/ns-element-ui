@@ -15,6 +15,7 @@
 </template>
 
 <script>
+
 import { data } from './json'
 export default {
   name: 'HelloWorld',

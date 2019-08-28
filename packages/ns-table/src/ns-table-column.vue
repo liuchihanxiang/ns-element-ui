@@ -49,7 +49,7 @@
             <template v-else-if="column.formatter">
               <span v-html="column.formatter(scope.row,scope.row[column.prop]) " />
             </template>
-            <span v-else>{{scope.row[column.prop]}}66</span>
+            <span v-else>{{scope.row[column.prop]}}</span>
           </template>
         </el-table-column>
       </template>
