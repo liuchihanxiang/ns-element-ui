@@ -40,6 +40,23 @@ export default {
       })
     },
 
+    toggleRowSelection (list) {
+      let key = this.rowKey || 'id'
+      if (!(list instanceof Array)) {
+        list = [list]
+      }
+
+      if (list.length > 0) {
+        this.$nextTick(() => {
+          this.currentData.forEach(item => {
+            if (list.includes(item[key])) {
+              this.$refs.elBaseTable.toggleRowSelection(item)
+            }
+          })
+        })
+      }
+    },
+
     // 保存树形状态
     saveTreeStateToCookies (data) {
       let cookiesArr = []

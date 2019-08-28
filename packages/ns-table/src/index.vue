@@ -30,6 +30,7 @@
         </ns-form>
       </el-card>
     </el-collapse-transition>
+
     <!-- 表格上方按钮 -->
     <div class="table-btn-container">
       <template v-if="btnList.length&&!btnListSlot">
@@ -70,7 +71,6 @@
                    circle>
           <i class="el-icon-search" />
         </el-button>
-
         <el-dropdown v-if="!isComplexHeader"
                      :hide-on-click="false"
                      class="cloumns-switch">
@@ -91,6 +91,7 @@
         </el-dropdown>
       </div>
     </div>
+
     <!-- 选中数据显示条数 -->
     <el-collapse-transition>
       <el-alert v-if="selection.length&&showSelectTips"
@@ -104,6 +105,7 @@
         <slot name='selectionContent' />
       </el-alert>
     </el-collapse-transition>
+
     <!-- 表格 -->
     <el-table ref="elBaseTable"
               class="ns-table"
@@ -154,6 +156,7 @@
               @current-change="(currentRow, oldCurrentRow) => emitEventHandler('current-change', currentRow, oldCurrentRow)"
               @header-dragend="(newWidth, oldWidth, column, event) => emitEventHandler('header-dragend', newWidth, oldWidth, column, event)"
               @expand-change="(row, expanded) => emitEventHandler('expand-change', row, expanded)">
+      <!-- 多选 -->
       <el-table-column v-if="columns[0].type&&type.indexOf(columns[0].type)>=0"
                        :align="columns[0].align?columns[0].align:'center'"
                        :header-align="columns[0].headerAlign?columns[0].align:'center'"
@@ -161,6 +164,7 @@
                        :type="columns[0].type"
                        reserve-selection
                        :width="columns[0].width?columns[0].width:50" />
+      <!-- 单选 -->
       <el-table-column :class-name="(columns[0].className||'')+' el-table-checkbox' "
                        v-if="columns[0].type==='radio'"
                        :width="columns[0].width?columns[0].width:50">
@@ -169,6 +173,7 @@
                     :label="scope.$index">&nbsp;</el-radio>
         </template>
       </el-table-column>
+      <!-- 正常显示列 -->
       <template v-for="(column,columnIndex) in columns">
         <template v-if="column.children&&column.children.length">
           <column :column-option="column"
@@ -218,11 +223,12 @@
               <template v-else-if="column.formatter">
                 <span v-html="column.formatter(scope.row,scope.row[column.prop]) " />
               </template>
-              <span v-else>{{scope.row[column.prop]}}66</span>
+              <span v-else>{{scope.row[column.prop]}}</span>
             </template>
           </el-table-column>
         </template>
       </template>
+
       <!-- 表格操作列 -->
       <el-table-column fixed="right"
                        :label="getInternationalValue(operationText)"
@@ -235,6 +241,7 @@
       </el-table-column>
 
     </el-table>
+
     <!-- 表格分页 -->
     <div v-if="pagination"
          style="margin-top: 10px;text-align: right;">
@@ -290,9 +297,11 @@ export default {
   },
   methods: {
     isEmptyObject,
+
     emitEventHandler (event) {
       this.$emit(event, ...Array.from(arguments).splice(1))
     },
+
     // 切换每页显示
     handleSizeChange (size) {
       this.pageSize = size
@@ -316,6 +325,7 @@ export default {
         this.filterData()
       }
     },
+
     filterData () {
       const serchFormKeyList = Object.keys(this.searchFormModel)
       const searchFormListKey = serchFormKeyList.filter(key => this.searchFormModel[key] !== '')
@@ -325,6 +335,7 @@ export default {
         let data = JSON.parse(JSON.stringify(this.cachData))
         if (this.treeTable) {
           this.currentData = this.treeFilter(this.filterTree(data, searchFormListKey))
+          debugger
         } else {
           this.currentData = data.filter(item => {
             return this.isIncludesObj(item, searchFormListKey)
@@ -332,6 +343,7 @@ export default {
         }
       }
     },
+
     isIncludesObj (obj, keyList) {
       return keyList.every(key => {
         let val = this.searchFormModel[key]
@@ -368,7 +380,6 @@ export default {
     treeFilter (data) {
       return data.filter((item, index) => {
         if (item && item.children && item.children.length) {
-          item._expanded = true
           item.children = this.treeFilter(item.children)
         }
         return item.isNeed

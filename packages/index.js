@@ -4,13 +4,15 @@ import NsDialog from './ns-dialog'
 import SwitchLanguage from './switch-language'
 import Breadcrumb from './breadcrumb'
 import ScrollPane from './scroll-pane'
+import SvgIcon from './svg-icon'
 const components = [
   NsForm,
   NsTable,
   NsDialog,
   SwitchLanguage,
   Breadcrumb,
-  ScrollPane
+  ScrollPane,
+  SvgIcon
 ]
 
 const install = function (Vue, opts = {}) {
