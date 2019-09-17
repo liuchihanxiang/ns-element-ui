@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="operations-wraps">
     <!-- 操作列个数小于等于最大个数时 全部显示 -->
     <template v-if="!realOperationsConfig.autoDropdown||rowOperation.length<realOperationsConfig.dropdownMaxNum">
       <template v-for="(operationItem,operationIndex) in  rowOperation">
@@ -118,3 +118,19 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.operations-wraps {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  & > a {
+    cursor: pointer;
+    font-size: 18px;
+    color: #409eff;
+  }
+  .operation-dropdown .el-icon--right {
+    margin-left: 0;
+  }
+}
+</style>

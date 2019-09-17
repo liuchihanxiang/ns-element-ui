@@ -531,10 +531,6 @@ export default {
       let { isInternational } = this.$NS
       return isExist(this.isInternational) ? this.isInternational : isInternational
     },
-    realOperationsOnlyShowIcon () {
-      let { operationsOnlyShowIcon } = this.$NS
-      return isExist(this.operationsOnlyShowIcon) ? this.operationsOnlyShowIcon : operationsOnlyShowIcon
-    },
     realOperationsConfig () {
       let { operationsConfig } = this.$NS
       let defaultConfig = {
@@ -547,10 +543,7 @@ export default {
         autoDropdown: true,
         dropdownMaxNum: 4
       }
-      if (this.operationsConfig && JSON.stringify(this.operationsConfig) !== '{}') {
-        operationsConfig = this.operationsConfig
-      }
-      return Object.assign({}, defaultConfig, operationsConfig)
+      return Object.assign({}, defaultConfig, operationsConfig, this.operationsConfig)
     },
 
     realDataFieldConfig () {
@@ -561,10 +554,7 @@ export default {
         pageIndexKey: 'currentPage',
         totalKey: 'data.total'
       }
-      if (this.dataFieldConfig && JSON.stringify(this.dataFieldConfig) !== '{}') {
-        dataFieldConfig = this.dataFieldConfig
-      }
-      return Object.assign({}, defaultConfig, dataFieldConfig)
+      return Object.assign({}, defaultConfig, dataFieldConfig, this.dataFieldConfig)
     },
     realShowSearchForm () {
       let { showSearchForm } = this.$NS

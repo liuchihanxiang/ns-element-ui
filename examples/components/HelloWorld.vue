@@ -9,8 +9,8 @@
               :operationsConfig="{
                 fixed:'right',
                 onlyShowIcon:false,
-                autoDropdown:false,
-                width:600
+                autoDropdown:true,
+                width:250
               }"
               :form-list="form"
               :tableData="tableData"
@@ -69,13 +69,16 @@ export default {
       tableData: data,
       operation: [{
         text: '阿萨德',
-        judges: 'row.type==="0"'
+        judges: 'row.type==="0"',
+        icon: 'el-icon-edit'
       }, {
         text: 'dsd',
-        click: this.handleClick
+        click: this.handleClick,
+        icon: 'el-icon-edit'
       }, {
         text: '撒大声地1',
-        click: this.handleClick
+        click: this.handleClick,
+        icon: 'el-icon-edit'
       }, {
         text: '撒大声地2',
         click: this.handleClick
