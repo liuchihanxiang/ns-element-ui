@@ -3,8 +3,15 @@
     <el-button type="tetx"
                @click="getData">看看</el-button>
     <ns-table ref="dataTable"
+              :operationsAutoDropdown="false"
               :pagination="false"
               treeTable
+              :operationsConfig="{
+                fixed:'right',
+                onlyShowIcon:false,
+                autoDropdown:false,
+                width:600
+              }"
               :form-list="form"
               :tableData="tableData"
               :columns='columns'
@@ -34,7 +41,8 @@ export default {
       }],
       columns: [{
         prop: 'name',
-        label: '是的'
+        label: '是的',
+        align: 'left'
       }, {
         label: '总的',
         children: [
@@ -65,6 +73,16 @@ export default {
       }, {
         text: 'dsd',
         click: this.handleClick
+      }, {
+        text: '撒大声地1',
+        click: this.handleClick
+      }, {
+        text: '撒大声地2',
+        click: this.handleClick
+      }, {
+        text: '撒大声地3',
+        click: this.handleClick,
+        btnType: 'danger'
       }]
     }
   },

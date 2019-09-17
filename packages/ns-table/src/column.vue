@@ -1,5 +1,7 @@
 <template>
-  <el-table-column :label="columnOption.label">
+  <el-table-column :label="columnOption.label"
+                   :align="columnOption.align||'center'"
+                   :header-align="columnOption.headerAlign||'center'">
     <template v-for="(column,columnIndex) in columnOption.children">
       <template v-if="column.children&&column.children.length">
         <column :column-option="column"
@@ -19,8 +21,8 @@
                          :sort-method="column.sortMethod"
                          :resizable="column.resizable"
                          :show-overflow-tooltip="typeof column.showOverflowTooltip==='undefined'?true:column.showOverflowTooltip"
-                         :align="column.align"
-                         :header-align="column.headerAlign"
+                         :align="column.align||'center'"
+                         :header-align="column.headerAlign||'center'"
                          :class-name="column.className"
                          :label-class-name="column.labelClassName"
                          :selectable='column.selectable'

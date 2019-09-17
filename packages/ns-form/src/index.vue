@@ -310,6 +310,7 @@ export default {
     actualFormList () {
       return this.filterFormList(this.formList)
     },
+
     getBtnPostion: function () {
       if (this.btnPostion) {
         return 'is-' + this.btnPostion
@@ -317,6 +318,7 @@ export default {
         return 'is-center'
       }
     },
+
     // 是否国际化
     isFormInternational () {
       return this.isExist(this.isInternational) ? this.isInternational : this.$NS.isInternational

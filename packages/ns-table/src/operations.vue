@@ -1,20 +1,20 @@
 <template>
   <div>
     <!-- 操作列个数小于等于最大个数时 全部显示 -->
-    <template v-if="rowOperation.length<table.operationsAutoDropdownMaxNum">
+    <template v-if="!realOperationsConfig.autoDropdown||rowOperation.length<realOperationsConfig.dropdownMaxNum">
       <template v-for="(operationItem,operationIndex) in  rowOperation">
         <!-- 操作按钮只显示文字 -->
-        <el-button v-if="!table.realOperationsOnlyShowIcon"
+        <el-button v-if="!realOperationsConfig.onlyShowIcon"
                    @click="operationItem.click(row,$event,operationItem.type)"
                    :class="operationItem.class||''"
                    :key="operationIndex"
                    class="operation-text no-choose-row"
-                   type="text"
-                   size="small">
+                   :type="operationItem.btnType?operationItem.btnType:'primary'"
+                   size="mini">
           {{getInternationalValue(operationItem.text)}}
         </el-button>
         <!-- 操作按钮只显示图标 -->
-        <el-tooltip v-else-if="table.realOperationsOnlyShowIcon && operationItem.icon"
+        <el-tooltip v-else-if="realOperationsConfig.onlyShowIcon && operationItem.icon"
                     class="item"
                     :key="operationIndex"
                     effect="dark"
@@ -33,25 +33,24 @@
       <!-- 前两个按钮 -->
       <template v-for="(n,numIndex) in 2">
         <!-- 操作按钮只显示文字 -->
-        <template v-if="!table.realOperationsOnlyShowIcon"
-                  :class="operation-text">
-          <el-button class="operation-text no-choose-row"
+        <template v-if="!realOperationsConfig.onlyShowIcon">
+          <el-button class="operation-text"
                      :class="rowOperation[n-1].class"
                      @click="rowOperation[n-1].click(row,$event,rowOperation[n-1].type)"
                      :key="numIndex"
-                     type="text"
-                     size="small">
+                     :type="rowOperation.btnType?rowOperation.btnType:'primary'"
+                     size="mini">
             {{getInternationalValue( rowOperation[n-1].text)}}
           </el-button>
         </template>
         <!-- 操作按钮只显示图标 -->
-        <template v-if="table.realOperationsOnlyShowIcon &&  rowOperation[n-1].icon">
+        <template v-if="realOperationsConfig.onlyShowIcon &&  rowOperation[n-1].icon">
           <el-tooltip class="item"
                       effect="dark"
                       :key="numIndex"
                       :content="getInternationalValue( rowOperation[n-1].text)"
                       placement="top-start">
-            <a class="operation-icon no-choose-row"
+            <a class="operation-icon"
                @click=" rowOperation[n-1].click(row,$event, rowOperation[n-1].type)">
               <i v-if=" rowOperation[n-1].icon"
                  :class=" rowOperation[n-1].icon+' '+ rowOperation[n-1].class" />
@@ -65,7 +64,7 @@
                    :show-timeout='80'
                    :hide-on-click="false">
         <span class="el-dropdown-link">
-          {{getInternationalValue(table.operationMore)}}
+          {{getInternationalValue(realOperationsConfig.operationMore)}}
           <i class="el-icon-arrow-down el-icon--right" />
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -112,6 +111,9 @@ export default {
         }
         return isRight
       })
+    },
+    realOperationsConfig () {
+      return this.table.realOperationsConfig
     }
   }
 }

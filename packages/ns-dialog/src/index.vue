@@ -6,6 +6,8 @@
              :visible.sync="show"
              @close="$emit('close')"
              @closed="closed"
+             :show-close="showClose"
+             :destroy-on-close="destroyOnClose"
              :append-to-body='appendToBody'
              :close-on-click-modal='false'
              :before-close="beforeClose"
@@ -41,6 +43,10 @@ export default {
       default: false
     },
     destroyOnClose: {
+      type: Boolean,
+      default: true
+    },
+    showClose: {
       type: Boolean,
       default: true
     },

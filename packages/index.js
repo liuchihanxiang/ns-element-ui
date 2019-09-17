@@ -19,13 +19,10 @@ const install = function (Vue, opts = {}) {
   })
   let defaultOpts = {
     isInternational: false,
-    operationsOnlyShowIcon: true,
     showSearchForm: true,
-    listField: 'data.data',
-    pageSizeKey: 'pageSize',
-    pageIndexKey: 'currentPage',
-    totalField: 'data.total',
-    ajaxMethod: 'post'
+    httpMethod: 'post',
+    operationsConfig: {},
+    dataFieldConfig: {}
   }
   Vue.prototype.$NS = Object.assign({}, defaultOpts, opts)
 }

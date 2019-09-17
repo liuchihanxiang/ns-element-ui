@@ -193,8 +193,8 @@
                            :sort-method="column.sortMethod"
                            :resizable="column.resizable"
                            :show-overflow-tooltip="typeof column.showOverflowTooltip==='undefined'?true:column.showOverflowTooltip"
-                           :align="column.align"
-                           :header-align="column.headerAlign"
+                           :align="column.align||'center'"
+                           :header-align="column.headerAlign||'center'"
                            :class-name="column.className"
                            :label-class-name="column.labelClassName"
                            :selectable='column.selectable'
@@ -230,11 +230,13 @@
       </template>
 
       <!-- 表格操作列 -->
-      <el-table-column fixed="right"
-                       :label="getInternationalValue(operationText)"
-                       width="170"
+      <el-table-column :fixed="realOperationsConfig.fixed"
+                       :label="getInternationalValue(realOperationsConfig.title)"
+                       :width="realOperationsConfig.width"
+                       :min-width="realOperationsConfig.minWidth"
+                       :align="realOperationsConfig.align"
                        v-if="operations&&operations instanceof Array&&operations.length&&!isMobile"
-                       class-name="operation-list no-choose-row">
+                       :class-name="realOperationsConfig.className">
         <template slot-scope="scope">
           <table-operations :row="scope.row"></table-operations>
         </template>
@@ -335,7 +337,6 @@ export default {
         let data = JSON.parse(JSON.stringify(this.cachData))
         if (this.treeTable) {
           this.currentData = this.treeFilter(this.filterTree(data, searchFormListKey))
-          debugger
         } else {
           this.currentData = data.filter(item => {
             return this.isIncludesObj(item, searchFormListKey)
@@ -439,15 +440,12 @@ export default {
         url,
         $http,
         pagination,
+        realDataFieldConfig,
         sidePagination,
-        realListField,
-        realPageIndexKey,
-        realPageSizeKey,
         page,
         pageSize,
-        realTotalField,
         queryParams,
-        ajaxOptions
+        httpMethod
       } = this
       let params = {} // 请求参数
       // 请求之前处理参数
@@ -461,8 +459,8 @@ export default {
       // 分页参数
       if (pagination) {
         params = Object.assign(params, {
-          [realPageIndexKey]: page,
-          [realPageSizeKey]: pageSize
+          [realDataFieldConfig.pageIndexKey]: page,
+          [realDataFieldConfig.pageSizeKey]: pageSize
         })
       }
       // 请求数据的函数处理
@@ -470,9 +468,9 @@ export default {
       if (fetch) {
         uestObject = fetch(params)
       } else {
-        let defaultMethod = this.$NS.ajaxMethod
-        let method = ajaxOptions.method
-          ? ajaxOptions.method.toLowerCase()
+        let defaultMethod = this.$NS.httpMethod
+        let method = httpMethod
+          ? httpMethod.toLowerCase()
           : defaultMethod
         if (method === 'get') {
           uestObject = $http[method](url, { params })
@@ -484,12 +482,12 @@ export default {
       uestObject
         .then(res => {
           if (res) {
-            let list = res.data && res.data instanceof Array ? res.data : getValueByPath(res, realListField)
+            let list = res.data && res.data instanceof Array ? res.data : getValueByPath(res, realDataFieldConfig.listKey)
             // 前端分页 要处理数据
             if (pagination && sidePagination === 'client') {
               this.paginationData(list)
             } else if (pagination && sidePagination === 'server') {
-              let totalValue = getValueByPath(res, realTotalField)// 总页数
+              let totalValue = getValueByPath(res, realDataFieldConfig.totalKey)// 总页数
               this.total = totalValue || 0
               let maxPage = Math.ceil(this.total / this.pageSize)
               if (this.page > maxPage && maxPage !== 0) {
@@ -537,25 +535,40 @@ export default {
       let { operationsOnlyShowIcon } = this.$NS
       return isExist(this.operationsOnlyShowIcon) ? this.operationsOnlyShowIcon : operationsOnlyShowIcon
     },
+    realOperationsConfig () {
+      let { operationsConfig } = this.$NS
+      let defaultConfig = {
+        fixed: 'right',
+        title: '操作',
+        align: 'center',
+        operationMore: '更多',
+        className: '',
+        onlyShowIcon: true,
+        autoDropdown: true,
+        dropdownMaxNum: 4
+      }
+      if (this.operationsConfig && JSON.stringify(this.operationsConfig) !== '{}') {
+        operationsConfig = this.operationsConfig
+      }
+      return Object.assign({}, defaultConfig, operationsConfig)
+    },
+
+    realDataFieldConfig () {
+      let { dataFieldConfig } = this.$NS
+      let defaultConfig = {
+        listKey: 'data.data',
+        pageSizeKey: 'pageSize',
+        pageIndexKey: 'currentPage',
+        totalKey: 'data.total'
+      }
+      if (this.dataFieldConfig && JSON.stringify(this.dataFieldConfig) !== '{}') {
+        dataFieldConfig = this.dataFieldConfig
+      }
+      return Object.assign({}, defaultConfig, dataFieldConfig)
+    },
     realShowSearchForm () {
       let { showSearchForm } = this.$NS
       return isExist(this.showSearchForm) ? this.showSearchForm : showSearchForm
-    },
-    realListField () {
-      let { listField } = this.$NS
-      return isExist(this.listField) ? this.listField : listField
-    },
-    realPageSizeKey () {
-      let { pageSizeKey } = this.$NS
-      return isExist(this.pageSizeKey) ? this.pageSizeKey : pageSizeKey
-    },
-    realPageIndexKey () {
-      let { pageIndexKey } = this.$NS
-      return isExist(this.pageIndexKey) ? this.pageIndexKey : pageIndexKey
-    },
-    realTotalField () {
-      let { totalField } = this.$NS
-      return isExist(this.totalField) ? this.totalField : totalField
     },
     treeProps () {
       const { treeTable, treeChildrenKey, hasChildrenKey } = this
@@ -617,9 +630,6 @@ export default {
 </script>
 <style rel="stylesheet/css" lang="scss">
 .ns-table-container {
-  .el-table__header th.operation-list {
-    text-align: left;
-  }
   .el-table__row .el-table-checkbox {
     text-align: center;
   }
@@ -650,7 +660,6 @@ export default {
     padding: 10px;
   }
   .operation-list {
-    text-align: left;
     .operation-text {
       font-size: 14px;
     }
@@ -678,24 +687,20 @@ export default {
       }
     }
   }
-}
-</style>
-<style lang='scss' scoped>
-$color-blue: #2196f3;
-$space-width: 18px;
-.alert-selection-tips {
-  padding: 0;
-}
+  .alert-selection-tips {
+    padding: 0;
+  }
 
-.processContainer {
-  width: 100%;
-  height: 100%;
-}
+  .processContainer {
+    width: 100%;
+    height: 100%;
+  }
 
-.pull-right {
-  float: right;
-}
-.pull-left {
-  float: left;
+  .pull-right {
+    float: right;
+  }
+  .pull-left {
+    float: left;
+  }
 }
 </style>

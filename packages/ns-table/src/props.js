@@ -8,7 +8,6 @@ export const tableProps = {
       return {}
     }
   }, // 查询表单
-
   collapsedIcon: {
     type: String,
     default: 'el-icon-caret-right'
@@ -56,6 +55,7 @@ export const tableProps = {
     type: Boolean,
     default: true
   },
+
   showRefreshBtn: {
     type: Boolean,
     default: true
@@ -64,37 +64,11 @@ export const tableProps = {
     type: Boolean,
     default: true
   },
-  operationText: {
-    type: String,
-    default: '操作'
-  },
-  operationMore: {
-    type: String,
-    default: '更多'
-  },
+  dataFieldConfig: Object, // 字段key值设置
   operations: Array,
-  operationsOnlyShowIcon: Boolean,
-  operationsAutoDropdown: {
-    type: Boolean,
-    default: true
-  },
-  operationsAutoDropdownMaxNum: {
-    type: Number,
-    default: 4
-  },
-  method: {
-    type: String,
-    default: 'get',
-    validator: value => {
-      return ['get', 'post', 'put', 'delete'].indexOf(value) !== -1
-    }
-  },
-  ajaxOptions: {
-    type: Object,
-    default: function () {
-      return {}
-    }
-  },
+  operationsConfig: Object, // 操作设置
+
+  httpMethod: String,
   responseHandler: Function,
   loadSuccess: Function,
   url: String,
@@ -109,10 +83,6 @@ export const tableProps = {
     type: Array,
     default: () => [10, 20, 50, 100]
   },
-  pageSizeKey: String,
-  listField: String,
-  totalField: String,
-  pageIndexKey: String,
   paginationLayout: {
     type: String,
     default: 'total, prev, pager, next, jumper, sizes'
