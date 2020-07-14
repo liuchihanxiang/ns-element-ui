@@ -26,7 +26,7 @@ export function filterDic (dicData, dicItem) {
  * @returns
  */
 export function isElInput (type) {
-  if (type === undefined || type === 'input' || type === 'textarea' || type === 'password') {
+  if (type === undefined || type === 'input' || type === 'password') {
     return true
   } else {
     return false

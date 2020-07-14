@@ -18,10 +18,7 @@ export default {
       return this.isFormInternational ? this.$t(value) : value
     },
     getPlaceholder (type, column) {
-      var placeholder =
-        type === 'searchForm'
-          ? column.placeholder || column.label
-          : column.placeholder
+      var placeholder = type === 'searchForm' ? column.placeholder || column.label : column.placeholder
       return this.getInternationalValue(placeholder)
     },
     /**
@@ -103,8 +100,7 @@ export default {
         return list
       }
       list.forEach(ele => {
-        let isBothUndefined =
-          ele.isNormal === undefined && ele.isSearch === undefined
+        let isBothUndefined = ele.isNormal === undefined && ele.isSearch === undefined
         if (this.type === 'searchForm') {
           if (isBothUndefined || !ele.isNormal) {
             arr.push(ele)
@@ -124,16 +120,11 @@ export default {
       list.forEach(ele => {
         if (ele.prop || slotTypeList.includes(ele.type)) {
           if (
-            ele.type === 'checkbox' ||
-            (ele.type === 'select' && ele.multiple) ||
-            ele.type === 'datetimerange' ||
-            ele.type === 'daterange'
+            ele.type === 'checkbox' || (ele.type === 'select' && ele.multiple) || ele.type === 'datetimerange' || ele.type === 'daterange'
           ) {
             this.defaultFormModel[ele.prop] = []
           } else if (
-            slotTypeList.includes(ele.type) &&
-            ele.form &&
-            JSON.stringify(ele.form) !== '{}'
+            slotTypeList.includes(ele.type) && ele.form && JSON.stringify(ele.form) !== '{}'
           ) {
             Object.keys(ele.form).forEach(key => {
               this.defaultFormModel[key] = ele.form[key]
@@ -154,9 +145,7 @@ export default {
       } else {
         Object.keys(this.value).forEach(key => {
           if (
-            this.defaultFormModel[key] !== undefined &&
-            this.value[key] !== null &&
-            this.value[key] !== undefined
+            this.defaultFormModel[key] !== undefined && this.value[key] !== null && this.value[key] !== undefined
           ) {
             this.formModel[key] = this.value[key]
           }

@@ -1,103 +1,114 @@
 <template>
   <div class="hello">
-    <el-button type="tetx"
-               @click="getData">看看</el-button>
-    <ns-table ref="dataTable"
-              :operationsAutoDropdown="false"
-              :pagination="false"
-              treeTable
-              :operationsConfig="{
+    <el-button
+      @click="getData"
+      type="tetx"
+    >看看</el-button>
+    <ns-table
+      :columns="columns"
+      :form-list="form"
+      :operations="operation"
+      :operationsAutoDropdown="false"
+      :operationsConfig="{
                 fixed:'right',
                 onlyShowIcon:false,
-                autoDropdown:true,
-                width:250
+                autoDropdown:false,
+                width:450
               }"
-              :form-list="form"
-              :tableData="tableData"
-              :columns='columns'
-              search='client'
-              :operations="operation">
-    </ns-table>
+      :pagination="false"
+      :tableData="tableData"
+      :tree-table="true"
+      ref="dataTable"
+      search="client"
+    ></ns-table>
   </div>
 </template>
 
 <script>
-
 import { data } from './json'
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
-  data () {
+  data() {
     return {
       baseForm: {},
-      form: [{
-        prop: 'name',
-        label: '是的'
-      }, {
-        prop: 'permissionCode',
-        label: '是的we'
-      }],
-      columns: [{
-        prop: 'name',
-        label: '是的',
-        align: 'left'
-      }, {
-        label: '总的',
-        children: [
-          {
-            prop: 'isChangeMenu',
-            label: '是否隐藏'
-          },
-          {
-            prop: 'hidden',
-            label: '所0得到的'
-          },
-          {
-            prop: 'permissionCode',
-            label: '所得'
-          },
-          {
-            prop: 'name',
-            label: '所得11'
-          }]
-      }, {
-        prop: 'permissionCode',
-        label: '是的we'
-      }],
+      form: [
+        {
+          prop: 'name',
+          label: '是的'
+        },
+        {
+          prop: 'permissionCode',
+          label: '是的we'
+        }
+      ],
+      columns: [
+        {
+          prop: 'name',
+          label: '是的',
+          align: 'left'
+        },
+        {
+          prop: 'isChangeMenu',
+          label: '是否隐藏'
+        },
+        {
+          prop: 'hidden',
+          label: '所0得到的'
+        },
+        {
+          prop: 'permissionCode',
+          label: '所得'
+        },
+        {
+          prop: 'name',
+          label: '所得11'
+        },
+        {
+          prop: 'permissionCode',
+          label: '是的we'
+        }
+      ],
       tableData: data,
-      operation: [{
-        text: '阿萨德',
-        judges: 'row.type==="0"',
-        icon: 'el-icon-edit'
-      }, {
-        text: 'dsd',
-        click: this.handleClick,
-        icon: 'el-icon-edit'
-      }, {
-        text: '撒大声地1',
-        click: this.handleClick,
-        icon: 'el-icon-edit'
-      }, {
-        text: '撒大声地2',
-        click: this.handleClick
-      }, {
-        text: '撒大声地3',
-        click: this.handleClick,
-        btnType: 'danger'
-      }]
+      operation: [
+        {
+          text: '阿萨德',
+          judges: 'row.type==="0"',
+          icon: 'el-icon-edit'
+        },
+        {
+          text: 'dsd',
+          click: this.handleClick,
+          icon: 'el-icon-edit'
+        },
+        {
+          text: '撒大声地1',
+          click: this.handleClick,
+          icon: 'el-icon-edit'
+        },
+        {
+          text: '撒大声地2',
+          click: this.handleClick
+        },
+        {
+          text: '撒大声地3',
+          click: this.handleClick,
+          btnType: 'danger'
+        }
+      ]
     }
   },
   methods: {
-    getData () {
+    getData() {
       this.baseForm = {
-        'sd1': '多岁的',
-        'sd2': '撒大声地',
-        'sd3': '<p>撒打算打算大所多所多</p>'
+        sd1: '多岁的',
+        sd2: '撒大声地',
+        sd3: '<p>撒打算打算大所多所多</p>'
       }
     },
-    handleClick (a, b, c) {
+    handleClick(a, b, c) {
       console.log(a, b, c)
     }
   }

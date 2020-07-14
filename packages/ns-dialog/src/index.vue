@@ -1,18 +1,20 @@
 <!--  -->
 <template>
-  <el-dialog v-el-drag-dialog
-             ref="ns-dialog"
-             :title="getInternationalValue(title)"
-             :visible.sync="show"
-             @close="$emit('close')"
-             @closed="closed"
-             :show-close="showClose"
-             :destroy-on-close="destroyOnClose"
-             :append-to-body='appendToBody'
-             :close-on-click-modal='false'
-             :before-close="beforeClose"
-             :class="{'ns-dialog--center':isCenter}"
-             :width="area instanceof Array?area[0]:area">
+  <el-dialog
+    v-el-drag-dialog
+    ref="ns-dialog"
+    :title="getInternationalValue(title)"
+    :visible.sync="show"
+    @close="$emit('close')"
+    @closed="closed"
+    :show-close="showClose"
+    :destroy-on-close="destroyOnClose"
+    :append-to-body="appendToBody"
+    :close-on-click-modal="false"
+    :before-close="beforeClose"
+    :class="{'ns-dialog--center':isCenter}"
+    :width="area instanceof Array?area[0]:area"
+  >
     <template slot="title">
       <slot name="title" />
     </template>
@@ -20,11 +22,8 @@
     <template slot="footer">
       <slot name="footer">
         <span class="dialog-footer">
-          <el-button v-if="yesBtn"
-                     type="primary"
-                     @click="ok">{{getInternationalValue(confirmText)}}</el-button>
-          <el-button v-if="cancelBtn"
-                     @click="$emit('update:visible', false)">{{getInternationalValue(cancelText)}}</el-button>
+          <el-button v-if="yesBtn" type="primary" @click="ok">{{getInternationalValue(confirmText)}}</el-button>
+          <el-button v-if="cancelBtn" @click="$emit('update:visible', false)">{{getInternationalValue(cancelText)}}</el-button>
         </span>
       </slot>
     </template>
@@ -62,11 +61,13 @@ export default {
       type: [Array, String],
       default: () => ['auto', 'auto']
     },
+    // eslint-disable-next-line vue/require-default-prop
     beforeClose: Function,
     width: {
       type: String,
       default: '800px'
     },
+    // eslint-disable-next-line vue/require-default-prop
     top: {
       type: String
     },
@@ -94,33 +95,33 @@ export default {
   watch: {
     visible: {
       immediate: true,
-      handler: function (val) {
+      handler: function(val) {
         this.show = val
       }
     }
   },
-  data () {
+  data() {
     return {
       show: false,
       isCenter: false
     }
   },
   methods: {
-    closed () {
+    closed() {
       this.$emit('update:visible', false)
       this.$emit('closed')
     },
-    ok: throttle(function () {
+    ok: throttle(function() {
       this.$emit('ok')
     }, 1000),
     // 初始化工具方法
-    initUtils () {
+    initUtils() {
       Object.keys(utils).forEach(key => {
         this[key] = utils[key]
       })
     }
   },
-  mounted () {
+  mounted() {
     let dialogHeight
     let $dialogWraps = this.$refs['ns-dialog']
     let $dialog = $dialogWraps.$el.getElementsByClassName('el-dialog')[0]
@@ -137,15 +138,13 @@ export default {
   },
   computed: {
     // 是否国际化
-    international () {
+    international() {
       return this.isExist(this.isInternational) ? this.isInternational : this.$NS.isInternational
     }
-
   },
-  created () {
+  created() {
     this.initUtils()
   }
-
 }
 </script>
 <style lang='scss' >

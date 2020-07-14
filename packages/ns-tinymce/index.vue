@@ -1,10 +1,6 @@
 <template>
   <div>
-    <Editor :id='id'
-            v-model="content"
-            :disabled="false"
-            :init="editorInit" />
-
+    <Editor :id="id" v-model="content" :disabled="false" :init="editorInit" />
   </div>
 </template>
 
@@ -15,14 +11,16 @@ export default {
   name: 'NsEditor',
   inheritAttrs: false,
   props: {
+    // eslint-disable-next-line vue/require-default-prop
     value: String,
+    // eslint-disable-next-line vue/require-default-prop
     init: Object
   },
   components: {
     Editor
   },
 
-  data () {
+  data() {
     return {
       id: 'tinymce-' + new Date().getTime(),
       content: this.value,
@@ -44,11 +42,9 @@ export default {
       }
     }
   },
-  methods: {
-
-  },
+  methods: {},
   computed: {
-    editorInit () {
+    editorInit() {
       return Object.assign({}, this.defaultEditorInit, this.init)
     }
     // tinymceHtml () {
@@ -56,18 +52,15 @@ export default {
     // }
   },
   watch: {
-    content (val) {
+    content(val) {
       this.$emit('input', val)
     },
-    value (val) {
+    value(val) {
       this.content = val
     }
-
   },
-  created () {
-
-  },
-  mounted () {
+  created() {},
+  mounted() {
     tinymce.init({}) //eslint-disable-line
   }
 }

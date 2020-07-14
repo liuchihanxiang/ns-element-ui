@@ -1,15 +1,14 @@
 <!--  -->
 <template>
-  <el-breadcrumb class="app-breadcrumb"
-                 separator-class="el-icon-arrow-right">
+  <el-breadcrumb class="app-breadcrumb" separator-class="el-icon-arrow-right">
     <transition-group name="breadcrumb">
-      <template v-for="(item,index)  in levelList">
-        <el-breadcrumb-item :key="item.path"
-                            v-if='isHasBreadcrumb(item)'>
-          <span v-if='index==levelList.length-1 || isFirst(item.redirect)'
-                class="no-redirect">{{getInternationalValue('routes.'+(item.name||""))}}</span>
-          <router-link v-else
-                       :to="item.path">{{getInternationalValue('routes.'+(item.name||""))}}</router-link>
+      <template v-for="(item,index) in levelList">
+        <el-breadcrumb-item :key="item.path" v-if="isHasBreadcrumb(item)">
+          <span
+            v-if="index==levelList.length-1 || isFirst(item.redirect)"
+            class="no-redirect"
+          >{{getInternationalValue('routes.'+(item.name||""))}}</span>
+          <router-link v-else :to="item.path">{{getInternationalValue('routes.'+(item.name||""))}}</router-link>
         </el-breadcrumb-item>
       </template>
     </transition-group>
@@ -20,10 +19,10 @@
 import { getInternationalValue, isExist } from '../../utils/index'
 export default {
   name: 'Breadcrumb',
-  created () {
+  created() {
     this.getBreadcrumb()
   },
-  data () {
+  data() {
     return {
       levelList: null
     }
@@ -34,23 +33,21 @@ export default {
     }
   },
   watch: {
-    $route () {
+    $route() {
       this.getBreadcrumb()
     }
   },
   methods: {
     getInternationalValue,
-    getBreadcrumb () {
+    getBreadcrumb() {
       let iconList = this.$route.matched.filter(item => item.name)
       const first = iconList[0]
       if (first && first.name !== 'homepage') {
-        iconList = [
-          { path: '/homepage', name: 'homepage' }
-        ].concat(iconList)
+        iconList = [{ path: '/homepage', name: 'homepage' }].concat(iconList)
       }
       this.levelList = iconList
     },
-    isFirst (redirect) {
+    isFirst(redirect) {
       let redirectName = redirect && redirect.name ? redirect.name : false
       if (redirectName) {
         let currentName = this.$route.name
@@ -59,13 +56,13 @@ export default {
         return false
       }
     },
-    isHasBreadcrumb (item) {
+    isHasBreadcrumb(item) {
       return !!item.name
     }
   },
   computed: {
     // 是否国际化
-    international () {
+    international() {
       return isExist(this.isInternational) ? this.isInternational : this.$NS.isInternational
     }
   }

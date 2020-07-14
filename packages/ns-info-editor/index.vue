@@ -1,25 +1,21 @@
 <template>
   <div class="components-container">
-    <div v-if="labelList.length"
-         class="ns-editor-label">
-      <el-button type="primary"
-                 size="mini"
-                 v-for="(item,index) in labelList"
-                 :key="index"
-                 @click="handleLabel(item.value)"
-                 class="editor-label-item">{{item.label}}</el-button>
+    <div v-if="labelList.length" class="ns-editor-label">
+      <el-button
+        type="primary"
+        size="mini"
+        v-for="(item,index) in labelList"
+        :key="index"
+        @click="handleLabel(item.value)"
+        class="editor-label-item"
+      >{{item.label}}</el-button>
     </div>
-    <ns-editor :value="content"
-               v-bind="$attrs"
-               v-on="$listeners"
-               ref="nsEditor" />
-
+    <ns-editor :value="content" v-bind="$attrs" v-on="$listeners" ref="nsEditor" />
   </div>
 </template>
 
 <script>
 import NsEditor from './../ns-tinymce'
-
 export default {
   name: 'NsInfoEditor',
   inheritAttrs: false,
@@ -27,10 +23,13 @@ export default {
     NsEditor
   },
   props: {
-    value: String,
+    value: {
+      type: String,
+      default: ''
+    },
     editorInit: {
       type: Object,
-      default: function () {
+      default: function() {
         return {}
       }
     },
@@ -42,16 +41,15 @@ export default {
       type: String,
       default: '/infoImg/'
     }
-
   },
-  data () {
+  data() {
     return {
       content: ''
     }
   },
   methods: {
     // 点击标签 插入对应标签图片
-    handleLabel (name) {
+    handleLabel(name) {
       let editor = this.$refs.nsEditor
       let currentEditor = editor.$children[0].editor
       let currentImg = require('@/assets/form/' + name.toLowerCase() + '.png')
@@ -59,9 +57,9 @@ export default {
     },
 
     /**
-    * 获取内容时 需要将img标签转化为span标签 方便后台替换span内的标识
-    */
-    formatterImgToText (content) {
+     * 获取内容时 需要将img标签转化为span标签 方便后台替换span内的标识
+     */
+    formatterImgToText(content) {
       let contentCon = document.createElement('div')
       contentCon.innerHTML = content
       let imgList = contentCon.querySelectorAll('.img-mark')
@@ -82,7 +80,7 @@ export default {
     /**
      * 回显数据时 需要将span标签转化为img标签 在页面显示
      */
-    formatterTextToImg (content) {
+    formatterTextToImg(content) {
       let contentCon = document.createElement('div')
       contentCon.innerHTML = content
       let imgList = contentCon.querySelectorAll('span.img-mark')
@@ -102,16 +100,14 @@ export default {
         return content
       }
     }
-
   },
   watch: {
     value: {
-      handler (val, oldVal) {
+      handler(val, oldVal) {
         this.content = this.formatterTextToImg(val)
       },
       immediate: true
     }
   }
-
 }
 </script>

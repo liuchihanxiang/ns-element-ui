@@ -11,6 +11,12 @@ export const getInternationalValue = function (value) {
     return value
   }
 }
+
+// 判断是否存在 不存在去默认值
+export const getDefaultVal = function (val, defaultVal) {
+  return isExist(val) ? val : defaultVal
+}
+
 export function isExist (a) {
   return a !== null && a !== undefined
 }

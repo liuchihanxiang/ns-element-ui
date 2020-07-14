@@ -1,10 +1,6 @@
 <template>
-  <div class="scroll-container"
-       ref="scrollContainer"
-       @wheel.prevent="handleScroll">
-    <div class="scroll-wrapper"
-         ref="scrollWrapper"
-         :style="{left: left + 'px'}">
+  <div class="scroll-container" ref="scrollContainer" @wheel.prevent="handleScroll">
+    <div class="scroll-wrapper" ref="scrollWrapper" :style="{left: left + 'px'}">
       <slot />
     </div>
   </div>
@@ -14,13 +10,13 @@
 const padding = 15 // tag's padding
 export default {
   name: 'ScrollPane',
-  data () {
+  data() {
     return {
       left: 0
     }
   },
   methods: {
-    handleScroll (e) {
+    handleScroll(e) {
       const eventDelta = e.wheelDelta || -e.deltaY * 3
       const $container = this.$refs.scrollContainer
       const $containerWidth = $container.offsetWidth
@@ -41,7 +37,7 @@ export default {
         }
       }
     },
-    moveToTarget ($target) {
+    moveToTarget($target) {
       const $container = this.$refs.scrollContainer
       const $containerWidth = $container.offsetWidth
       const $targetLeft = $target.offsetLeft
