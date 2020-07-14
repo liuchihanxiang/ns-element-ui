@@ -21,7 +21,7 @@
     "babel-polyfill": "^6.26.0",
     "core-js": "^2.6.5",
     "element-ui": "^2.11.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3"
   },
