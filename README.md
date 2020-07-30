@@ -5,15 +5,15 @@
 </p>
 
 <h1>
-LimeUI
+ns-element-ui
     <h3>A lightweight Vue.js UI toolkit</h3>
 </h1>
 
 # Install
 
-Run the command below in your terminal to install limeUI first
+Run the command below in your terminal to install ns-element-ui first
 ```
-npm install lime-ui --save
+npm install ns-element-ui --save
 ```
 
 # Usage
@@ -21,10 +21,10 @@ npm install lime-ui --save
 ## Global Use
 Import in your entry script file and register it
 ```javascript
-import LimeUI from 'lime-ui'
-import "lime-ui/lib/styles/lime-ui.css"
+import NS from 'ns-element-ui'
+import "ns-element-ui/lib/styles/ns-element-ui.css"
 
-Vue.use(LimeUI)
+Vue.use(NS)
 ```
 
 ### Example
@@ -46,7 +46,7 @@ Configure your `.babelrc` file like this
 {
     "plugins": [
         ["component", {
-            "libraryName": "lime-ui",
+            "libraryName": "ns-element-ui",
             "libDir": "lib",
             "styleLibrary": {
                 "name": "styles",
@@ -62,7 +62,7 @@ The you can import component on demand, and you don't need to care about importi
 
 ```javascript
 import Vue from 'vue'
-import { Button } from 'lime-ui'
+import { NsDialog } from 'ns-element-ui'
 
-Vue.component('a-button', Button)
+Vue.component('ns-dialog', NsDialog)
 ```
