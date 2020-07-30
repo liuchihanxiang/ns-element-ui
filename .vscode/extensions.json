@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "formulahendry.auto-rename-tag",
+    "coenraads.bracket-pair-colorizer",
+    "pranaygp.vscode-css-peek",
+    "joelday.docthis",
+    "dbaeumer.vscode-eslint",
+    "mkxml.vscode-filesize",
+    "sidthesloth.html5-boilerplate",
+    "abusaidm.html-snippets",
+    "zhuangtongfa.material-theme",
+    "christian-kohler.path-intellisense",
+    "esbenp.prettier-vscode",
+    "shan.code-settings-sync",
+    "fantasytyx.tortoise-svn",
+    "octref.vetur",
+    "elemefe.vscode-element-helper",
+    "mikey.vscode-fileheader"
+  ]
+}

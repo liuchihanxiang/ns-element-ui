@@ -1,0 +1,29 @@
+@import "mixins/mixins";
+@include b(form) {
+  .el-select,
+  .el-date-editor.el-input,
+  .el-date-editor.el-input__inner,
+  .el-cascader,
+  .el-input-number,
+  .el-autocomplete {
+    width: 100%;
+  }
+  .ns-search-item-container {
+    width: 180px;
+  }
+  .search-btn-container {
+    width: auto;
+  }
+  .form-btn-container {
+    width: 100%;
+    &.is-center {
+      text-align: center;
+    }
+    &.is-left {
+      text-align: left;
+    }
+    &.is-right {
+      text-align: right;
+    }
+  }
+}

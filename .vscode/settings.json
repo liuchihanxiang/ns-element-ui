@@ -1,0 +1,75 @@
+{
+  "git.ignoreMissingGitWarning": true,
+  "workbench.colorTheme": "One Dark Pro",
+  "window.zoomLevel": 1.3,
+  "editor.tabSize": 2,
+  "files.insertFinalNewline": true,
+  "vetur.validation.template": false,
+  "vetur.format.options.tabSize": 2,
+  "vetur.format.defaultFormatterOptions": {
+    "css": "prettier",
+    "postcss": "prettier",
+    "scss": "prettier",
+    "js": "prettier",
+    "ts": "prettier",
+    "stylus": "stylus-supremacy",
+    "html": "prettyhtml",
+    "prettyhtml": {
+      // "wrapAttributes": true //属性强制折行对齐
+      "printWidth": 120
+    },
+
+    // "html": "js-beautify-html",
+    // "js-beautify-html": {
+    //   "wrap_attributes": "force-expand-multiline", //属性强制折行对齐
+    //   "end_with_newline": false
+    // },
+    "prettier": {
+      "semi": false,
+      "singleQuote": true,
+      "printWidth":800
+    }
+  },
+  "prettier.printWidth": 800,
+  "eslint.autoFixOnSave": true,
+  // "editor.formatOnPaste": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "css",
+    {
+      "language": "html",
+      "autoFix": true
+    }
+  ],
+  "eslint.options": {
+    "extensions": [".js", ".vue"]
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "editor.defaultFormatter": "octref.vetur",
+  "editor.formatOnSave": true,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "files.associations": {
+    "*.vue": "vue",
+    "*.wxss": "css",
+    "*.html": "html"
+  },
+  "emmet.includeLanguages": {
+    "vue-html": "html",
+    "vue": "html"
+  },
+  "terminal.integrated.rendererType": "dom",
+  "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe",
+  "editor.wordSeparators": "`~!@#%^&*()=+[{]}\\|;:'\",.<>/?",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
