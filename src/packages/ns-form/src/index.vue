@@ -197,13 +197,13 @@
                 :size="column.size"
                 :clearable="column.clearable"
                 :is-range="column.isRange"
-                :format="column.format||'yyyy-MM-dd'"
+                :format="column.format||dateValueFormat"
                 :align="column.align"
                 :default-value="column.defaultValue"
                 :popper-class="column.popperClass"
                 :range-separator="column.rangeSeparator||'-'"
                 :picker-options="column.pickerOptions"
-                :value-format="column.valueFormat||'yyyyMMdd'"
+                :value-format="column.valueFormat || dateFormat"
                 :prefix-icon="column.datePrefixIcon"
               />
               <!-- 计数器 -->
@@ -425,10 +425,21 @@ export default {
         return 'is-center'
       }
     },
-
     // 是否国际化
     international() {
       return this.isExist(this.isInternational) ? this.isInternational : this.$NS.isInternational
+    },
+    dateValueFormat() {
+      return this.$NS.nsFormDefault.dateValueFormat
+    },
+    dateFormat() {
+      return this.$NS.nsFormDefault.dateFormat
+    },
+    dicLabelKey() {
+      return this.$NS.nsFormDefault.dicLabelKey
+    },
+    dicValueKey() {
+      return this.$NS.nsFormDefault.dicValueKey
     }
   },
   watch: {

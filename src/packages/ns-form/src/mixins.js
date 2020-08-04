@@ -1,13 +1,13 @@
 export default {
   methods: {
     getLabel (item, labelKey) {
-      let key = item.labelkey || labelKey || 'name'
+      let key = item.labelkey || labelKey || dicLabelKey
       return this.getInternationalValue(item[key])
     },
 
     getValue (item, column) {
       let { isValueObject, valueKey } = column
-      valueKey = valueKey || 'id'
+      valueKey = valueKey || dicValueKey
       if (isValueObject) {
         return item
       } else {
