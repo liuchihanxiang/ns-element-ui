@@ -144,7 +144,7 @@
                 :multiple="column.multiple"
                 :disabled="column.disabled&&type!=='searchForm'"
                 :filterable="getDefaultVal(column.filterable,true)"
-                :value-key="getValue(item,column)"
+                :value-key="column.valueKey || dicValueKey"
                 :collapse-tags="column.collapseTags"
                 :multiple-limit="column.multipleLimit"
                 :remote="column.remote"
