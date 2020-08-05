@@ -53,13 +53,15 @@ export default {
       }
       let lazy = props && props.lazy !== undefined ? props.lazy : true
       let multiple = props && props.multiple !== undefined ? props.multiple : false
+      let checkStrictly = props && props.checkStrictly !== undefined ? props.checkStrictly : false
       return {
         lazy: lazy,
         value: valueKey,
         label: labelKey,
         leaf: leafKey,
         multiple: multiple,
-        lazyLoad: lazyLoad
+        lazyLoad: lazyLoad,
+        checkStrictly
       }
     },
     /**
