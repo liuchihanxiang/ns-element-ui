@@ -39,7 +39,7 @@ export default {
         this.$http.post(url, params).then(res => {
           let list = []
           if (beforeResolve) {
-            list = beforeResolve(res)
+            list = beforeResolve(res,node)
           } else {
             list = this.getValueByPath(res, dataPath)
             if (lastLevel) {

@@ -58,6 +58,8 @@ export default {
       formList: [
         {
           label: '性别',
+          labelKey:'label',
+          valueKey:'value',
           prop: 'key1',
           type: 'select',
           dicData: SEX,
