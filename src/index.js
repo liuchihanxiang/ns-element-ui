@@ -18,7 +18,13 @@ const install = function (Vue, opts = {}) {
     showSearchForm: true,
     httpMethod: 'post',
     operationsConfig: {},
-    dataFieldConfig: {}
+    dataFieldConfig: {},
+    nsFormDefault:{
+      dateValueFormat:'yyyy-MM-dd',
+      dateFormat:'yyyy-MM-dd',
+      dicLabelKey:'label',
+      dicValueKey:'value'
+    }
   }
   Vue.prototype.$NS = Object.assign({}, defaultOpts, opts)
 }

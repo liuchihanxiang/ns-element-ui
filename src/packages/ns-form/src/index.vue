@@ -144,7 +144,7 @@
                 :multiple="column.multiple"
                 :disabled="column.disabled&&type!=='searchForm'"
                 :filterable="getDefaultVal(column.filterable,true)"
-                :value-key="column.valueKey||'value'"
+                :value-key="etValue(item,column)"
                 :collapse-tags="column.collapseTags"
                 :multiple-limit="column.multipleLimit"
                 :remote="column.remote"
