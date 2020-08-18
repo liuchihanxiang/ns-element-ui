@@ -117,7 +117,7 @@ export default {
       if (column.fetchSuggestions && this.isFunction(column.fetchSuggestions)) {
         return column.fetchSuggestions(queryString, callback)
       } else if (column.url) {
-        return (queryString, callback) => {
+        return ((queryString, callback) => {
           let key = column.fetchKey || 'name'
           if (queryString !== '') {
             this.$http.post(column.url, { [key]: queryString }).then(res => {
@@ -128,7 +128,7 @@ export default {
           } else { // eslint-disable-next-line
             callback([])
           }
-        }
+        })(queryString, callback)
       }
     },
 

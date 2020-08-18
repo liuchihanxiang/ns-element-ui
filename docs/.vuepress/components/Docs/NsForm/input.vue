@@ -42,7 +42,7 @@ export default {
           type: 'autocomplete',
           prop: 'key111',
           placeholder: '请输入内容',
-          fetchSuggestions: this.fetchSuggestions
+          url:'asdasd',
         },
         {
           type: 'password',
