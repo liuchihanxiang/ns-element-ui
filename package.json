@@ -1,6 +1,6 @@
 {
   "name": "ns-element-ui",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "another light weight vue.js component library",
   "main": "lib/ns-element-ui.min.js",
   "dependencies": {
