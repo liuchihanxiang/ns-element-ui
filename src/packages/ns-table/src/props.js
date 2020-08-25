@@ -35,6 +35,11 @@ export const tableProps = {
     type: Boolean,
     default: false
   },
+  treeLoad:Function,
+  lazy:{
+    type: Boolean,
+    default: false
+  },
   fetch: Function,
   isMobile: {
     type: Boolean,

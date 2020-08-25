@@ -35,6 +35,7 @@
             <el-button
               v-if="permit(btnItem.code)"
               :key="btnIndex"
+              :disabled="btnItem.disabled"
               :class="btnItem.class"
               @click="btnItem.click?btnItem.click(btnItem.code):''"
               :type="btnItem.type?btnItem.type:'primary'"
@@ -44,6 +45,7 @@
             <el-button
               v-if="btnItem.text"
               :key="btnIndex"
+              :disabled="btnItem.disabled"
               :class="btnItem.class"
               @click="btnItem.click?btnItem.click():''"
               :type="btnItem.type?btnItem.type:'primary'"
@@ -127,6 +129,7 @@
       :max-height="maxHeight"
       :stripe="stripe"
       :border="border"
+      :lazy="lazy"
       :size="size"
       :fit="fit"
       :show-header="showHeader"
@@ -141,6 +144,7 @@
       :header-cell-style="headerCellStyle"
       :row-key="rowKey"
       :empty-text="empyText"
+      :load="treeLoad"
       :default-expand-all="defautExpandAll"
       :default-sort="defaultSort"
       :tooltip-effect="tooltipEffect"

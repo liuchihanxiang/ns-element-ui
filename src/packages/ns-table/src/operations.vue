@@ -111,8 +111,10 @@ export default {
         }
         if (!item.text) {
           return false
-        } else if (judgesObj) {
+        }else if (judgesObj && typeof judgesObj === 'string') {
           return eval(judgesObj) /*eslint-disable-line*/
+        } else if (Object.prototype.toString.call(judgesObj) === '[object Function]') {
+          return judgesObj()
         } else {
           return true
         }
