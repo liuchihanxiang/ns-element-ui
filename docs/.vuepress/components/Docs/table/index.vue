@@ -4,12 +4,11 @@
       :formList="formList"
       :btnList="btnList"
       :permit="filterBtn"
-      tree-table
       lazy
       row-key="id"
       :pagination="false"
       :treeLoad="load"
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      :tree-props="{children: 'children', hasChildren: 'hasChildren1'}"
       :operationsConfig="{
       onlyShowIcon:false
     }"
@@ -112,7 +111,7 @@ export default {
           date: '2016-05-01',
           name: '王小虎333',
           address: '上海市普陀区金沙江路 1519 弄',
-          hasChildren: true
+          hasChildren1: true
         }, {
           id: 4,
           date: '2016-05-03',

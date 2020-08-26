@@ -1,8 +1,8 @@
-npm run lib
+npm run dist
 
 git add .
 
-git commit -m 提交
+git commit -m '修复树形表格'
 
 git push -u origin master 
 

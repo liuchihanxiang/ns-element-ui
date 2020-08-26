@@ -34,7 +34,8 @@ module.exports = {
           title: 'nsTable 表格组件',
           collapsable: false,
           children: [
-            {title:'表格',path:'basic/ns-table/searchForm'},
+            {title:'基础表格',path:'basic/ns-table/searchForm'},
+            {title:'vxe高级表格',path:'basic/ns-table/vxe-grid'},
             {title:'api',path:'basic/ns-table/api'}
           ]
         },

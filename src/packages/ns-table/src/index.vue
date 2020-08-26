@@ -560,15 +560,16 @@ export default {
     realShowSearchForm() {
       let { showSearchForm } = this.$NS
       return isExist(this.showSearchForm) ? this.showSearchForm : showSearchForm
-    },
-    treeProps() {
-      const { treeTable, treeChildrenKey, hasChildrenKey } = this
-      if (treeTable) {
-        return { children: treeChildrenKey, hasChildren: hasChildrenKey }
-      } else {
-        return { children: 'childrenNull', hasChildren: 'hasChildren' }
-      }
     }
+    // treeProps() {
+    //   const { treeTable, treeChildrenKey, hasChildrenKey } = this
+    //     console.log({ children: treeChildrenKey, hasChildren: hasChildrenKey })
+    //   if (treeTable) {
+    //     return { children: treeChildrenKey, hasChildren: hasChildrenKey }
+    //   } else {
+    //     return { children: 'childrenNull', hasChildren: 'hasChildren' }
+    //   }
+    // }
   },
   watch: {
     columns: {

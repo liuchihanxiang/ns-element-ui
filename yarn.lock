@@ -10178,6 +10178,11 @@ vuepress@^1.0.3:
     opencollective-postinstall "^2.0.2"
     update-notifier "^4.0.0"
 
+vxe-table@^2.9.17:
+  version "2.9.17"
+  resolved "https://registry.yarnpkg.com/vxe-table/-/vxe-table-2.9.17.tgz#4bc75211496236dece6c6128099fb3b78a8821eb"
+  integrity sha512-ywqKRfES5z5dBsFAynraRAOjEBDMEDEILVn8UtUYfepq5//opKwvAbUiXpN6YfbNW/eTN7yIpEY5C2uibmHMNg==
+
 watchpack@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.6.1.tgz#280da0a8718592174010c078c7585a74cd8cd0e2"
@@ -10457,6 +10462,11 @@ xdg-basedir@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-4.0.0.tgz#4bc8d9984403696225ef83a1573cbbcb4e79db13"
   integrity sha512-PSNhEJDejZYV7h50BohL09Er9VaIefr2LMAf3OEmpCkjOi34eYyQYAXUTjEQtZJTKcF0E2UKTh+osDLsgNim9Q==
+
+xe-utils@^2.7.8:
+  version "2.7.8"
+  resolved "https://registry.yarnpkg.com/xe-utils/-/xe-utils-2.7.8.tgz#c8df5ac56be3c47a76ea9e8af55b4a051d89ea5e"
+  integrity sha512-+ObGoO+659XeguiH6rK5cBFZFYwwPCxIJ82ImqTYXOqNG2C0Vren0cbHVz8YBXzcrZGqhK7J511u0S+Yt567Dg==
 
 xmlhttprequest-ssl@~1.5.4:
   version "1.5.5"

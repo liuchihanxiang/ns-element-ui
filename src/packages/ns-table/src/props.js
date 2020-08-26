@@ -92,15 +92,7 @@ export const tableProps = {
     default: 'total, prev, pager, next, jumper, sizes'
   },
 
-  // 树形表格相关
-  treeTable: {
-    type: Boolean,
-    default: false
-  },
-  treeChildrenKey: {
-    type: String,
-    default: 'children'
-  },
+  treeProps:Object,	
   expandAll: {
     type: Boolean,
     default: false
