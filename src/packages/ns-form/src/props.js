@@ -10,6 +10,10 @@ export default {
       return {}
     }
   },
+  placeholder: {
+    type: Boolean,
+    default: false
+  },
   // 用于控制该表单内组件的尺寸
   size: {
     type: String,

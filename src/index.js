@@ -2,11 +2,17 @@ import NsForm from './packages/ns-form'
 import NsTable from './packages/ns-table'
 import NsDialog from './packages/ns-dialog'
 import NsEditor from './packages/ns-tinymce'
+import NsNumberRange from './packages/ns-number-range'
+import NsSelect from './packages/ns-select'
+import NsCheckbox from './packages/ns-checkbox'
 const components = [
   NsForm,
   NsTable,
   NsDialog,
-  NsEditor
+  NsEditor,
+  NsNumberRange,
+  NsSelect,
+  NsCheckbox
 ]
 
 const install = function (Vue, opts = {}) {
@@ -19,11 +25,13 @@ const install = function (Vue, opts = {}) {
     httpMethod: 'post',
     operationsConfig: {},
     dataFieldConfig: {},
-    nsFormDefault:{
-      dateValueFormat:'yyyy-MM-dd',
-      dateFormat:'yyyy-MM-dd',
-      dicLabelKey:'label',
-      dicValueKey:'value'
+    tableParams: {
+    },
+    nsFormDefault: {
+      dateValueFormat: 'yyyy-MM-dd',
+      dateFormat: 'yyyy-MM-dd',
+      dicLabelKey: 'label',
+      dicValueKey: 'value'
     }
   }
   Vue.prototype.$NS = Object.assign({}, defaultOpts, opts)

@@ -16,10 +16,8 @@ export default {
     },
 
     getPlaceholder (type, column) {
-      var placeholder =
-        type === 'searchForm'
-          ? column.placeholder || column.label
-          : column.placeholder
+      let text = column.type === 'select' ? '请选择' : '请输入'
+      let placeholder = (type === 'searchForm' || this.placeholder) ? (column.placeholder || text + column.label) : column.placeholder ? (text + column.placeholder) : ''
       return this.getInternationalValue(placeholder || '')
     },
     getCascaderProps({ props, valueKey, labelKey, codeKey, levelkey, superCodeVal, parentCodeKey, url, beforeHttp, dataPath, beforeResolve, leafKey, lastLevel }) {
@@ -39,7 +37,7 @@ export default {
         this.$http.post(url, params).then(res => {
           let list = []
           if (beforeResolve) {
-            list = beforeResolve(res,node)
+            list = beforeResolve(res, node)
           } else {
             list = this.getValueByPath(res, dataPath)
             if (lastLevel) {

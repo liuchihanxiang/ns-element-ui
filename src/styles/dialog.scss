@@ -1,0 +1,35 @@
+@import "mixins/mixins";
+@include b(dialog) {
+  &--center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .el-dialog {
+      margin: 0 !important;
+    }
+  }
+
+  .el-dialog {
+    display: flex;
+    flex-direction: column;
+    .el-dialog__body {
+      flex: 1;
+    }
+    .el-dialog__header {
+      background-color: #f8f8f8;
+      border-bottom: 1px solid #ebeef5;
+    }
+    .el-dialog__footer {
+      padding: 10px 20px;
+      text-align: center;
+      border-top: 1px solid #ebeef5;
+    }
+    .el-dialog__headerbtn.screen {
+      right: 40px;
+      i {
+        color: #909399;
+        font-size: 13px;
+      }
+    }
+  }
+}

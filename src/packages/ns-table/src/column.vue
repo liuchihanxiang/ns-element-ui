@@ -10,7 +10,7 @@
       </template>
       <template v-else>
         <el-table-column
-          v-if="!column.type&&table.showClomnuIndex.indexOf(columnIndex)!=-1&&(typeof column.show==='undefined'||column.show)"
+          v-if="typeof column.show==='undefined'||column.show"
           :key="columnIndex"
           :column-key="column.columnKey"
           :prop="column.prop"
@@ -67,10 +67,6 @@ export default {
   },
   methods: {
     getInternationalValue
-  },
-  watch: {},
-  created() { },
-  mounted() { },
-  update() { }
+  }
 }
 </script>

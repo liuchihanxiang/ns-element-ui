@@ -1,4 +1,4 @@
-@import 'mixins/mixins';
+@import "mixins/mixins";
 @include b(table) {
   .el-table__row .el-table-checkbox {
     text-align: center;
@@ -10,17 +10,12 @@
   .header_wraps {
     @include clearfix;
     margin-bottom: 10px;
-    .btn_wraps {
-      margin-top: 10px;
+    .form_wraps {
+      float: left;
     }
-    &.header_wraps-inline {
-      .form_wraps {
-        float: left;
-      }
-      .btn_wraps {
-        float: right;
-        margin-left: 20px;
-      }
+    .btn_wraps {
+      float: right;
+      margin-left: 20px;
     }
   }
   .table-btn-container {
