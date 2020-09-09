@@ -1,0 +1,7 @@
+{
+  "ns-dialog": "packages/ns-dialog/index.js",
+  "ns-form": "packages/ns-form/index.js",
+  "ns-qrcode": "packages/ns-qrcode/index.js",
+  "ns-table": "packages/ns-table/index.js",
+  "ns-tinymce": "packages/ns-tinymce/index.js"
+}
