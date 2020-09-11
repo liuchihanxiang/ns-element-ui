@@ -157,6 +157,7 @@
         :header-align="columns[0].headerAlign?columns[0].align:'left'"
         :class-name="(columns[0].className||'')+' el-table-checkbox' "
         :type="columns[0].type"
+        :label="getInternationalValue(columns[0].label)"
         reserve-selection
         :width="columns[0].width?columns[0].width:50"
       />
@@ -177,7 +178,7 @@
         </template>
         <template v-else>
           <el-table-column
-            v-if="typeof column.show==='undefined'||column.show"
+            v-if="(typeof column.show==='undefined'||column.show)&&!column.type"
             :key="columnIndex"
             :column-key="column.columnKey"
             :prop="column.prop"
@@ -279,7 +280,7 @@ export default {
       selection: [],
       type: ['selection', 'index', 'expand'],
       radio: false,
-      tableId: new Date().getTime()
+      tableId: new Date().getTime(),
     }
   },
   methods: {
@@ -356,7 +357,7 @@ export default {
           i--
         }
       }
-    }
+    },
   },
 
   watch: {
@@ -366,11 +367,11 @@ export default {
           this.initData(this.searchFormModel)
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   mounted() {
     this.initData(this.searchFormModel)
-  }
+  },
 }
 </script>

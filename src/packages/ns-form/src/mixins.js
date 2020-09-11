@@ -17,6 +17,7 @@ export default {
 
     getPlaceholder (type, column) {
       let text = column.type === 'select' ? '请选择' : '请输入'
+      if (type === 'searchForm') { text = '' }
       let placeholder = (type === 'searchForm' || this.placeholder) ? (column.placeholder || text + column.label) : column.placeholder ? (text + column.placeholder) : ''
       return this.getInternationalValue(placeholder || '')
     },

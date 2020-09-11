@@ -6,7 +6,7 @@
       </template>
       <template v-else>
         <el-table-column
-          v-if="typeof column.show==='undefined'||column.show"
+          v-if="(typeof column.show==='undefined'||column.show)&&!column.type"
           :key="columnIndex"
           :column-key="column.columnKey"
           :resizable="column.resizable"

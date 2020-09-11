@@ -52,6 +52,8 @@
                 :suffix-icon="column.suffixIcon"
                 :show-password="getDefaultVal(column.showPassword,false)"
                 :rows="column.rows"
+                @input="(value)=>{isFunction(column.input)&&column.input(value)}"
+                @blur="(value)=>{isFunction(column.blur)&&column.blur(value)}"
                 @change="(value)=>{isFunction(column.change)&&column.change(value)}"
               />
               <!-- input或textarea -->
@@ -319,7 +321,7 @@ export default {
   name: 'NsForm',
   mixins: [formMixins],
   components: {
-    NsEditor
+    NsEditor,
   },
   props,
   data() {
@@ -330,7 +332,7 @@ export default {
       defaultFormModel: {},
       dickeyList: [],
       dicUrlList: [],
-      outFormItemList: ['outItemSlot', 'groupLine', 'groupLineSlot'] // formitem外部选项类型集合
+      outFormItemList: ['outItemSlot', 'groupLine', 'groupLineSlot'], // formitem外部选项类型集合
     }
   },
   created() {
@@ -348,7 +350,7 @@ export default {
     },
     // 初始化工具方法
     initUtils() {
-      Object.keys(utils).forEach(key => {
+      Object.keys(utils).forEach((key) => {
         this[key] = utils[key]
       })
     },
@@ -362,7 +364,7 @@ export default {
     // 初始化字典数据
     initDic() {
       // dicKey代表前端存的数据字典 key值 dicUr为请求后端的接口
-      this.actualFormList.forEach(ele => {
+      this.actualFormList.forEach((ele) => {
         if (!ele.dicUrl && ele.dicData && typeof ele.dicData === 'string') {
           this.dickeyList.push(ele.dicData)
         } else if (ele.dicUrl) {
@@ -371,16 +373,16 @@ export default {
             method: ele.method,
             ajaxData: ele.ajaxData,
             listKey: ele.listKey,
-            dicKey: ele.dicData || ele.prop
+            dicKey: ele.dicData || ele.prop,
           })
         }
       })
-      this.getAllDic().then(data => {
+      this.getAllDic().then((data) => {
         this.dicList = data
       })
     },
     handlerSearch() {
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         if (valid) {
           let params = this.formFormat ? this.formFormat(this.fromModel) : this.fromModel
           this.handlerSubmit(params)
@@ -410,7 +412,7 @@ export default {
       } else {
         return false
       }
-    }
+    },
   },
   computed: {
     // 经过过滤的formlist
@@ -418,7 +420,7 @@ export default {
       return this.formList ? this.filterFormList(this.formList) : []
     },
 
-    getBtnPostion: function() {
+    getBtnPostion: function () {
       if (this.btnPostion) {
         return 'is-' + this.btnPostion
       } else {
@@ -440,21 +442,21 @@ export default {
     },
     dicValueKey() {
       return this.$NS.nsFormDefault.dicValueKey
-    }
+    },
   },
   watch: {
     value: {
       handler(n, o) {
         this.setFormVal()
       },
-      deep: true
+      deep: true,
     },
     formModel: {
       handler(n, o) {
         this.$emit('input', n)
       },
-      deep: true
-    }
-  }
+      deep: true,
+    },
+  },
 }
 </script>
