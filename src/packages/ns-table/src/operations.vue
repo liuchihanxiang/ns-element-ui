@@ -6,7 +6,7 @@
         <!-- 操作按钮只显示文字 -->
         <el-button
           v-if="!realOperationsConfig.onlyShowIcon"
-          @click="operationItem.click(operationItem.type,row,$event)"
+          @click="operationItem.click(operationItem.type,row,$event,rowIndex)"
           :class="operationItem.class||''"
           :key="operationIndex"
           class="operation-text no-choose-row"
@@ -22,7 +22,7 @@
           :content="getInternationalValue(operationItem.text)"
           placement="top-start"
         >
-          <a class="operation-icon no-choose-row" @click="operationItem.click(operationItem.type,row,$event)">
+          <a class="operation-icon no-choose-row" @click="operationItem.click(operationItem.type,row,$event,rowIndex)">
             <i v-if="operationItem.icon" :class="operationItem.icon+' '+(operationItem.class||'')" />
           </a>
         </el-tooltip>
@@ -37,7 +37,7 @@
           <el-button
             class="operation-text"
             :class="rowOperation[n-1].class"
-            @click="rowOperation[n-1].click(rowOperation[n-1].type,row,$event)"
+            @click="rowOperation[n-1].click(rowOperation[n-1].type,row,$event,rowIndex)"
             :key="numIndex"
             :type="rowOperation.btnType?rowOperation.btnType:'text'"
             size="mini"
@@ -49,10 +49,10 @@
             class="item"
             effect="dark"
             :key="numIndex"
-            :content="getInternationalValue( rowOperation[n-1].text)"
+            :content="getInternationalValue(rowOperation[n-1].text)"
             placement="top-start"
           >
-            <a class="operation-icon" @click="rowOperation[n-1].click(rowOperation[n-1].type,row,$event)">
+            <a class="operation-icon" @click="rowOperation[n-1].click(rowOperation[n-1].type,row,$event,rowIndex)">
               <i v-if=" rowOperation[n-1].icon" :class=" rowOperation[n-1].icon+' '+ rowOperation[n-1].class" />
             </a>
           </el-tooltip>
@@ -69,7 +69,7 @@
             <el-dropdown-item
               class="no-choose-row"
               :class="operationItem.class||''"
-              @click.native="operationItem.click(operationItem.type,row,$event)"
+              @click.native="operationItem.click(operationItem.type,row,$event,rowIndex)"
               :key="operationIndex"
               v-if="operationIndex>=realOperationsConfig.dropdownDefaultShowNum"
             >{{getInternationalValue(operationItem.text)}}</el-dropdown-item>
@@ -90,11 +90,15 @@ export default {
       type: Object,
       default: function () {
         return {}
-      }
-    }
+      },
+    },
+    rowIndex: {
+      type: Number,
+      default: 0,
+    },
   },
   methods: {
-    getInternationalValue
+    getInternationalValue,
   },
   computed: {
     rowOperation() {
@@ -119,7 +123,7 @@ export default {
     },
     realOperationsConfig() {
       return this.table.realOperationsConfig
-    }
-  }
+    },
+  },
 }
 </script>

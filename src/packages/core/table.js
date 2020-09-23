@@ -165,7 +165,7 @@ export default {
       this.loading = true
       let tableParams = this.$NS.tableParams
       let { fetch, url, $http, pagination, realDataFieldConfig, sidePagination, page, pageSize, queryParams, httpMethod } = this
-      let params = {} // 请求参数
+      let params = {} //请求参数
       let copyFormParams = JSON.parse(JSON.stringify(formParams))
       let obj = Object.assign(copyFormParams, tableParams)
       // 请求之前处理参数

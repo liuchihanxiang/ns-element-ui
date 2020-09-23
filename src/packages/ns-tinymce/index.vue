@@ -13,25 +13,25 @@ export default {
   props: {
     value: {
       type: String,
-      default: ''
+      default: '',
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     type: {
       type: String,
-      default: ''
+      default: '',
     },
     init: {
       type: Object,
-      default: function() {
+      default: function () {
         return {}
-      }
-    }
+      },
+    },
   },
   components: {
-    Editor
+    Editor,
   },
   data() {
     return {
@@ -54,8 +54,8 @@ export default {
         min_height: 350,
         ax_wordlimit_num: 1000,
         toolbar_mode: 'sliding',
-        removed_menuitems: 'image'
-      }
+        removed_menuitems: 'image',
+      },
     }
   },
   computed: {
@@ -66,11 +66,11 @@ export default {
           toolbar: 'fullscreen preview | fontsizeselect | fontselect | forecolor | backcolor | alignleft aligncenter alignright bullist numlist | bold  italic  underline |',
           plugins: 'fullscreen  preview lists advlist',
           min_width: 300,
-          min_height: 100
+          min_height: 100,
         }
       }
       return Object.assign({}, this.defaultEditorInit, obj, this.init)
-    }
+    },
   },
   watch: {
     content(val) {
@@ -78,11 +78,11 @@ export default {
     },
     value(val) {
       this.content = val
-    }
+    },
   },
   created() {
     tinymce.init({}) //eslint-disable-line
   },
-  destroyed() {}
+  destroyed() {},
 }
 </script>

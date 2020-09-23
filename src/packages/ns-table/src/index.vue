@@ -234,7 +234,7 @@
         :class-name="realOperationsConfig.className"
       >
         <template slot-scope="scope">
-          <table-operations :row="scope.row"></table-operations>
+          <table-operations :row="scope.row" :row-index="scope.$index"></table-operations>
         </template>
       </el-table-column>
     </el-table>
