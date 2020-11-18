@@ -1,13 +1,15 @@
 <template>
-  <el-select
-    v-model="text"
+  <el-select v-model="text"
     :multiple="multiple"
     :collapse-tags="collapseTags"
+    :size="size"
     @change="handleChange"
     :placeholder="placeholder"
-    :clearable="clearable"
-  >
-    <el-option v-for="item in dicData" :key="item.value" :label="item[dicLabelKey]" :value="item[dicValueKey]"></el-option>
+    :clearable="clearable">
+    <el-option v-for="item in dicData"
+      :key="item.value"
+      :label="item[dicLabelKey]"
+      :value="item[dicValueKey]"></el-option>
   </el-select>
 </template>
 
@@ -24,6 +26,10 @@ export default {
     multiple: {
       type: Boolean,
       default: false
+    },
+    size: {
+      type: String,
+      default: ''
     },
     collapseTags: {
       type: Boolean,
@@ -59,7 +65,7 @@ export default {
   },
   watch: {
     value: {
-      handler: function(val) {
+      handler: function (val) {
         if (val) {
           this.text = val
         }

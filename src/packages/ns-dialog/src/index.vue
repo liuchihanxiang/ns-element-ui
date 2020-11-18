@@ -1,7 +1,6 @@
 <!--  -->
 <template>
-  <el-dialog
-    ref="ns-dialog"
+  <el-dialog ref="ns-dialog"
     :title="getInternationalValue(title)"
     :visible.sync="show"
     @close="$emit('close')"
@@ -15,22 +14,34 @@
     :close-on-click-modal="closeOnClickModal"
     :before-close="beforeClose"
     :class="{'ns-dialog--center':isCenter,'ns-dialog':true}"
-    :width="area instanceof Array?area[0]:'auto'"
-  >
+    @hook:mounted="dialogMounted"
+    :width="area instanceof Array?area[0]:'auto'">
     <div slot="title">
       <slot name="title">
         <span class="el-dialog__title">{{ title }}</span>
       </slot>
-      <button v-if="showFullScreen" type="button" @click="toggleSize" class="el-dialog__headerbtn screen">
+      <button v-if="showFullScreen"
+        type="button"
+        @click="toggleSize"
+        class="el-dialog__headerbtn screen">
         <i :class="fullScreen?'icon iconfont icon-exit-full-screen':'icon iconfont icon-full-screen'" />
       </button>
     </div>
-    <slot />
+    <el-scrollbar ref="myScrollbar"
+      :native="false"
+      style="height:100%"
+      :noresize="false">
+      <slot />
+    </el-scrollbar>
     <template slot="footer">
       <slot name="footer">
-        <span v-if="footer" class="dialog-footer">
-          <el-button v-if="confirmBtn" type="primary" @click="ok">{{getInternationalValue(confirmText)}}</el-button>
-          <el-button v-if="cancelBtn" @click="$emit('update:visible', false)">{{getInternationalValue(cancelText)}}</el-button>
+        <span v-if="footer"
+          class="dialog-footer">
+          <el-button v-if="confirmBtn"
+            type="primary"
+            @click="ok">{{getInternationalValue(confirmText)}}</el-button>
+          <el-button v-if="cancelBtn"
+            @click="$emit('update:visible', false)">{{getInternationalValue(cancelText)}}</el-button>
         </span>
       </slot>
     </template>
@@ -125,7 +136,7 @@ export default {
   watch: {
     visible: {
       immediate: true,
-      handler: function(val) {
+      handler: function (val) {
         this.show = val
       }
     }
@@ -151,7 +162,7 @@ export default {
       this.$emit('closed')
     },
 
-    ok: throttle(function() {
+    ok: throttle(function () {
       this.$emit('ok')
     }, 1000),
 
@@ -176,6 +187,9 @@ export default {
         marginTop = this.top
       }
       this.setDialogSize({ height: dialogHeight, width, marginTop })
+    },
+    dialogMounted() {
+      console.log('初始化了又')
     },
 
     getInternationalValue

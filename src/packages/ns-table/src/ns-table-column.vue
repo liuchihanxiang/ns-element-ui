@@ -2,27 +2,29 @@
   <span>
     <template v-for="(column,columnIndex) in columnList">
       <template v-if="column.children&&column.children.length">
-        <column :column-option="column" :key="columnIndex"></column>
+        <column :column-option="column"
+          :key="columnIndex"></column>
       </template>
       <template v-else>
-        <el-table-column
-          v-if="(typeof column.show==='undefined'||column.show)&&!column.type"
+        <el-table-column v-if="(typeof column.show==='undefined'||column.show)&&!column.type"
           :key="columnIndex"
           :column-key="column.columnKey"
           :resizable="column.resizable"
           :filter-method="column.filterMethod"
-          :filtered-value="column.filteredValue"
-        >
+          :filtered-value="column.filteredValue">
           <template slot="header">
             <span v-if="column.headerSlotName">
-              <slot :name="column.headerSlotName" :row="column" />
+              <slot :name="column.headerSlotName"
+                :row="column" />
             </span>
             <span v-else>{{column.label}}</span>
           </template>
           <template slot-scope="scope">
             <span v-if="column.filter">{{ Vue.filter(column['filter'])(scope.row[column.prop]) }}</span>
             <span v-else-if="column.slotName">
-              <slot :name="column.slotName" :row="scope.row" :$index="scope.$index" />
+              <slot :name="column.slotName"
+                :row="scope.row"
+                :$index="scope.$index" />
             </span>
             <template v-else-if="column.formatter">
               <span v-html="column.formatter(scope.row,scope.row[column.prop]) " />

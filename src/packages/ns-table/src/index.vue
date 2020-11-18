@@ -3,8 +3,7 @@
   <div class="ns-table ns-table-container">
     <!-- 查询表单 -->
     <div :class="{'header_wraps':true,'header_wraps-inline':!btnListAlone}">
-      <ns-form
-        class="form_wraps"
+      <ns-form class="form_wraps"
         ref="serchForm"
         type="searchForm"
         v-if="formList.length"
@@ -23,36 +22,33 @@
         :submit-loading="loading"
         :search-btn="formOption.searchBtn"
         :reset-btn="formOption.resetBtn"
-        :handler-submit="handlerSearch"
-      >
+        :handler-submit="handlerSearch">
         <template slot="extraBtn">
           <slot name="searchBtn" />
         </template>
       </ns-form>
       <slot name="btnList">
-        <div v-if="btnList.length" class="btn_wraps">
+        <div v-if="btnList.length"
+          class="btn_wraps">
           <div class="pull-left">
             <template v-for="(btnItem,btnIndex) in btnList">
               <template v-if="!btnItem.position||btnItem.position==='left'">
                 <template v-if="btnItem.code&&permit">
-                  <el-button
-                    v-if="permit(btnItem.code)&&(btnItem.show === undefined || btnItem.show)"
+                  <el-button v-if="permit(btnItem.code)&&(btnItem.show === undefined || btnItem.show)"
                     :key="btnIndex"
                     :disabled="btnItem.disabled"
                     :class="btnItem.class"
                     @click="btnItem.click?btnItem.click(btnItem.code):''"
-                    :type="btnItem.type?btnItem.type:'primary'"
-                  >{{getInternationalValue(permit(btnItem.code))}}</el-button>
+                    :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(permit(btnItem.code))}}
+                  </el-button>
                 </template>
                 <template v-else>
-                  <el-button
-                    v-if="btnItem.text&&(btnItem.show===undefined || btnItem.show)"
+                  <el-button v-if="btnItem.text&&(btnItem.show===undefined || btnItem.show)"
                     :key="btnIndex"
                     :disabled="btnItem.disabled"
                     :class="btnItem.class"
                     @click="btnItem.click?btnItem.click(btnItem.code):''"
-                    :type="btnItem.type?btnItem.type:'primary'"
-                  >{{getInternationalValue(btnItem.text)}}</el-button>
+                    :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(btnItem.text)}}</el-button>
                 </template>
               </template>
             </template>
@@ -61,24 +57,21 @@
             <template v-for="(btnItem,btnIndex) in btnList">
               <template v-if="btnItem.position==='right'">
                 <template v-if="btnItem.code&&permit">
-                  <el-button
-                    v-if="permit(btnItem.code)&&(btnItem.show===undefined || btnItem.show)"
+                  <el-button v-if="permit(btnItem.code)&&(btnItem.show===undefined || btnItem.show)"
                     :key="btnIndex"
                     :disabled="btnItem.disabled"
                     :class="btnItem.class"
                     @click="btnItem.click?btnItem.click(btnItem.code):''"
-                    :type="btnItem.type?btnItem.type:'primary'"
-                  >{{getInternationalValue(permit(btnItem.code))}}</el-button>
+                    :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(permit(btnItem.code))}}
+                  </el-button>
                 </template>
                 <template v-else>
-                  <el-button
-                    v-if="btnItem.text&&(btnItem.show===undefined || btnItem.show)"
+                  <el-button v-if="btnItem.text&&(btnItem.show===undefined || btnItem.show)"
                     :key="btnIndex"
                     :disabled="btnItem.disabled"
                     :class="btnItem.class"
                     @click="btnItem.click?btnItem.click(btnItem.code):''"
-                    :type="btnItem.type?btnItem.type:'primary'"
-                  >{{getInternationalValue(btnItem.text)}}</el-button>
+                    :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(btnItem.text)}}</el-button>
                 </template>
               </template>
             </template>
@@ -86,19 +79,19 @@
         </div>
       </slot>
     </div>
-
     <!-- 选中数据显示条数 -->
     <el-collapse-transition>
-      <el-alert v-if="selection.length&&showSelectTips" :closable="false" class="alert-selection-tips" type="success">
-        当前已选{{selection.length}}条数据
-        <el-button type="text" size="mini" @click="clearSelect">清空所选</el-button>
+      <el-alert v-if="selection.length&&showSelectTips"
+        :closable="false"
+        class="alert-selection-tips"
+        type="success"> 当前已选{{selection.length}}条数据 <el-button type="text"
+          size="mini"
+          @click="clearSelect">清空所选</el-button>
         <slot name="selectionContent" />
       </el-alert>
     </el-collapse-transition>
-
     <!-- 表格 -->
-    <el-table
-      ref="elBaseTable"
+    <el-table ref="elBaseTable"
       class="ns-base-table"
       :data-id="tableId"
       element-loading-text="拼命加载中..."
@@ -148,37 +141,33 @@
       @filter-change="filters => emitEventHandler('filter-change', filters)"
       @current-change="(currentRow, oldCurrentRow) => emitEventHandler('current-change', currentRow, oldCurrentRow)"
       @header-dragend="(newWidth, oldWidth, column, event) => emitEventHandler('header-dragend', newWidth, oldWidth, column, event)"
-      @expand-change="(row, expanded) => emitEventHandler('expand-change', row, expanded)"
-    >
+      @expand-change="(row, expanded) => emitEventHandler('expand-change', row, expanded)">
       <!-- 多选 -->
-      <el-table-column
-        v-if="columns[0].type&&type.indexOf(columns[0].type)>=0"
+      <el-table-column v-if="columns[0].type&&type.indexOf(columns[0].type)>=0"
         :align="columns[0].align?columns[0].align:'left'"
         :header-align="columns[0].headerAlign?columns[0].align:'left'"
         :class-name="(columns[0].className||'')+' el-table-checkbox' "
         :type="columns[0].type"
         :label="getInternationalValue(columns[0].label)"
-        reserve-selection
-        :width="columns[0].width?columns[0].width:50"
-      />
+        :reserve-selection="getDefaultVal(columns[0].reserveSelection,true)"
+        :width="columns[0].width?columns[0].width:50" />
       <!-- 单选 -->
-      <el-table-column
-        :class-name="(columns[0].className||'')+' el-table-checkbox' "
+      <el-table-column :class-name="(columns[0].className||'')+' el-table-checkbox' "
         v-if="columns[0].type==='radio'"
-        :width="columns[0].width?columns[0].width:50"
-      >
+        :width="columns[0].width?columns[0].width:50">
         <template slot-scope="scope">
-          <el-radio v-model="radio" :label="scope.$index">&nbsp;</el-radio>
+          <el-radio v-model="radio"
+            :label="scope.$index">&nbsp;</el-radio>
         </template>
       </el-table-column>
       <!-- 正常显示列 -->
-      <template v-for="(column,columnIndex) in columns">
+      <template v-for="(column,columnIndex) in filterColumns">
         <template v-if="column.children&&column.children.length">
-          <column :column-option="column" :key="columnIndex"></column>
+          <column :column-option="column"
+            :key="columnIndex"></column>
         </template>
         <template v-else>
-          <el-table-column
-            v-if="(typeof column.show==='undefined'||column.show)&&!column.type"
+          <el-table-column v-if="(typeof column.show==='undefined'||column.show)&&!column.type"
             :key="columnIndex"
             :column-key="column.columnKey"
             :prop="column.prop"
@@ -196,23 +185,24 @@
             :class-name="column.className"
             :label-class-name="column.labelClassName"
             :selectable="column.selectable"
-            :reserve-selection="column.reserveSelection"
             :filters="column.filters"
             :filter-placement="column.filterPlacement"
             :filter-multiple="column.filterMultiple"
             :filter-method="column.filterMethod"
-            :filtered-value="column.filteredValue"
-          >
+            :filtered-value="column.filteredValue">
             <template slot="header">
               <span v-if="column.headerSlotName">
-                <slot :name="column.headerSlotName" :row="column" />
+                <slot :name="column.headerSlotName"
+                  :row="column" />
               </span>
               <span v-else>{{column.label}}</span>
             </template>
             <template slot-scope="scope">
               <span v-if="column.filter">{{ Vue.filter(column['filter'])(scope.row[column.prop]) }}</span>
               <span v-else-if="column.slotName">
-                <slot :name="column.slotName" :row="scope.row" :$index="scope.$index" />
+                <slot :name="column.slotName"
+                  :row="scope.row"
+                  :$index="scope.$index" />
               </span>
               <template v-else-if="column.formatter">
                 <span v-html="column.formatter(scope.row,scope.row[column.prop]) " />
@@ -222,35 +212,31 @@
           </el-table-column>
         </template>
       </template>
-
       <!-- 表格操作列 -->
-      <el-table-column
-        :fixed="realOperationsConfig.fixed"
+      <el-table-column :fixed="realOperationsConfig.fixed"
         :label="getInternationalValue(realOperationsConfig.title)"
         :width="realOperationsConfig.width"
         :min-width="realOperationsConfig.minWidth"
         :align="realOperationsConfig.align"
         v-if="operations&&operations instanceof Array&&operations.length"
-        :class-name="realOperationsConfig.className"
-      >
+        :class-name="realOperationsConfig.className">
         <template slot-scope="scope">
-          <table-operations :row="scope.row" :row-index="scope.$index"></table-operations>
+          <table-operations :row="scope.row"
+            :row-index="scope.$index"></table-operations>
         </template>
       </el-table-column>
     </el-table>
-
     <!-- 表格分页 -->
-    <div v-if="pagination" style="margin-top: 10px;text-align: right;">
-      <el-pagination
-        background
+    <div v-if="pagination"
+      style="margin-top: 10px;text-align: right;">
+      <el-pagination background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="page"
         :page-sizes="pageList"
         :page-size="pageSize"
         :layout="paginationLayout"
-        :total="total"
-      />
+        :total="total" />
     </div>
   </div>
 </template>
@@ -261,6 +247,7 @@ import Column from './column'
 import TableOperations from './operations'
 import tableMixins from './mixins.js'
 import NsForm from '../../ns-form/src/index.vue'
+import { getValueByPath, isEmptyObject, getDefaultVal } from './../../../utils/index'
 import commonTable from '../../core/table'
 export default {
   components: { NsForm, TableOperations, Column },
@@ -280,13 +267,16 @@ export default {
       selection: [],
       type: ['selection', 'index', 'expand'],
       radio: false,
-      tableId: new Date().getTime(),
+      tableId: new Date().getTime()
     }
   },
   methods: {
+    getDefaultVal,
+    isEmptyObject,
     emitEventHandler(event) {
       this.$emit(event, ...Array.from(arguments).splice(1))
     },
+
     // 过滤数据
     filterData() {
       const serchFormKeyList = Object.keys(this.searchFormModel)
@@ -303,6 +293,147 @@ export default {
           })
         }
       }
+    },
+
+    // 切换每页显示
+    handleSizeChange(size) {
+      this.pageSize = size
+      this.initData(this.searchFormModel)
+    },
+
+    // 处理国际化
+    getInternationalValue(value) {
+      return this.isTableInternational ? this.$t(value) : value
+    },
+
+    // 刷新表格
+    handlerRefresh() {
+      this.initData(this.searchFormModel)
+    },
+
+    // 重置查询form表单
+    handlersearchFormReset() {
+      this.$refs.serchForm.handlerReset()
+    },
+
+    // 切换分页
+    handleCurrentChange(page) {
+      this.page = page
+      this.initData(this.searchFormModel)
+    },
+
+    // 处理查询
+    handlerSearch(resetPage = true) {
+      if (resetPage) {
+        this.page = 1
+      }
+      if (this.url && this.search === 'server') {
+        this.initData(this.searchFormModel)
+      } else {
+        this.filterData()
+      }
+    },
+    /**
+     * 从后台获取数据时 第一次进来tableData为空  所以url或者fetch只要有一个就可以第一次请求数据
+     * 请求到数据后 若有分页且是前台分页则把数据放到tableData
+     * 后面点击分页时 tableData不为0直接进到localDataHandler方法里面
+     * 若是后台分页 则不存数据到tableData 直接赋值给currentData
+     */
+    initData() {
+      let { tableData, url, fetch } = this
+      //  数据从哪里拿前台还是后台
+      if (!tableData.length && (url || fetch)) {
+        //  数据从后台拿  必须满足 url和fetch字少有一个 并且没有从后台拿过数据
+        this.initServe(arguments[0])
+      } else {
+        this.handleLocalData(tableData)
+      }
+    },
+    // 处理传来的静态数据
+    handleLocalData() {
+      let { pagination, tableData } = this
+      let cachData = JSON.parse(JSON.stringify(tableData))
+      this.cachData = JSON.parse(JSON.stringify(tableData))
+      if (pagination) {
+        this.paginationData(cachData)
+      } else {
+        this.currentData = cachData
+      }
+    },
+    // 请求数据
+    initServe(formParams = {}) {
+      this.loading = true
+      let tableParams = this.$NS.tableParams
+      let { fetch, url, $http, pagination, realDataFieldConfig, sidePagination, page, pageSize, queryParams, httpMethod } = this
+      let params = {} // 请求参数
+      let copyFormParams = JSON.parse(JSON.stringify(formParams))
+      let obj = Object.assign(copyFormParams, tableParams)
+      // 请求之前处理参数
+      if (queryParams && typeof queryParams === 'function') {
+        params = queryParams(obj, copyFormParams)
+      } else if (queryParams && typeof queryParams === 'object') {
+        params = Object.assign(queryParams, copyFormParams)
+      } else {
+        params = obj
+      }
+      // 分页参数
+      if (pagination) {
+        params = Object.assign(params, {
+          [realDataFieldConfig.pageIndexKey]: page,
+          [realDataFieldConfig.pageSizeKey]: pageSize
+        })
+      }
+      // 请求数据的函数处理
+      let uestObject = null
+      if (fetch) {
+        uestObject = fetch(params)
+      } else {
+        let defaultMethod = this.$NS.httpMethod
+        let method = httpMethod ? httpMethod.toLowerCase() : defaultMethod
+        if (method === 'get') {
+          uestObject = $http[method](url, { params })
+        } else {
+          uestObject = $http[method](url, params)
+        }
+      }
+      // 开始请求数据
+      uestObject
+        .then((res) => {
+          if (res) {
+            let list = res.data && res.data instanceof Array ? res.data : getValueByPath(res, realDataFieldConfig.listKey)
+            // 前端分页 要处理数据
+            if (pagination && sidePagination === 'client') {
+              this.paginationData(list)
+            } else if (pagination && sidePagination === 'server') {
+              let totalValue = getValueByPath(res, realDataFieldConfig.totalKey) // 总页数
+              this.total = totalValue || 0
+              let maxPage = Math.ceil(this.total / this.pageSize)
+              if (this.page > maxPage && maxPage !== 0) {
+                this.handleCurrentChange(maxPage)
+                return false
+              }
+            }
+            if (this.responseHandler) {
+              this.currentData = this.responseHandler(list)
+            } else {
+              this.currentData = list
+            }
+            if (this.search === 'client') {
+              this.cachData = JSON.parse(JSON.stringify(this.currentData))
+            }
+
+            if (this.loadSuccess) {
+              this.$nextTick(() => {
+                this.loadSuccess(res)
+              })
+            }
+            this.loading = false
+          }
+        })
+        .catch((error) => {
+          this.loading = false
+          console.log(error) /*eslint-disable-line*/
+        })
     },
 
     isIncludesObj(obj, keyList) {
@@ -357,7 +488,7 @@ export default {
           i--
         }
       }
-    },
+    }
   },
 
   watch: {
@@ -367,11 +498,29 @@ export default {
           this.initData(this.searchFormModel)
         }
       },
-      immediate: true,
-    },
+      immediate: true
+    }
+  },
+  computed: {
+    filterColumns() {
+      return this.columns.filter((item) => {
+        const show = item.show
+        if (!show) {
+          return true
+        } else if (show && typeof show === 'string') {
+          return eval(judgesObj) /*eslint-disable-line*/
+        } else if (Object.prototype.toString.call(show) === '[object Function]') {
+          return show(item)
+        } else if (typeof show === 'boolean') {
+          return show
+        } else {
+          return true
+        }
+      })
+    }
   },
   mounted() {
     this.initData(this.searchFormModel)
-  },
+  }
 }
 </script>

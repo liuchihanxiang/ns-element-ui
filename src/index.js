@@ -1,6 +1,7 @@
 import NsForm from './packages/ns-form'
 import NsTable from './packages/ns-table'
 import NsDialog from './packages/ns-dialog'
+import NsDrawer from './packages/ns-drawer'
 import NsEditor from './packages/ns-tinymce'
 import NsNumberRange from './packages/ns-number-range'
 import NsSelect from './packages/ns-select'
@@ -9,6 +10,7 @@ const components = [
   NsForm,
   NsTable,
   NsDialog,
+  NsDrawer,
   NsEditor,
   NsNumberRange,
   NsSelect,

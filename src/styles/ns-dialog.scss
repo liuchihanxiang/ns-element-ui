@@ -1,4 +1,4 @@
-@import "mixins/mixins";
+@import 'mixins/mixins';
 @include b(dialog) {
   &--center {
     display: flex;
@@ -8,12 +8,22 @@
       margin: 0 !important;
     }
   }
+  .el-dialog__wrapper {
+    overflow: hidden;
+  }
 
   .el-dialog {
     display: flex;
     flex-direction: column;
+    max-height: calc(100% - 30px);
+    max-width: calc(100% - 30px);
     .el-dialog__body {
+      padding: 0;
       flex: 1;
+      overflow: hidden !important;
+      .el-scrollbar__view {
+        padding: 30px 20px;
+      }
     }
     .el-dialog__header {
       background-color: #f8f8f8;

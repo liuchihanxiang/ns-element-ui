@@ -1,0 +1,31 @@
+// 抽屉样式
+.ns-drawer {
+  &.no-padding {
+    .el-drawer__content {
+      padding: 0;
+    }
+  }
+  .el-drawer__header {
+    margin: 0;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ebeef5;
+  }
+  .el-drawer__body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    .el-drawer__content {
+      flex: 1;
+      overflow: hidden;
+      padding: 15px;
+    }
+    .el-drawer__footer {
+      padding: 10px 20px;
+      text-align: center;
+      border-top: 1px solid #ebeef5;
+      .btn-cancel {
+        margin-left: 60px;
+      }
+    }
+  }
+}

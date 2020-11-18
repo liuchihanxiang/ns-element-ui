@@ -321,7 +321,7 @@ export default {
   name: 'NsForm',
   mixins: [formMixins],
   components: {
-    NsEditor,
+    NsEditor
   },
   props,
   data() {
@@ -332,7 +332,7 @@ export default {
       defaultFormModel: {},
       dickeyList: [],
       dicUrlList: [],
-      outFormItemList: ['outItemSlot', 'groupLine', 'groupLineSlot'], // formitem外部选项类型集合
+      outFormItemList: ['outItemSlot', 'groupLine', 'groupLineSlot'] // formitem外部选项类型集合
     }
   },
   created() {
@@ -373,7 +373,7 @@ export default {
             method: ele.method,
             ajaxData: ele.ajaxData,
             listKey: ele.listKey,
-            dicKey: ele.dicData || ele.prop,
+            dicKey: ele.dicData || ele.prop
           })
         }
       })
@@ -412,7 +412,7 @@ export default {
       } else {
         return false
       }
-    },
+    }
   },
   computed: {
     // 经过过滤的formlist
@@ -442,21 +442,21 @@ export default {
     },
     dicValueKey() {
       return this.$NS.nsFormDefault.dicValueKey
-    },
+    }
   },
   watch: {
     value: {
       handler(n, o) {
         this.setFormVal()
       },
-      deep: true,
+      deep: true
     },
     formModel: {
       handler(n, o) {
         this.$emit('input', n)
       },
-      deep: true,
-    },
-  },
+      deep: true
+    }
+  }
 }
 </script>
