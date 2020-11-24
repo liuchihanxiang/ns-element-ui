@@ -7,7 +7,7 @@
     "@tinymce/tinymce-vue": "^3.2.0",
     "core-js": "2.6.9",
     "element-ui": "^2.13.1",
-    "highlight.js": "^9.12.0",
+    "highlight.js": "^10.1.2",
     "lodash": "^4.17.15",
     "qrcodejs2": "^0.0.2",
     "tinymce": "^5.2.2",
