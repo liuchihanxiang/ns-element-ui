@@ -22,6 +22,7 @@ const install = function (Vue, opts = {}) {
     Vue.component(component.name, component)
   })
   let defaultOpts = {
+    size: 'medium',
     isInternational: false,
     showSearchForm: true,
     httpMethod: 'post',

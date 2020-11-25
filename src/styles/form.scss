@@ -1,4 +1,4 @@
-@import "mixins/mixins";
+@import 'mixins/mixins';
 @include b(form) {
   .el-select,
   .el-date-editor.el-input,
@@ -9,6 +9,7 @@
     width: 100%;
   }
   .ns-search-item-container {
+    margin: 0 0 15px 0;
     width: 180px;
   }
   .search-btn-container {

@@ -13,7 +13,7 @@
     :close-on-press-escape="closeOnPressEscape"
     :close-on-click-modal="closeOnClickModal"
     :before-close="beforeClose"
-    :class="{'ns-dialog--center':isCenter,'ns-dialog':true}"
+    :class="{'ns-dialog--center':isCenter,'ns-dialog ns-scroll-dialog':true}"
     @hook:mounted="dialogMounted"
     :width="area instanceof Array?area[0]:'auto'">
     <div slot="title">
@@ -138,6 +138,11 @@ export default {
       immediate: true,
       handler: function (val) {
         this.show = val
+        if (val) {
+          this.$nextTick(() => {
+            this.initDialogSize()
+          })
+        }
       }
     }
   },
@@ -169,11 +174,18 @@ export default {
     setDialogSize({ height, width, marginTop, top, left }) {
       let $dialogWraps = this.$refs['ns-dialog']
       let $dialog = $dialogWraps.$el.getElementsByClassName('el-dialog')[0]
-      $dialog.style.height = height
+      if (height === 'auto') {
+        $dialog.style.height = $dialog.clientHeight + 15 + 'px'
+      } else {
+        $dialog.style.height = height
+      }
       $dialog.style.width = width
       $dialog.style.marginTop = marginTop
       $dialog.style.top = 'auto'
       $dialog.style.left = 'auto'
+      if (this.$refs.myScrollbar.wrap) {
+        this.$refs.myScrollbar.wrap.scrollTop = 0
+      }
     },
 
     initDialogSize() {
@@ -201,7 +213,6 @@ export default {
     } else {
       this.isCenter = true
     }
-    this.initDialogSize()
   },
 
   computed: {

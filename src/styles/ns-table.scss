@@ -6,6 +6,11 @@
   .el-radio .el-radio__label {
     position: absolute;
   }
+  .form_wraps {
+    .ns-search-item-container {
+      margin: 0 0 15px 0;
+    }
+  }
 
   .header_wraps {
     @include clearfix;

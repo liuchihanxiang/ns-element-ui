@@ -11,7 +11,9 @@
   .el-dialog__wrapper {
     overflow: hidden;
   }
-
+  &.ns-scroll-dialog .el-dialog__body {
+    overflow: hidden !important;
+  }
   .el-dialog {
     display: flex;
     flex-direction: column;
@@ -20,7 +22,7 @@
     .el-dialog__body {
       padding: 0;
       flex: 1;
-      overflow: hidden !important;
+      overflow-y: auto;
       .el-scrollbar__view {
         padding: 30px 20px;
       }

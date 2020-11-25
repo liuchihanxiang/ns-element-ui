@@ -1,7 +1,7 @@
 <template>
   <el-drawer :visible.sync="show"
     :class="{'ns-drawer':true,'no-padding':noPadding}"
-    @close="close"
+    v-on="$listeners"
     v-bind="$attrs">
     <slot name="other"></slot>
     <el-scrollbar :native="false"
@@ -73,16 +73,11 @@ export default {
       immediate: true,
       handler: function (val) {
         this.show = val
-        console.log(val)
       }
     }
   },
   methods: {
     handleClose() {},
-    close() {
-      this.$emit('update:visible', false)
-      this.$emit('close')
-    },
     ok: throttle(function () {
       this.$emit('ok')
     }, 1000)

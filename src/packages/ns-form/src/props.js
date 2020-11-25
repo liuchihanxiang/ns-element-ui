@@ -15,13 +15,7 @@ export default {
     default: false
   },
   // 用于控制该表单内组件的尺寸
-  size: {
-    type: String,
-    default: 'medium',
-    validator: function (value) {
-      return ['medium', 'small', 'mini'].indexOf(value) !== -1
-    }
-  },
+  size: String,
   // 行内表单模式
   inline: {
     type: Boolean,
