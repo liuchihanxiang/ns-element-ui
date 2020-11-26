@@ -13,6 +13,7 @@
   }
   &.ns-scroll-dialog .el-dialog__body {
     overflow: hidden !important;
+    display: flex;
   }
   .el-dialog {
     display: flex;
@@ -21,10 +22,19 @@
     max-width: calc(100% - 30px);
     .el-dialog__body {
       padding: 0;
-      flex: 1;
+      flex: 1 1 auto;
       overflow-y: auto;
+      .el-scrollbar {
+        flex: 1 1 auto;
+        display: flex;
+        .el-scrollbar__wrap {
+          flex: 1 1 auto;
+          height: auto;
+        }
+      }
       .el-scrollbar__view {
-        padding: 30px 20px;
+        width: 100%;
+        padding: 20px 20px;
       }
     }
     .el-dialog__header {
@@ -37,7 +47,8 @@
       border-top: 1px solid #ebeef5;
     }
     .el-dialog__headerbtn.screen {
-      right: 40px;
+      right: 45px;
+      font-size: 16px;
       i {
         color: #909399;
         font-size: 13px;

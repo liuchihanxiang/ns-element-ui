@@ -14,7 +14,6 @@
     :close-on-click-modal="closeOnClickModal"
     :before-close="beforeClose"
     :class="{'ns-dialog--center':isCenter,'ns-dialog ns-scroll-dialog':true}"
-    @hook:mounted="dialogMounted"
     :width="area instanceof Array?area[0]:'auto'">
     <div slot="title">
       <slot name="title">
@@ -29,7 +28,6 @@
     </div>
     <el-scrollbar ref="myScrollbar"
       :native="false"
-      style="height:100%"
       :noresize="false">
       <slot />
     </el-scrollbar>
@@ -138,11 +136,6 @@ export default {
       immediate: true,
       handler: function (val) {
         this.show = val
-        if (val) {
-          this.$nextTick(() => {
-            this.initDialogSize()
-          })
-        }
       }
     }
   },
@@ -174,11 +167,7 @@ export default {
     setDialogSize({ height, width, marginTop, top, left }) {
       let $dialogWraps = this.$refs['ns-dialog']
       let $dialog = $dialogWraps.$el.getElementsByClassName('el-dialog')[0]
-      if (height === 'auto') {
-        $dialog.style.height = $dialog.offsetHeight + 18 + 'px'
-      } else {
-        $dialog.style.height = height
-      }
+      $dialog.style.height = height
       $dialog.style.width = width
       $dialog.style.marginTop = marginTop
       $dialog.style.top = 'auto'
@@ -200,10 +189,6 @@ export default {
       }
       this.setDialogSize({ height: dialogHeight, width, marginTop })
     },
-    dialogMounted() {
-      console.log('初始化了又')
-    },
-
     getInternationalValue
   },
 
@@ -213,6 +198,7 @@ export default {
     } else {
       this.isCenter = true
     }
+    this.initDialogSize()
   },
 
   computed: {

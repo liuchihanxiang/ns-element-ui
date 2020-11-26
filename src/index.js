@@ -14,7 +14,7 @@ const components = [
   NsEditor,
   NsNumberRange,
   NsSelect,
-  NsCheckbox
+  NsCheckbox,
 ]
 
 const install = function (Vue, opts = {}) {
