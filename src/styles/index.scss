@@ -5,3 +5,6 @@
 @import 'ns-drawer';
 @import 'ns-qrcode';
 @import './common/index';
+.el-scrollbar .el-scrollbar__wrap {
+  overflow-x: hidden;
+}

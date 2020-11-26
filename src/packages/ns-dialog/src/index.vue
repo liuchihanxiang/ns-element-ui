@@ -175,7 +175,7 @@ export default {
       let $dialogWraps = this.$refs['ns-dialog']
       let $dialog = $dialogWraps.$el.getElementsByClassName('el-dialog')[0]
       if (height === 'auto') {
-        $dialog.style.height = $dialog.clientHeight + 15 + 'px'
+        $dialog.style.height = $dialog.offsetHeight + 18 + 'px'
       } else {
         $dialog.style.height = height
       }
