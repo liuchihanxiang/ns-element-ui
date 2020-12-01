@@ -6,6 +6,7 @@ import NsEditor from './packages/ns-tinymce'
 import NsNumberRange from './packages/ns-number-range'
 import NsSelect from './packages/ns-select'
 import NsCheckbox from './packages/ns-checkbox'
+import NsGrid from './packages/ns-grid'
 const components = [
   NsForm,
   NsTable,
@@ -15,6 +16,7 @@ const components = [
   NsNumberRange,
   NsSelect,
   NsCheckbox,
+  NsGrid
 ]
 
 const install = function (Vue, opts = {}) {

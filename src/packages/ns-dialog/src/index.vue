@@ -136,6 +136,13 @@ export default {
       immediate: true,
       handler: function (val) {
         this.show = val
+        if (val) {
+          this.$nextTick(() => {
+            if (this.$refs.myScrollbar && this.$refs.myScrollbar.wrap) {
+              this.$refs.myScrollbar.wrap.scrollTop = 0
+            }
+          })
+        }
       }
     }
   },
@@ -172,9 +179,6 @@ export default {
       $dialog.style.marginTop = marginTop
       $dialog.style.top = 'auto'
       $dialog.style.left = 'auto'
-      if (this.$refs.myScrollbar.wrap) {
-        this.$refs.myScrollbar.wrap.scrollTop = 0
-      }
     },
 
     initDialogSize() {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ns-grid">
     <!-- 查询表单 -->
     <div class="header_wraps">
       <ns-form class="form_wraps"
@@ -49,8 +49,11 @@
         </div>
       </slot>
     </div>
+    <vxe-toolbar custom
+      print></vxe-toolbar>
     <!-- 表格 -->
     <vxe-table ref="elBaseTable"
+      border
       :data="currentData"
       class="ns-base-table">
       <!-- 正常显示列 -->
@@ -61,8 +64,10 @@
         </template>
         <template v-else>
           <vxe-table-column :key="columnIndex"
+            :type="column.type"
             :column-key="column.columnKey"
-            :prop="column.prop">
+            :field="column.prop"
+            :title="column.label">
           </vxe-table-column>
         </template>
       </template>
@@ -117,17 +122,13 @@ export default {
       function getList(listData) {
         let list = []
         listData.map((item) => {
-          let { prop, label, type, children, show } = item
-          if (prop === 'ss12') {
-            debugger
-          }
+          let { type, children, show } = item
           let isShow = true
           if (show === undefined) {
             isShow = true
           } else if (show && typeof show === 'string') {
             isShow = eval(judgesObj) /*eslint-disable-line*/
           } else if (Object.prototype.toString.call(show) === '[object Function]') {
-            debugger
             isShow = show(item)
           } else if (typeof show === 'boolean') {
             isShow = show
@@ -136,16 +137,8 @@ export default {
             if (children && children.length) {
               item.children = getList(children)
             }
-            if (prop) {
-              item.field = prop
-              delete item.prop
-            }
             if (type && type === 'index') {
               item.type = 'seq'
-            }
-            if (label) {
-              item.title = label
-              delete item.label
             }
             list.push(item)
           }
@@ -179,6 +172,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>

@@ -6,6 +6,7 @@
         :column="item"
         :key="`${item.prop||'gItem'}_${index}`"></vxe-column>
       <vxe-table-column v-else
+        :type="column.type"
         :key="`${item.prop||'cItem'}_${index}`"
         :field="item.prop"
         :title="item.label"></vxe-table-column>
