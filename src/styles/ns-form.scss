@@ -1,4 +1,4 @@
-@import "mixins/mixins";
+@import 'mixins/mixins';
 @include b(form) {
   .el-select,
   .el-date-editor.el-input,
@@ -24,6 +24,15 @@
     }
     &.is-right {
       text-align: right;
+    }
+  }
+  .ns-radio-group-button {
+    display: flex;
+    .el-radio-button {
+      flex: 1 1 auto;
+    }
+    .el-radio-button__inner {
+      width: 100%;
     }
   }
 }

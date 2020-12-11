@@ -59,7 +59,7 @@ export default {
         label: labelKey,
         leaf: leafKey,
         multiple: multiple,
-        lazyLoad: lazyLoad,
+        lazyLoad: lazy ? lazyLoad : undefined,
         checkStrictly
       }
     },

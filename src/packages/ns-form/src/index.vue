@@ -18,12 +18,13 @@
         :span="24">
         <template v-for="(column,index) in actualFormList">
           <el-col :span="column.span||24"
+            v-if="column.show===undefined?true:column.show"
             :key="index"
             :class="{'ns-item-container':true,'ns-search-item-container':type==='searchForm'}">
             <el-form-item :label="type!=='searchForm'?getInternationalValue(column.label||column.placeholder):''"
+              v-if="!outFormItemList.includes(column.type)"
               :prop="column.prop"
               :class="column.class"
-              v-if="!outFormItemList.includes(column.type)&&column.show===undefined?true:column.show"
               :rules="type!=='searchForm'?(column.rules||[]):[]"
               :label-width="(column.labelWidth|| labelWidth)+'px'">
               <template slot="label"
@@ -107,17 +108,29 @@
                   :label="getValue(item,column)">{{getLabel(item,column.labelKey)}}</el-checkbox>
               </el-checkbox-group>
               <!-- 单选按钮 -->
-              <el-radio-group v-else-if="column.type==='radio'"
+              <el-radio-group v-else-if="column.type==='radio'||column.type==='radioButton'"
                 v-model="formModel[column.prop]"
+                :class="column.type==='radioButton'&&'ns-radio-group-button'"
                 :size="column.size"
                 :name="column.prop"
                 @change="(value)=>column.change?column.change(value,filterDic(column.dicData,dicList[column.dicData||column.prop])):''"
                 :readonly="column.readonly"
                 :disabled="column.disabled&&type!=='searchForm'">
-                <el-radio v-for="(item,index) in filterDic(column.dicData,dicList[column.dicData||column.prop])"
-                  :key="index"
-                  :label="getValue(item,column)"
-                  :border="column.border">{{getLabel(item,column.labelKey)}}</el-radio>
+                <template v-if="column.type==='radioButton'">
+                  <el-radio-button
+                    v-for="(item,index) in filterDic(column.dicData,dicList[column.dicData||column.prop])"
+                    :key="index"
+                    :label="getValue(item,column)"
+                    class="ns-radio-button"
+                    :border="column.border">{{getLabel(item,column.labelKey)}}</el-radio-button>
+                </template>
+                <template v-else>
+                  <el-radio v-for="(item,index) in filterDic(column.dicData,dicList[column.dicData||column.prop])"
+                    :key="index"
+                    :label="getValue(item,column)"
+                    :border="column.border">{{getLabel(item,column.labelKey)}}</el-radio>
+                </template>
+
               </el-radio-group>
               <!-- 下拉 -->
               <el-select v-else-if="column.type==='select'"
@@ -238,6 +251,7 @@
               <slot :name="column.slotName" />
             </el-divider>
           </el-col>
+
         </template>
 
         <el-col :span="24"

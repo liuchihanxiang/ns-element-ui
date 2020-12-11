@@ -9,3 +9,10 @@
 .el-scrollbar .el-scrollbar__wrap {
   overflow-x: hidden;
 }
+
+.el-select-dropdown__wrap,
+.el-cascader-menu__wrap {
+  &.el-scrollbar__wrap {
+    margin-bottom: 0 !important;
+  }
+}

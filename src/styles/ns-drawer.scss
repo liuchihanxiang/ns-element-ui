@@ -2,7 +2,7 @@
 .ns-drawer {
   &.no-padding {
     .el-drawer__content {
-      padding: 0;
+      padding: 0 !important;
     }
   }
   .el-drawer__header {
