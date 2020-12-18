@@ -21,6 +21,10 @@ export default {
     type: Boolean,
     default: false
   },
+  clearable: {
+    type: Boolean,
+    default: true
+  },
   showResetBtn: {
     type: Boolean,
     default: true

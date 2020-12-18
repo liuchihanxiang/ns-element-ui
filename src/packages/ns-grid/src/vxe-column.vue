@@ -1,15 +1,12 @@
 <template>
-  <vxe-table-colgroup :field="column.prop"
-    :title="column.label">
+  <vxe-table-colgroup v-bind="column">
     <template v-for="(item,index) in column.children">
       <vxe-column v-if="item.children&&item.children.length"
         :column="item"
         :key="`${item.prop||'gItem'}_${index}`"></vxe-column>
       <vxe-table-column v-else
-        :type="column.type"
         :key="`${item.prop||'cItem'}_${index}`"
-        :field="item.prop"
-        :title="item.label"></vxe-table-column>
+        v-bind="column"></vxe-table-column>
     </template>
   </vxe-table-colgroup>
 </template>

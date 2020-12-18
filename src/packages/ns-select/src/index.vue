@@ -66,7 +66,7 @@ export default {
   watch: {
     value: {
       handler: function (val) {
-        if (val) {
+        if (val !== undefined) {
           this.text = val
         }
       },

@@ -53,8 +53,10 @@
       print></vxe-toolbar>
     <!-- 表格 -->
     <vxe-table ref="elBaseTable"
-      border
+      stripe
+      highlight-hover-row
       :data="currentData"
+      v-bind="gridConfig"
       class="ns-base-table">
       <!-- 正常显示列 -->
       <template v-for="(column,columnIndex) in tableColumns">
@@ -64,10 +66,32 @@
         </template>
         <template v-else>
           <vxe-table-column :key="columnIndex"
-            :type="column.type"
-            :column-key="column.columnKey"
-            :field="column.prop"
-            :title="column.label">
+            v-bind="column">
+            <template v-if="isSlot(column,column.field)"
+              v-slot:default="rowData">
+              <slot v-bind="rowData"
+                :name="`${column.field}`"></slot>
+            </template>
+            <template v-else-if="isSlot(column,`${column.field}_header`)"
+              v-slot:header>
+              <slot :name="`${column.field}_header`"></slot>
+            </template>
+            <template v-else-if="isSlot(column,`${column.field}_content`)"
+              v-slot:content>
+              <slot :name="`${column.field}_content`"></slot>
+            </template>
+            <template v-else-if="isSlot(column,`${column.field}_footer`)"
+              v-slot:footer>
+              <slot :name="`${column.field}_footer`"></slot>
+            </template>
+            <template v-else-if="isSlot(column,`${column.field}_filter`)"
+              v-slot:filter>
+              <slot :name="`${column.field}_filter`"></slot>
+            </template>
+            <template v-else-if="isSlot(column,`${column.field}_edit`)"
+              v-slot:edit>
+              <slot :name="`${column.field}_edit`"></slot>
+            </template>
           </vxe-table-column>
         </template>
       </template>
@@ -109,6 +133,14 @@ export default {
   name: 'NsGrid',
   mixins: [tableCommon],
   components: { VxeColumn },
+  props: {
+    gridConfig: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
   data() {
     return {
       searchFormModel: {},
@@ -122,7 +154,7 @@ export default {
       function getList(listData) {
         let list = []
         listData.map((item) => {
-          let { type, children, show } = item
+          let { type, children, show, prop, label } = item
           let isShow = true
           if (show === undefined) {
             isShow = true
@@ -132,6 +164,14 @@ export default {
             isShow = show(item)
           } else if (typeof show === 'boolean') {
             isShow = show
+          }
+          if (prop) {
+            item.field = prop
+            delete item.field
+          }
+          if (label) {
+            item.title = label
+            delete item.label
           }
           if (isShow) {
             if (children && children.length) {
@@ -148,6 +188,9 @@ export default {
 
       return getList(data)
     },
+    isSlot({ slotList }, slotProp) {
+      return slotList && slotList.length && slotList.includes(slotProp)
+    },
     getPageCount(total, size) {
       return Math.max(Math.ceil(total / size), 1)
     }
@@ -157,7 +200,6 @@ export default {
     tableColumns() {
       let copyColumns = cloneDeep(this.columns)
       let columns = this.formatterColumns(copyColumns)
-      console.log(columns, 7514)
       // let operationColumns = {
       //   title: '操作',
       //   slots: {
