@@ -120,8 +120,12 @@ export default {
       } else if (column.url) {
         return ((queryString, callback) => {
           let key = column.fetchKey || 'name'
+          let params = {
+            [key]: queryString,
+            ...(column.params || {})
+          }
           if (queryString !== '') {
-            this.$http.post(column.url, { [key]: queryString }).then(res => {
+            this.$http.post(column.url, params).then(res => {
               let listKey = column.listKey || 'data'
               let list = this.getValueByPath(res, listKey)
               callback(list)

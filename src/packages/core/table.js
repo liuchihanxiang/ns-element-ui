@@ -97,6 +97,7 @@ export default {
       pageSize: 10,
       selectKey: '',
       searchFormModel: {},
+      lastSearchModel: {},
       currentData: [],
       cachData: [],
       selection: []
@@ -133,7 +134,7 @@ export default {
     },
     // 重置查询form表单
     handlersearchFormReset() {
-      this.$refs.serchForm.handlerReset()
+      this.$refs.serchForm && this.$refs.serchForm.handlerReset()
     },
 
     // 切换分页
@@ -147,6 +148,7 @@ export default {
       if (resetPage) {
         this.page = 1
       }
+      this.lastSearchModel = JSON.parse(JSON.stringify(this.searchFormModel))
       if (this.url && this.search === 'server') {
         this.initData(this.searchFormModel)
       } else {

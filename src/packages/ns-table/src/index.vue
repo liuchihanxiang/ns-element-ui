@@ -15,6 +15,7 @@
         :label-width="formOption.labelWidth || 0"
         :label-suffix="formOption.labelSuffix"
         :status-icon="formOption.statusIcon"
+        :clearable="getDefaultVal(formOption.clearable,true)"
         :inline-message="formOption.inlineMessage"
         :inline="formOption.inline"
         :disabled="formOption.disabled"

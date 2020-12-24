@@ -5,7 +5,7 @@
       <template v-for="(operationItem,operationIndex) in rowOperation">
         <!-- 操作按钮只显示文字 -->
         <el-button v-if="!realOperationsConfig.onlyShowIcon"
-          @click="operationItem.click(operationItem.type,row,$event,rowIndex)"
+          @click="operationItem.click({type:operationItem.type,row,rowIndex,columnIndex,column})"
           :class="operationItem.class||''"
           :key="operationIndex"
           class="operation-text no-choose-row"
@@ -19,7 +19,7 @@
           :content="getInternationalValue(operationItem.text)"
           placement="top-start">
           <a class="operation-icon no-choose-row"
-            @click="operationItem.click(operationItem.type,row,$event,rowIndex)">
+            @click="operationItem.click({type:operationItem.type,row,rowIndex,columnIndex,column})">
             <i v-if="operationItem.icon"
               :class="operationItem.icon+' '+(operationItem.class||'')" />
           </a>
@@ -34,7 +34,7 @@
         <template v-if="!realOperationsConfig.onlyShowIcon">
           <el-button class="operation-text"
             :class="rowOperation[n-1].class"
-            @click="rowOperation[n-1].click(rowOperation[n-1].type,row,$event,rowIndex)"
+            @click="rowOperation[n-1].click({type:rowOperation[n-1].type,row,rowIndex,columnIndex,column})"
             :key="numIndex"
             :type="rowOperation.btnType?rowOperation.btnType:'text'"
             size="mini">{{getInternationalValue(rowOperation[n-1].text)}}</el-button>
@@ -47,7 +47,7 @@
             :content="getInternationalValue( rowOperation[n-1].text)"
             placement="top-start">
             <a class="operation-icon"
-              @click="rowOperation[n-1].click(rowOperation[n-1].type,row,$event,rowIndex)">
+              @click="rowOperation[n-1].click({type:rowOperation[n-1].type,row,rowIndex,columnIndex,column})">
               <i v-if=" rowOperation[n-1].icon"
                 :class=" rowOperation[n-1].icon+' '+ rowOperation[n-1].class" />
             </a>
@@ -66,7 +66,7 @@
           <template v-for="(operationItem,operationIndex) in rowOperation">
             <el-dropdown-item class="no-choose-row"
               :class="operationItem.class||''"
-              @click.native="operationItem.click(operationItem.type,row,$event,rowIndex)"
+              @click.native="operationItem.click({type:operationItem.type,row,rowIndex,columnIndex,column})"
               :key="operationIndex"
               v-if="operationIndex>=realOperationsConfig.dropdownDefaultShowNum">
               {{getInternationalValue(operationItem.text)}}</el-dropdown-item>
@@ -92,6 +92,16 @@ export default {
     rowIndex: {
       type: Number,
       default: 0
+    },
+    columnIndex: {
+      type: Number,
+      default: 0
+    },
+    column: {
+      type: Object,
+      default: function () {
+        return {}
+      }
     }
   },
   methods: {

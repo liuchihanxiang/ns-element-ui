@@ -1,5 +1,25 @@
 @include b(grid) {
-  thead .vxe-header--column {
-    padding: 6px 0 !important;
+  // thead .vxe-header--column {
+  //   padding: 6px 0 !important;
+  // }
+  .operations-wraps {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    & > a {
+      cursor: pointer;
+      font-size: 18px;
+      color: #409eff;
+    }
+    .operation-dropdown {
+      font-size: 12px;
+      margin-left: 10px;
+      .el-icon--right {
+        margin-left: 0;
+      }
+    }
   }
+}
+.operation-dropdown_prop {
+  min-width: 100px;
 }

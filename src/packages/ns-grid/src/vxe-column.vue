@@ -3,10 +3,10 @@
     <template v-for="(item,index) in column.children">
       <vxe-column v-if="item.children&&item.children.length"
         :column="item"
-        :key="`${item.prop||'gItem'}_${index}`"></vxe-column>
+        :key="`${item.field||'gItem'}_${index}`"></vxe-column>
       <vxe-table-column v-else
-        :key="`${item.prop||'cItem'}_${index}`"
-        v-bind="column"></vxe-table-column>
+        :key="`${item.field||'cItem'}_${index}`"
+        v-bind="item"></vxe-table-column>
     </template>
   </vxe-table-colgroup>
 </template>
