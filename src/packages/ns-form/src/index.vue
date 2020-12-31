@@ -37,6 +37,7 @@
                 v-model.trim="formModel[column.prop]"
                 :type="column.type"
                 :size="column.size"
+                :class="{'el-input_word-limit':getDefaultVal(column.showWordLimit,true)}"
                 :readonly="column.readonly"
                 :disabled="column.disabled&&type!=='searchForm'"
                 :clearable="getDefaultVal(column.clearable,clearable)"

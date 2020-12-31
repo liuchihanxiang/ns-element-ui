@@ -6,6 +6,7 @@ import NsEditor from './packages/ns-tinymce'
 import NsNumberRange from './packages/ns-number-range'
 import NsSelect from './packages/ns-select'
 import NsCheckbox from './packages/ns-checkbox'
+import NsRadio from './packages/ns-radio'
 import NsGrid from './packages/ns-grid'
 const components = [
   NsForm,
@@ -16,6 +17,7 @@ const components = [
   NsNumberRange,
   NsSelect,
   NsCheckbox,
+  NsRadio,
   NsGrid
 ]
 

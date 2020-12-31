@@ -18,6 +18,7 @@ export default {
     getPlaceholder (type, column) {
       let selectTypeList = ['select', 'cascader']
       let text = selectTypeList.includes(column.type) ? '请选择' : '请输入'
+      if (column.noPreText) { text = '' }
       if (type === 'searchForm') { text = '' }
       let placeholder = (type === 'searchForm' || this.placeholder) ? (column.placeholder || text + column.label) : column.placeholder ? (text + column.placeholder) : ''
       return this.getInternationalValue(placeholder || '')
