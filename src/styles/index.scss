@@ -17,3 +17,12 @@
     margin-bottom: 0 !important;
   }
 }
+
+.el-checkbox__input {
+  &.is-focus {
+    //修改focus时,input边框颜色选中、label颜色未选中的问题。
+    .el-checkbox__inner {
+      border-color: #dcdfe6;
+    }
+  }
+}

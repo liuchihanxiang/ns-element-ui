@@ -189,12 +189,12 @@
                 :size="column.size"
                 :clearable="getDefaultVal(column.clearable,clearable)"
                 :is-range="column.isRange"
-                :format="column.format||dateValueFormat"
+                :format="column.format || dateValueFormat"
                 :align="column.align"
                 :default-value="column.defaultValue"
                 :popper-class="column.popperClass"
                 :range-separator="column.rangeSeparator||'-'"
-                :picker-options="column.pickerOptions"
+                :picker-options="pickerOptions(column)"
                 :value-format="column.valueFormat || dateFormat"
                 :prefix-icon="column.datePrefixIcon" />
               <!-- 计数器 -->

@@ -129,6 +129,9 @@ export default {
             this.$http.post(column.url, params).then(res => {
               let listKey = column.listKey || 'data'
               let list = this.getValueByPath(res, listKey)
+              if (column.beforeCB) {
+                list = column.beforeCB(list)
+              }
               callback(list)
             })
           } else { // eslint-disable-next-line
@@ -136,6 +139,21 @@ export default {
           }
         })(queryString, callback)
       }
+    },
+
+    pickerOptions(column) {
+      let disabledDate = null
+      if (column.dateRange) {
+        disabledDate = (time) => {
+          if (column.dateRange === 'future') {
+            return time.getTime() < new Date().getTime()
+          } else {
+            return time.getTime() > new Date().getTime()
+          }
+        }
+      }
+      let pickerOptions = column.pickerOptions || {}
+      return Object.assign({}, { disabledDate }, pickerOptions)
     },
 
     // 获取单个后台数据字典的方法

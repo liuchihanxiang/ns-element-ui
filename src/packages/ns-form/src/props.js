@@ -52,7 +52,7 @@ export default {
   // 是否在输入框中显示校验结果反馈图标
   statusIcon: {
     type: Boolean,
-    default: true
+    default: false
   },
   // 是否以行内形式展示校验信息
   inlineMessage: {
