@@ -29,55 +29,10 @@
         </template>
       </ns-form>
       <slot name="btnList">
-        <div v-if="btnList.length"
-          class="btn_wraps">
-          <div class="pull-left">
-            <template v-for="(btnItem,btnIndex) in btnList">
-              <template v-if="!btnItem.position||btnItem.position==='left'">
-                <template v-if="btnItem.code&&permit">
-                  <el-button v-if="permit(btnItem.code)&&(btnItem.show === undefined || btnItem.show)"
-                    :key="btnIndex"
-                    :disabled="btnItem.disabled"
-                    :class="btnItem.class"
-                    @click="btnItem.click?btnItem.click(btnItem.code):''"
-                    :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(permit(btnItem.code))}}
-                  </el-button>
-                </template>
-                <template v-else>
-                  <el-button v-if="btnItem.text&&(btnItem.show===undefined || btnItem.show)"
-                    :key="btnIndex"
-                    :disabled="btnItem.disabled"
-                    :class="btnItem.class"
-                    @click="btnItem.click?btnItem.click(btnItem.code):''"
-                    :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(btnItem.text)}}</el-button>
-                </template>
-              </template>
-            </template>
-          </div>
-          <div class="pull-right">
-            <template v-for="(btnItem,btnIndex) in btnList">
-              <template v-if="btnItem.position==='right'">
-                <template v-if="btnItem.code&&permit">
-                  <el-button v-if="permit(btnItem.code)&&(btnItem.show===undefined || btnItem.show)"
-                    :key="btnIndex"
-                    :disabled="btnItem.disabled"
-                    :class="btnItem.class"
-                    @click="btnItem.click?btnItem.click(btnItem.code):''"
-                    :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(permit(btnItem.code))}}
-                  </el-button>
-                </template>
-                <template v-else>
-                  <el-button v-if="btnItem.text&&(btnItem.show===undefined || btnItem.show)"
-                    :key="btnIndex"
-                    :disabled="btnItem.disabled"
-                    :class="btnItem.class"
-                    @click="btnItem.click?btnItem.click(btnItem.code):''"
-                    :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(btnItem.text)}}</el-button>
-                </template>
-              </template>
-            </template>
-          </div>
-        </div>
+        <table-btns :btn-list="btnList"
+          :permit="permit">
+          <slot name="btnItem"></slot>
+        </table-btns>
       </slot>
     </div>
     <!-- 选中数据显示条数 -->
@@ -150,7 +105,7 @@
         :class-name="(columns[0].className||'')+' el-table-checkbox' "
         :type="columns[0].type"
         :label="getInternationalValue(columns[0].label)"
-        :reserve-selection="getDefaultVal(columns[0].reserveSelection,true)"
+        :reserve-selection="realReserveSelection"
         :width="columns[0].width?columns[0].width:50" />
       <!-- 单选 -->
       <el-table-column :class-name="(columns[0].className||'')+' el-table-checkbox' "
@@ -250,8 +205,9 @@ import tableMixins from './mixins.js'
 import NsForm from '../../ns-form/src/index.vue'
 import { isEmptyObject, getDefaultVal } from './../../../utils/index'
 import commonTable from '../../core/table'
+import TableBtns from './table-btns'
 export default {
-  components: { NsForm, TableOperations, Column },
+  components: { NsForm, TableOperations, Column, TableBtns },
   name: 'NsTable',
   mixins: [tableMixins, commonTable],
   props: tableProps,

@@ -29,7 +29,22 @@ export const notEmptyArray = function (arr) {
  * @returns
  */
 export const filterDic = function (dicData, dicItem) {
-  return notEmptyArray(dicData) ? dicData : notEmptyArray(dicItem) ? dicItem : []
+  if (notEmptyArray(dicData)) {
+    if (typeof dicData[0] === 'number' || typeof dicData[0] === 'string') {
+      dicData = dicData.map(item => {
+        return {
+          name: item,
+          id: item
+        }
+      })
+    }
+    return dicData
+  } else if (notEmptyArray(dicItem)) {
+    return dicItem
+  } else {
+    return []
+  }
+  // return  ? dicData : notEmptyArray(dicItem) ? dicItem : []
 }
 /**
  *判断是否为el-input组件

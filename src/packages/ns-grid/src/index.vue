@@ -49,8 +49,7 @@
         </div>
       </slot>
     </div>
-    <vxe-toolbar custom
-      print></vxe-toolbar>
+    <!-- <vxe-toolbar custom></vxe-toolbar> -->
     <!-- 表格 -->
     <vxe-table ref="elBaseTable"
       stripe

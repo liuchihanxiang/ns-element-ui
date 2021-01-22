@@ -57,6 +57,10 @@ export default {
     responseHandler: Function,
     loadSuccess: Function,
     url: String,
+    reserveSelection: {
+      type: Boolean,
+      default: undefined
+    },
     queryParams: [Function, Object],
     // 分页相关
     pagination: {
@@ -148,7 +152,6 @@ export default {
       if (resetPage) {
         this.page = 1
       }
-      this.lastSearchModel = JSON.parse(JSON.stringify(this.searchFormModel))
       if (this.url && this.search === 'server') {
         this.initData(this.searchFormModel)
       } else {
@@ -180,6 +183,7 @@ export default {
       }
       // 请求数据的函数处理
       let uestObject = null
+      this.lastSearchModel = JSON.parse(JSON.stringify(params)) // 存储最后一次查询条件
       if (fetch) {
         uestObject = fetch(params)
       } else {
@@ -274,6 +278,7 @@ export default {
       let { isInternational } = this.$NS
       return isExist(this.isInternational) ? this.isInternational : isInternational
     },
+
     realOperationsConfig() {
       let { operationsConfig } = this.$NS
       let defaultConfig = {
@@ -299,6 +304,11 @@ export default {
         totalKey: 'data.total'
       }
       return Object.assign({}, defaultConfig, dataFieldConfig, this.dataFieldConfig)
+    },
+    realReserveSelection() {
+      let { reserveSelection } = this.$NS
+      console.log(this.reserveSelection)
+      return typeof this.reserveSelection === 'boolean' ? this.reserveSelection : reserveSelection
     }
 
   },

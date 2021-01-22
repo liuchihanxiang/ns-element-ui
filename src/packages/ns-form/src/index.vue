@@ -131,7 +131,6 @@
                     :label="getValue(item,column)"
                     :border="column.border">{{getLabel(item,column.labelKey)}}</el-radio>
                 </template>
-
               </el-radio-group>
               <!-- 下拉 -->
               <el-select v-else-if="column.type==='select'"

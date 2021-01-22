@@ -7,6 +7,7 @@
     position: absolute;
   }
   .form_wraps {
+    margin-bottom: 10px;
     .ns-search-item-container {
       margin: 0 0 15px 0;
     }
@@ -15,9 +16,7 @@
   .header_wraps {
     @include clearfix;
     margin-bottom: 10px;
-    .btn_wraps {
-      margin-top: 10px;
-    }
+
     &.header_wraps-inline {
       .form_wraps {
         float: left;
@@ -26,6 +25,19 @@
         float: right;
         margin-left: 20px;
         margin-top: 0;
+      }
+    }
+  }
+  .btn_wraps {
+    .el-dropdown {
+      margin: 0 10px;
+    }
+    & > .pull-left,
+    & > .pull-right {
+      .table-btn_item {
+        &:first-child {
+          margin-left: 0;
+        }
       }
     }
   }

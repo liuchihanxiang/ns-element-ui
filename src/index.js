@@ -30,6 +30,7 @@ const install = function (Vue, opts = {}) {
     isInternational: false,
     showSearchForm: true,
     httpMethod: 'post',
+    reserveSelection: false,
     operationsConfig: {},
     dataFieldConfig: {},
     tableParams: {
