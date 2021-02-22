@@ -52,8 +52,28 @@
             @click="btnItem.click?btnItem.click(btnItem.code):''"
             :type="btnItem.type?btnItem.type:'primary'">{{getBtnText(btnItem)}}
           </el-button>
+
         </template>
       </template>
+      <el-button :icon="isFullScreen?'icon-exit-full-screen':'icon-full-screen'"
+        @click="toggleFullScreen"
+        class="tools-btn"></el-button>
+      <el-dropdown :hide-on-click="false"
+        class="cloumns-switch">
+        <span class="el-dropdown-link">
+          <el-button icon="icon-config"
+            class="tools-btn"></el-button>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-checkbox-group v-model="showClomnuIndex">
+            <el-dropdown-item v-for="(item,index) in showClomnuList"
+              :key="index">
+              <el-checkbox :label="item.index">{{item.label}}</el-checkbox>
+            </el-dropdown-item>
+          </el-checkbox-group>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <!-- <i class="icon-exit-full-screen"></i> -->
     </div>
   </div>
 </template>
@@ -66,8 +86,19 @@ export default {
       type: Array,
       default: () => []
     },
+    columns: {
+      type: Array,
+      default: () => []
+    },
     // eslint-disable-next-line vue/require-default-prop
     permit: Function
+  },
+  data() {
+    return {
+      showClomnuList: [],
+      showClomnuIndex: [],
+      isFullScreen: false
+    }
   },
   methods: {
     // 处理国际化
@@ -80,12 +111,48 @@ export default {
         return isShow && text
       }
     },
+    toggleFullScreen() {
+      this.isFullScreen = !this.isFullScreen
+      this.$emit('toggleFullScreen', this.isFullScreen)
+    },
     getBtnText({ code, text, type, show }) {
       let btnText = text
       if (this.permit && Object.prototype.toString.call(this.permit) === '[object Function]') {
         btnText = this.permit(code)
       }
       return this.getInternationalValue(btnText)
+    }
+  },
+  watch: {
+    columns: {
+      handler(val) {
+        let showClomnuIndex = []
+        let showClomnuList = []
+        val.forEach((ele, index) => {
+          if (ele.show || typeof ele.show === 'undefined') {
+            if (typeof ele.hide === 'undefined' || ele.hide) {
+              showClomnuIndex.push(index)
+            }
+            showClomnuList.push({
+              label: ele.label,
+              index: index
+            })
+          }
+        })
+        this.showClomnuIndex = showClomnuIndex
+        this.showClomnuList = showClomnuList
+      },
+      deep: true,
+      immediate: true
+    },
+    showClomnuIndex: {
+      handler: function (val) {
+        if (val) {
+          this.$emit('changeClomnus', val)
+        }
+      },
+      deep: true,
+      immediate: true
     }
   }
 }

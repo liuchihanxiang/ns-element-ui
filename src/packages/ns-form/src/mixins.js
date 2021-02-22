@@ -20,7 +20,7 @@ export default {
       let text = selectTypeList.includes(column.type) ? '请选择' : '请输入'
       if (column.noPreText) { text = '' }
       if (type === 'searchForm') { text = '' }
-      let placeholder = (type === 'searchForm' || this.placeholder) ? (column.placeholder || text + column.label) : column.placeholder ? (text + column.placeholder) : ''
+      let placeholder = (type === 'searchForm' || this.placeholder) ? (column.placeholder || text + column.label) : column.placeholder ? (column.placeholder) : ''
       return this.getInternationalValue(placeholder || '')
     },
 
@@ -66,6 +66,7 @@ export default {
         checkStrictly
       }
     },
+
     /**
      * 获取字典数据，字典数据分为两种 一种存在前端可以直接拿到，另一种存在后台需要请求拿回数据
      * 前台字典数据
@@ -115,6 +116,7 @@ export default {
         })
       })
     },
+
     autocompleteFetchSuggestions(queryString, callback, column) {
       if (column.fetchSuggestions && this.isFunction(column.fetchSuggestions)) {
         return column.fetchSuggestions(queryString, callback)
@@ -214,7 +216,8 @@ export default {
             ele.type === 'checkbox' ||
             (ele.type === 'select' && ele.multiple) ||
             ele.type === 'datetimerange' ||
-            ele.type === 'daterange'
+            ele.type === 'daterange'  ||
+            ele.type === 'numberRange'
           ) {
             this.defaultFormModel[ele.prop] = []
           } else if (

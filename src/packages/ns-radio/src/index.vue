@@ -1,9 +1,11 @@
 <template>
-  <el-radio-group v-model="text"
-    @change="handleChange">
-    <el-radio v-for="item in dicData"
-      :key="item[dicValueKey]"
-      :label="item[dicValueKey]">{{item[dicLabelKey]}}</el-radio>
+  <el-radio-group v-model="text" v-bind="$attrs" v-on="$listeners" @change="handleChange">
+    <template v-if="button">
+      <el-radio-button v-for="item in dicData" :key="item[dicValueKey]" :label="item[dicValueKey]">{{ item[dicLabelKey] }}</el-radio-button>
+    </template>
+    <template v-else>
+      <el-radio v-for="item in dicData" :key="item[dicValueKey]" :label="item[dicValueKey]">{{ item[dicLabelKey] }}</el-radio>
+    </template>
   </el-radio-group>
 </template>
 
@@ -15,23 +17,26 @@ export default {
   props: {
     value: {
       type: [String, Number, Boolean],
-      default: () => []
+      default: () => [],
+    },
+    button: {
+      type: Boolean,
+      default: false,
     },
     dicData: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
-      text: this.value
+      text: this.value,
     }
   },
   methods: {
     handleChange(val) {
       this.$emit('input', val)
-      this.$emit('change', val)
-    }
+    },
   },
   watch: {
     value: {
@@ -40,8 +45,8 @@ export default {
           this.text = val
         }
       },
-      deep: true
-    }
-  }
+      deep: true,
+    },
+  },
 }
 </script>

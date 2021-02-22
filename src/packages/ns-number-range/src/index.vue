@@ -2,9 +2,17 @@
   <div class="ns-number-rang">
     <el-input
       v-model.number="text[0]"
-      :style="{width:width+'px'}"
-      @input="(value)=>{handleChange(value,0)}"
-      @blur="(event)=>{handleBlur(event,)}"
+      :style="{ width: width + 'px' }"
+      @input="
+        (value) => {
+          handleChange(value, 0)
+        }
+      "
+      @blur="
+        (event) => {
+          handleBlur(event)
+        }
+      "
       :placeholder="placeholderMin"
       :min="min"
       :max="max"
@@ -16,14 +24,22 @@
         <slot name="prefix"></slot>
       </template>
     </el-input>
-    <span class="split" style="margin:0 5px;">—</span>
+    <span class="split" style="margin: 0 5px">—</span>
     <el-input
       v-model.number="text[1]"
-      :style="{width:width+'px'}"
+      :style="{ width: width + 'px' }"
       :min="min"
       :max="max"
-      @blur="(event)=>{handleBlur(event,1)}"
-      @input="(value)=>{handleChange(value,1)}"
+      @blur="
+        (event) => {
+          handleBlur(event, 1)
+        }
+      "
+      @input="
+        (value) => {
+          handleChange(value, 1)
+        }
+      "
       :placeholder="placeholderMax"
     >
       <template slot="suffix">
@@ -42,38 +58,38 @@ export default {
   props: {
     value: {
       type: Array,
-      default: () => ['', '']
+      default: () => ['', ''],
     },
     width: {
       type: Number,
-      default: 100
+      default: 100,
     },
     prefixIcon: {
       type: String,
-      default: null
+      default: null,
     },
     suffixIcon: {
       type: String,
-      default: null
+      default: null,
     },
     max: {
       type: Number,
-      default: null
+      default: null,
     },
     placeholder: {
       type: [String, Array],
-      default: ''
+      default: '',
     },
     min: {
       type: Number,
       default: null,
       placeholderMin: '',
-      placeholderMax: ''
-    }
+      placeholderMax: '',
+    },
   },
   data() {
     return {
-      text: this.value.length === 2 ? this.value : ['', '']
+      text: this.value.length === 2 ? this.value : ['', ''],
     }
   },
   methods: {
@@ -93,19 +109,18 @@ export default {
         }
       }
       this.$emit('blur', event)
-    }
+    },
   },
-  computed: {
-  },
+  computed: {},
   watch: {
     value: {
-      handler: function(val) {
+      handler: function (val) {
         if (val && val.length) {
           this.text = val
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   created() {
     if (typeof this.placeholder === 'string' || (this.placeholder instanceof Array && this.placeholder.length === 1)) {
@@ -115,6 +130,6 @@ export default {
       this.placeholderMin = this.placeholder[0]
       this.placeholderMax = this.placeholder[1]
     }
-  }
+  },
 }
 </script>

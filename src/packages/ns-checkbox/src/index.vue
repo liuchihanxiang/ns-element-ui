@@ -1,9 +1,6 @@
 <template>
-  <el-checkbox-group v-model="text"
-    @change="handleChange">
-    <el-checkbox v-for="item in formatter(dicData)"
-      :key="item[dicValueKey]"
-      :label="item[dicValueKey]">{{item[dicLabelKey]}}</el-checkbox>
+  <el-checkbox-group v-model="text" v-bind="$attrs" v-on="$listeners" @change="handleChange">
+    <el-checkbox v-for="item in formatterDicData" :key="item[dicValueKey]" :label="item[dicValueKey]">{{ item[dicLabelKey] }}</el-checkbox>
   </el-checkbox-group>
 </template>
 
@@ -15,35 +12,22 @@ export default {
   props: {
     value: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     dicData: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
-      text: this.value
+      text: this.value,
     }
   },
   methods: {
     handleChange(val) {
       this.$emit('input', val)
-      this.$emit('change', val)
     },
-    formatter(dicData) {
-      if (dicData.length && (typeof dicData[0] === 'number' || typeof dicData[0] === 'string')) {
-        return dicData.map((item) => {
-          return {
-            name: item,
-            id: name
-          }
-        })
-      } else {
-        return dicData || []
-      }
-    }
   },
   watch: {
     value: {
@@ -52,8 +36,23 @@ export default {
           this.text = val
         }
       },
-      deep: true
-    }
-  }
+      deep: true,
+    },
+  },
+  computed: {
+    formatterDicData() {
+      let { dicData, dicLabelKey, dicValueKey } = this
+      if (dicData.length && (typeof dicData[0] === 'number' || typeof dicData[0] === 'string')) {
+        return dicData.map((item) => {
+          return {
+            [dicLabelKey]: item,
+            [dicValueKey]: item,
+          }
+        })
+      } else {
+        return dicData || []
+      }
+    },
+  },
 }
 </script>

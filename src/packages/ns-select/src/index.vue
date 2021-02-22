@@ -1,15 +1,6 @@
 <template>
-  <el-select v-model="text"
-    :multiple="multiple"
-    :collapse-tags="collapseTags"
-    :size="size"
-    @change="handleChange"
-    :placeholder="placeholder"
-    :clearable="clearable">
-    <el-option v-for="item in dicData"
-      :key="item.value"
-      :label="item[dicLabelKey]"
-      :value="item[dicValueKey]"></el-option>
+  <el-select v-model="text" v-bind="$attrs" @change="handleChange" v-on="$listeners">
+    <el-option v-for="item in dicData" :key="item.value" :label="item[dicLabelKey]" :value="item[dicValueKey]"></el-option>
   </el-select>
 </template>
 
@@ -21,47 +12,46 @@ export default {
   props: {
     value: {
       type: [String, Number, Array],
-      default: ''
+      default: '',
     },
     multiple: {
       type: Boolean,
-      default: false
+      default: false,
     },
     size: {
       type: String,
-      default: ''
+      default: '',
     },
     collapseTags: {
       type: Boolean,
-      default: false
+      default: false,
     },
     clearable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     filterable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     placeholder: {
       type: String,
-      default: ''
+      default: '',
     },
     dicData: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
-      text: this.value
+      text: this.value,
     }
   },
   methods: {
     handleChange(val) {
       this.$emit('input', val)
-      this.$emit('change', val)
-    }
+    },
   },
   watch: {
     value: {
@@ -70,8 +60,8 @@ export default {
           this.text = val
         }
       },
-      deep: true
-    }
-  }
+      deep: true,
+    },
+  },
 }
 </script>

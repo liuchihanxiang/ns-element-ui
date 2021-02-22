@@ -7,7 +7,6 @@
     @closed="closed"
     :show-close="showClose"
     :custom-class="customClass"
-    v-el-drag-dialog
     :destroy-on-close="destroyOnClose"
     :append-to-body="appendToBody"
     :close-on-press-escape="closeOnPressEscape"

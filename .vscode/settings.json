@@ -1,7 +1,7 @@
 {
   "git.ignoreMissingGitWarning": true,
   "workbench.colorTheme": "One Dark Pro",
-  "window.zoomLevel": 1.3,
+  "window.zoomLevel": 1.2,
   "editor.tabSize": 2,
   "files.insertFinalNewline": true,
   "vetur.validation.template": false,
@@ -10,47 +10,34 @@
     "css": "prettier",
     "postcss": "prettier",
     "scss": "prettier",
-    "js": "prettier",
+    "js": "vscode-typescript",
     "ts": "prettier",
     "stylus": "stylus-supremacy",
-    "html": "prettyhtml",
-    "prettyhtml": {
-      // "wrapAttributes": true //属性强制折行对齐
-      "printWidth": 120
-    },
-
-    // "html": "js-beautify-html",
-    // "js-beautify-html": {
-    //   "wrap_attributes": "force-expand-multiline", //属性强制折行对齐
-    //   "end_with_newline": false
-    // },
     "prettier": {
+      "eslintIntegration":true,
       "semi": false,
       "singleQuote": true,
-      "printWidth":800
+      "printWidth": 800,
+      "trailingComma":"none"
+    },
+    "js-beautify-html": {
+      "wrap_attributes": "force", //属性强制折行对齐
+      "wrap_line_length":120,
+       "end_with_newline": false
     }
   },
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
   "prettier.printWidth": 800,
-  "eslint.autoFixOnSave": true,
-  // "editor.formatOnPaste": true,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "css",
-    {
-      "language": "html",
-      "autoFix": true
-    }
-  ],
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
   "eslint.options": {
     "extensions": [".js", ".vue"]
   },
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": false
   },
   "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.defaultFormatter": "octref.vetur",
   "editor.formatOnSave": true,
@@ -71,5 +58,7 @@
   "editor.wordSeparators": "`~!@#%^&*()=+[{]}\\|;:'\",.<>/?",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "fileheader.Author": "liwg",
+  "fileheader.LastModifiedBy": "liwg"
 }

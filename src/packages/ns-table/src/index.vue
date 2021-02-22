@@ -1,6 +1,6 @@
 <!-- v-loading.lock="loading" -->
 <template>
-  <div class="ns-table ns-table-container">
+  <div :class="{'ns-table ns-table-container':true,'fullScreen':isFullScreen}">
     <!-- 查询表单 -->
     <div :class="{'header_wraps':true,'header_wraps-inline':!btnListAlone}">
       <ns-form class="form_wraps"
@@ -8,6 +8,7 @@
         type="searchForm"
         v-if="formList.length"
         v-model="searchFormModel"
+        @handlerReset="handlerReset"
         :is-international="realIsInternational"
         :form-list="formList"
         :mixins="getDefaultVal(formOption.mixins,true)"
@@ -30,6 +31,10 @@
       </ns-form>
       <slot name="btnList">
         <table-btns :btn-list="btnList"
+          :columns="filterColumns"
+          :showClomnuIndex="showClomnuIndex"
+          @changeClomnus="changeClomnus"
+          @toggleFullScreen="toggleFullScreen"
           :permit="permit">
           <slot name="btnItem"></slot>
         </table-btns>
@@ -123,7 +128,8 @@
             :key="columnIndex"></column>
         </template>
         <template v-else>
-          <el-table-column v-if="(typeof column.show==='undefined'||column.show)&&!column.type"
+          <el-table-column
+            v-if="(typeof column.show==='undefined'||column.show)&&!column.type&&showClomnuIndex.includes(columnIndex)"
             :key="columnIndex"
             :column-key="column.columnKey"
             :prop="column.prop"
@@ -216,7 +222,9 @@ export default {
       loading: false,
       type: ['selection', 'index', 'expand'],
       radio: false,
-      tableId: new Date().getTime()
+      tableId: new Date().getTime(),
+      isFullScreen: false,
+      showClomnuIndex: []
     }
   },
   methods: {
@@ -243,7 +251,6 @@ export default {
         }
       }
     },
-
     isIncludesObj(obj, keyList) {
       return keyList.every((key) => {
         let val = this.searchFormModel[key]
@@ -264,6 +271,13 @@ export default {
         })
       }
       return flag1 || flag2
+    },
+
+    changeClomnus(indexList) {
+      this.showClomnuIndex = indexList
+    },
+    toggleFullScreen(isFullScreen) {
+      this.isFullScreen = isFullScreen
     },
 
     filterTree(data, keyList) {

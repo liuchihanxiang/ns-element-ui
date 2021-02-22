@@ -12,135 +12,153 @@
       :status-icon="statusIcon"
       :size="actualSize"
       :validate-on-rule-change="validateOnRuleChange"
-      :label-width="labelWidth+'px'"
+      :label-width="labelWidth + 'px'"
       @submit.native.prevent>
       <el-row :gutter="20"
         :span="24">
-        <template v-for="(column,index) in actualFormList">
-          <el-col :span="column.span||24"
-            v-if="column.show===undefined?true:column.show"
+        <template v-for="(column, index) in actualFormList">
+          <el-col :span="column.span || 24"
+            v-if="column.show === undefined ? true : column.show"
             :key="index"
-            :class="{'ns-item-container':true,'ns-search-item-container':type==='searchForm'}">
-            <el-form-item :label="type!=='searchForm'?getInternationalValue(column.label||column.placeholder):''"
+            :class="{'ns-item-container': true,'ns-search-item-container': type === 'searchForm'}">
+            <!-- 表单前缀 -->
+            <template v-if="type !== 'searchForm'">
+              <div v-if="column.prefix"
+                class="tips"
+                :style="{'margin-left': (column.labelWidth || labelWidth) + 'px'}"
+                v-html="column.prefix"></div>
+              <slot :name="`${column.prop}Prefix`"></slot>
+            </template>
+            <!-- 表单 -->
+            <el-form-item :label="type !== 'searchForm'? getInternationalValue(column.label || column.placeholder): ''"
               v-if="!outFormItemList.includes(column.type)"
               :prop="column.prop"
               :class="column.class"
-              :rules="type!=='searchForm'?(column.rules||[]):[]"
-              :label-width="(column.labelWidth|| labelWidth)+'px'">
-              <template slot="label"
-                v-if="column.labelSlot">
-                <slot :name="column.prop+'Label'"
-                  :column="column"></slot>
+              :rules="type !== 'searchForm' ? column.rules || [] : []"
+              :label-width="(column.labelWidth || labelWidth) + 'px'">
+              <template slot="label">
+                <slot :name="column.prop + 'Label'"
+                  :column="column">
+                  {{ type === 'searchForm' ? '' : column.label }}
+                  <el-tooltip v-if="type !== 'searchForm' && column.tips"
+                    effect="dark">
+                    <div slot="content"
+                      v-html="column.tips"></div>
+                    <i class="el-icon-question"></i>
+                  </el-tooltip>
+                </slot>
               </template>
               <!-- input或password -->
               <el-input v-if="isElInput(column.type)"
                 v-model.trim="formModel[column.prop]"
                 :type="column.type"
                 :size="column.size"
-                :class="{'el-input_word-limit':getDefaultVal(column.showWordLimit,true)}"
+                :class="{'el-input_word-limit': getDefaultVal(column.showWordLimit,true)}"
                 :readonly="column.readonly"
-                :disabled="column.disabled&&type!=='searchForm'"
-                :clearable="getDefaultVal(column.clearable,clearable)"
+                :disabled="column.disabled && type !== 'searchForm'"
+                :clearable="getDefaultVal(column.clearable, clearable)"
                 :autosize="column.autosize"
-                :placeholder="getPlaceholder(type,column)"
+                :placeholder="getPlaceholder(type, column)"
                 :prefix-icon="column.prefixIcon"
-                :show-word-limit="type==='searchForm'?false:getDefaultVal(column.showWordLimit,true)"
-                :maxlength="column.maxlength||30"
+                :show-word-limit="type === 'searchForm'? false: getDefaultVal(column.showWordLimit, true)"
+                :maxlength="column.maxlength || 30"
                 :minlength="column.minlength"
                 :suffix-icon="column.suffixIcon"
-                :show-password="getDefaultVal(column.showPassword,false)"
+                :show-password="getDefaultVal(column.showPassword, false)"
                 :rows="column.rows"
-                @input="(value)=>{isFunction(column.input)&&column.input(value)}"
-                @blur="(value)=>{isFunction(column.blur)&&column.blur(value)}"
-                @change="(value)=>{isFunction(column.change)&&column.change(value)}" />
+                @input="(value) => {isFunction(column.input) && column.input(value)}"
+                @blur="(value) => {isFunction(column.blur) && column.blur(value)}"
+                @change="(value) => {isFunction(column.change) && column.change(value)}" />
               <!-- input或textarea -->
-              <el-input v-else-if="column.type==='textarea'"
+              <el-input v-else-if="column.type === 'textarea'"
                 v-model="formModel[column.prop]"
                 :type="column.type"
                 :size="column.size"
                 :readonly="column.readonly"
-                :disabled="column.disabled&&type!=='searchForm'"
-                :clearable="getDefaultVal(column.clearable,clearable)"
+                :disabled="column.disabled && type !== 'searchForm'"
+                :clearable="getDefaultVal(column.clearable, clearable)"
                 :autosize="column.autosize"
-                :placeholder="getPlaceholder(type,column)"
-                :show-word-limit="getDefaultVal(column.showWordLimit,true)"
-                :maxlength="column.maxlength||500"
+                :placeholder="getPlaceholder(type, column)"
+                :show-word-limit="getDefaultVal(column.showWordLimit, true)"
+                :maxlength="column.maxlength || 500"
                 :minlength="column.minlength"
                 :rows="column.rows"
-                @change="(value)=>{isFunction(column.change)&&column.change(value)}" />
+                @change="(value) => {isFunction(column.change) && column.change(value)}" />
+              <ns-number-range v-model="formModel[column.prop]"
+                v-else-if="column.type === 'numberRange'"></ns-number-range>
               <!-- autocomplete -->
-              <el-autocomplete v-else-if="column.type==='autocomplete'"
+              <el-autocomplete v-else-if="column.type === 'autocomplete'"
                 v-model.trim="formModel[column.prop]"
                 :size="column.size"
                 :readonly="column.readonly"
-                :disabled="column.disabled&&type!=='searchForm'"
-                :clearable="getDefaultVal(column.clearable,clearable)"
-                :placeholder="getPlaceholder(type,column)"
+                :disabled="column.disabled && type !== 'searchForm'"
+                :clearable="getDefaultVal(column.clearable, clearable)"
+                :placeholder="getPlaceholder(type, column)"
                 :prefix-icon="column.prefixIcon"
                 :suffix-icon="column.suffixIcon"
-                :value-key="getDefaultVal(column.valueKey,'name')"
+                :value-key="getDefaultVal(column.valueKey, 'name')"
                 :placement="column.placement"
                 :select-when-unmatched="column.selectWhenUnmatched"
-                :popper-class="getDefaultVal(column.popperClass,'')"
+                :popper-class="getDefaultVal(column.popperClass, '')"
                 :hide-loading="column.hideLoading"
                 :popper-append-to-body="column.popperAppendToBody"
                 :highlight-first-item="column.highlightFirstItem"
-                :trigger-on-focus="getDefaultVal(column.triggerOnFocus,true)"
-                :fetch-suggestions="(queryString,callback)=>{autocompleteFetchSuggestions(queryString,callback,column)}"
-                @select="(value)=>{isFunction(column.select)&&column.select(value)}"
-                @change="(value)=>{isFunction(column.change)&&column.change(value)}" />
+                :trigger-on-focus="getDefaultVal(column.triggerOnFocus, true)"
+                :fetch-suggestions="(queryString, callback) => {autocompleteFetchSuggestions(queryString, callback, column)}"
+                @select="(value) => {isFunction(column.select) && column.select(value)}"
+                @change="(value) => {isFunction(column.change) && column.change(value)}" />
               <!-- 多选-->
-              <el-checkbox-group v-else-if="column.type==='checkbox'"
+              <el-checkbox-group v-else-if="column.type === 'checkbox'"
                 v-model="formModel[column.prop]"
                 :size="column.size"
                 :min="column.min"
                 :max="column.max"
                 :text-color="column.textColor"
                 :fill="column.fill"
-                :disabled="column.disabled&&type!=='searchForm'">
-                <el-checkbox v-for="(item,index) in filterDic(column.dicData,dicList[column.dicData||column.prop])"
+                :disabled="column.disabled && type !== 'searchForm'">
+                <el-checkbox v-for="(item, index) in filterDic(column.dicData,dicList[column.dicData || column.prop])"
                   :key="index"
                   :border="column.border"
                   :true-label="column.trueLabel"
                   :false-label="column.falseLabel"
-                  :indeterminate="item.indeterminate||column.indeterminate"
+                  :indeterminate="item.indeterminate || column.indeterminate"
                   :disabled="item.disabled"
                   :name="column.prop"
-                  :label="getValue(item,column)">{{getLabel(item,column.labelKey)}}</el-checkbox>
+                  :label="getValue(item, column)">{{ getLabel(item, column.labelKey) }}</el-checkbox>
               </el-checkbox-group>
               <!-- 单选按钮 -->
-              <el-radio-group v-else-if="column.type==='radio'||column.type==='radioButton'"
+              <el-radio-group v-else-if="column.type === 'radio' || column.type === 'radioButton'"
                 v-model="formModel[column.prop]"
-                :class="column.type==='radioButton'&&'ns-radio-group-button'"
+                :class="column.type === 'radioButton' && 'ns-radio-group-button'"
                 :size="column.size"
                 :name="column.prop"
-                @change="(value)=>column.change?column.change(value,filterDic(column.dicData,dicList[column.dicData||column.prop])):''"
+                @change="(value) =>column.change? column.change(value,filterDic(column.dicData,dicList[column.dicData || column.prop])): '' "
                 :readonly="column.readonly"
-                :disabled="column.disabled&&type!=='searchForm'">
-                <template v-if="column.type==='radioButton'">
+                :disabled="column.disabled && type !== 'searchForm'">
+                <template v-if="column.type === 'radioButton'">
                   <el-radio-button
-                    v-for="(item,index) in filterDic(column.dicData,dicList[column.dicData||column.prop])"
+                    v-for="(item, index) in filterDic(column.dicData,dicList[column.dicData || column.prop])"
                     :key="index"
-                    :label="getValue(item,column)"
+                    :label="getValue(item, column)"
                     class="ns-radio-button"
-                    :border="column.border">{{getLabel(item,column.labelKey)}}</el-radio-button>
+                    :border="column.border">{{ getLabel(item, column.labelKey) }}</el-radio-button>
                 </template>
                 <template v-else>
-                  <el-radio v-for="(item,index) in filterDic(column.dicData,dicList[column.dicData||column.prop])"
+                  <el-radio v-for="(item, index) in filterDic(column.dicData,dicList[column.dicData || column.prop])"
                     :key="index"
-                    :label="getValue(item,column)"
-                    :border="column.border">{{getLabel(item,column.labelKey)}}</el-radio>
+                    :label="getValue(item, column)"
+                    :border="column.border">{{ getLabel(item, column.labelKey) }}</el-radio>
                 </template>
               </el-radio-group>
               <!-- 下拉 -->
-              <el-select v-else-if="column.type==='select'"
+              <el-select v-else-if="column.type === 'select'"
                 v-model="formModel[column.prop]"
-                :placeholder="getPlaceholder(type,column)"
+                :placeholder="getPlaceholder(type, column)"
                 :size="column.size"
-                :clearable="getDefaultVal(column.clearable,clearable)"
+                :clearable="getDefaultVal(column.clearable, clearable)"
                 :multiple="column.multiple"
-                :disabled="column.disabled&&type!=='searchForm'"
-                :filterable="getDefaultVal(column.filterable,true)"
+                :disabled="column.disabled && type !== 'searchForm'"
+                :filterable="getDefaultVal(column.filterable, true)"
                 :value-key="column.valueKey || dicValueKey"
                 :collapse-tags="column.collapseTags"
                 :multiple-limit="column.multipleLimit"
@@ -149,24 +167,24 @@
                 :no-data-text="column.noDataText"
                 :no-match-text="column.noMatchText"
                 :popper-append-to-body="column.popperAppendToBody"
-                @remove-tag="(value)=>column.removeTag?column.removeTag(value,filterDic(column.dicData,dicList[column.dicData||column.prop])):''"
-                @change="(value)=>column.change?column.change(value,filterDic(column.dicData,dicList[column.dicData||column.prop])):''">
-                <el-option v-for="(item, index) in filterDic(column.dicData,dicList[column.dicData||column.prop])"
+                @remove-tag="(value) =>column.removeTag? column.removeTag(value,filterDic(column.dicData,dicList[column.dicData || column.prop])): ''"
+                @change="(value) =>column.change? column.change(value,filterDic(column.dicData,dicList[column.dicData || column.prop])): ''">
+                <el-option v-for="(item, index) in filterDic(column.dicData,dicList[column.dicData || column.prop])"
                   :key="index"
-                  :disabled="handleDisabled(item,column)"
-                  :label="getLabel(item,column.labelKey)"
-                  :value="getValue(item,column)" />
+                  :disabled="handleDisabled(item, column)"
+                  :label="getLabel(item, column.labelKey)"
+                  :value="getValue(item, column)" />
               </el-select>
               <!-- 时间选择器 -->
-              <el-time-picker v-else-if="column.type==='timePicker'"
+              <el-time-picker v-else-if="column.type === 'timePicker'"
                 v-model="formModel[column.prop]"
-                :placeholder="getPlaceholder(type,column)"
+                :placeholder="getPlaceholder(type, column)"
                 :start-placeholder="getInternationalValue(column.startPlaceholder)"
                 :end-placeholder="getInternationalValue(column.endPlaceholder)"
                 :readonly="column.readonly"
-                :disabled="column.diabled&&type!=='searchForm'"
+                :disabled="column.diabled && type !== 'searchForm'"
                 :size="column.size"
-                :clearable="getDefaultVal(column.clearable,clearable)"
+                :clearable="getDefaultVal(column.clearable, clearable)"
                 :is-range="column.isRange"
                 :arrow-control="column.arrowControl"
                 :align="column.align"
@@ -180,106 +198,115 @@
               <el-date-picker v-else-if="isDatePicker(column.type)"
                 v-model="formModel[column.prop]"
                 :type="column.type"
-                :placeholder="getPlaceholder(type,column)"
+                :placeholder="getPlaceholder(type, column)"
                 :start-placeholder="getInternationalValue(column.startPlaceholder)"
                 :end-placeholder="getInternationalValue(column.endPlaceholder)"
                 :readonly="column.readonly"
                 :disabled="column.diabled"
                 :size="column.size"
-                :clearable="getDefaultVal(column.clearable,clearable)"
+                :clearable="getDefaultVal(column.clearable, clearable)"
                 :is-range="column.isRange"
                 :format="column.format || dateValueFormat"
                 :align="column.align"
                 :default-value="column.defaultValue"
                 :popper-class="column.popperClass"
-                :range-separator="column.rangeSeparator||'-'"
+                :range-separator="column.rangeSeparator || '-'"
                 :picker-options="pickerOptions(column)"
                 :value-format="column.valueFormat || dateFormat"
                 :prefix-icon="column.datePrefixIcon" />
               <!-- 计数器 -->
-              <el-input-number v-else-if="column.type==='inputNumber'"
+              <el-input-number v-else-if="column.type === 'inputNumber'"
                 v-model="formModel[column.prop]"
                 :size="column.size"
                 :min="column.minNum"
                 :max="column.maxNum"
                 :step="column.step"
-                :disabled="column.disabled&&type!=='searchForm'"
+                :disabled="column.disabled && type !== 'searchForm'"
                 :controls="column.controls"
-                :placeholder="getPlaceholder(type,column)"
+                :placeholder="getPlaceholder(type, column)"
                 :label="getInternationalValue(column.placeholder)"
                 :controls-position="column.controlsPosition" />
               <!-- Switch 开关 -->
-              <el-switch v-else-if="column.type==='switch'"
+              <el-switch v-else-if="column.type === 'switch'"
                 v-model="formModel[column.prop]"
-                :disabled="column.disabled&&type!=='searchForm'"
+                :disabled="column.disabled && type !== 'searchForm'"
                 :width="column.width"
                 :active-icon-class="column.activeIconClass"
                 :inactive-icon-class="column.inactiveIconClass"
                 :active-text="getInternationalValue(column.activeText)"
-                :active-value="getDefaultVal(column.activeValue,1)"
-                :inactive-value="getDefaultVal(column.inactiveValue,0)"
+                :active-value="getDefaultVal(column.activeValue, 1)"
+                :inactive-value="getDefaultVal(column.inactiveValue, 0)"
                 :active-color="column.activeColor"
                 :inactive-color="column.inactiveColor"
-                @change="column.change?column.change($event):''"
+                @change="column.change ? column.change($event) : ''"
                 :inactive-text="getInternationalValue(column.inactiveText)" />
-              <el-cascader v-else-if="column.type==='cascader'"
+              <el-cascader v-else-if="column.type === 'cascader'"
                 :options="column.options"
                 :size="column.size"
-                :show-all-levels="getDefaultVal(column.showAllLevels,false)"
-                :placeholder="getPlaceholder(type,column)"
+                :show-all-levels="getDefaultVal(column.showAllLevels, false)"
+                :placeholder="getPlaceholder(type, column)"
                 :disabled="column.disabled"
-                :collapse-tags="getDefaultVal(column.collapseTags,true)"
-                :clearable="getDefaultVal(column.clearable,clearable)"
+                :collapse-tags="getDefaultVal(column.collapseTags, true)"
+                :clearable="getDefaultVal(column.clearable, clearable)"
                 v-model="formModel[column.prop]"
                 :props="getCascaderProps(column)"></el-cascader>
-              <ns-editor v-else-if="column.type==='editor'"
+              <ns-editor v-else-if="column.type === 'editor'"
                 ref="nsEditor"
-                :init="column.init||{}"
+                :init="column.init || {}"
+                :label-list="column.labelList"
                 :disabled="column.disabled"
+                :placeholder="column.placeholder"
                 v-model="formModel[column.prop]"></ns-editor>
-              <span v-else-if="column.type==='slot'">
+              <span v-else-if="column.type === 'slot'">
                 <slot :name="column.slotName" />
               </span>
             </el-form-item>
-            <template v-else-if="column.type==='outItemSlot'">
+            <template v-else-if="column.type === 'outItemSlot'">
               <slot :name="column.slotName" />
             </template>
-            <el-divider v-else-if="column.type==='groupLine'"
-              :content-position="column.position||'left'">{{column.title}}</el-divider>
-            <el-divider v-else-if="column.type==='groupLineSlot'"
-              :content-position="column.position||'left'">
+            <el-divider v-else-if="column.type === 'groupLine'"
+              :content-position="column.position || 'left'">{{ column.title }}</el-divider>
+            <el-divider v-else-if="column.type === 'groupLineSlot'"
+              :content-position="column.position || 'left'">
               <slot :name="column.slotName" />
             </el-divider>
+            <!-- 表单后缀 -->
+            <template v-if="type !== 'searchForm'">
+              <div v-if="column.suffix"
+                :style="{'margin-left': (column.labelWidth || labelWidth) + 'px'}"
+                v-html="column.suffix"></div>
+              <slot :name="`${column.prop}Suffix`"></slot>
+            </template>
           </el-col>
-
         </template>
-
+        <!-- 表单按钮 -->
         <el-col :span="24"
           class="search-btn-container">
-          <template v-if="type==='searchForm'">
+          <!-- 表格查询按钮 -->
+          <template v-if="type === 'searchForm'">
             <slot name="searchBtn">
               <el-button type="primary"
                 @click="handlerSearch"
-                :icon="getDefaultVal(searchBtn.icon,'el-icon-search')"
+                :icon="getDefaultVal(searchBtn.icon, 'el-icon-search')"
                 class="btn-confirm"
-                :size="searchBtn&&searchBtn.size">
-                {{searchBtn&&searchBtn.text?getInternationalValue(searchBtn.text):'查询'}}</el-button>
+                :size="searchBtn && searchBtn.size">
+                {{searchBtn && searchBtn.text? getInternationalValue(searchBtn.text): '查询'}}</el-button>
               <el-button @click="handlerReset"
                 v-if="showResetBtn"
                 class="btn-cancel"
-                :icon="getDefaultVal(resetBtn.icon,'el-icon-delete')"
-                :size="getDefaultVal(resetBtn.size,actualSize)">
-                {{resetBtn&&resetBtn.text?getInternationalValue(resetBtn.text):'重置'}}
+                :icon="getDefaultVal(resetBtn.icon, 'el-icon-delete')"
+                :size="getDefaultVal(resetBtn.size, actualSize)">
+                {{resetBtn && resetBtn.text? getInternationalValue(resetBtn.text): '重置'}}
               </el-button>
             </slot>
           </template>
           <div class="form-btn-container"
-            v-else-if="type!=='searchForm'&& submitBtn&&submitBtn.show"
+            v-else-if="type !== 'searchForm' && submitBtn && submitBtn.show"
             :class="getBtnPostion">
             <el-button type="primary"
               @click="handlerSearch"
-              :size="getDefaultVal(submitBtn.size,actualSize)">
-              {{submitBtn&&submitBtn.text?getInternationalValue(submitBtn.text):'提交'}}
+              :size="getDefaultVal(submitBtn.size, actualSize)">
+              {{submitBtn && submitBtn.text? getInternationalValue(submitBtn.text): '提交'}}
             </el-button>
             <slot name="menuForm" />
           </div>
@@ -295,11 +322,13 @@ import * as utils from './../../../utils/index'
 import formMixins from './mixins.js'
 import props from './props.js'
 import NsEditor from './../../ns-tinymce'
+import nsNumberRange from './../../ns-number-range/index'
 export default {
   name: 'NsForm',
   mixins: [formMixins],
   components: {
-    NsEditor
+    NsEditor,
+    nsNumberRange
   },
   props,
   data() {
@@ -375,6 +404,7 @@ export default {
     },
     handlerReset() {
       this.$refs.form && this.$refs.form.resetFields()
+      this.$emit('handlerReset')
     },
     emitEventHandler(event) {
       this.$emit(event, ...Array.from(arguments).splice(1))

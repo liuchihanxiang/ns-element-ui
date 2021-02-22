@@ -108,7 +108,6 @@ export default {
     }
   },
   methods: {
-
     // 处理前端分页
     paginationData(data) {
       let { pageSize, page } = this
@@ -136,9 +135,14 @@ export default {
     handlerRefresh() {
       this.initData(this.searchFormModel)
     },
+
     // 重置查询form表单
     handlersearchFormReset() {
       this.$refs.serchForm && this.$refs.serchForm.handlerReset()
+    },
+
+    handlerReset() {
+      this.handlerRefresh()
     },
 
     // 切换分页

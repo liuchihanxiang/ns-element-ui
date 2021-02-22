@@ -2,6 +2,7 @@
  * 公共配置
  */
 const path = require('path');
+
 const webpack = require('webpack');
 const pkg = require('../package.json');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
@@ -120,6 +121,22 @@ module.exports = {
             },
           },
         ]
+      },
+      {
+        test: /\.md$/,
+        use: [
+          {
+            loader: 'vue-loader',
+            options: {
+              compilerOptions: {
+                preserveWhitespace: false,
+              },
+            },
+          },
+          {
+            loader: path.resolve(__dirname, './md-loader/index.js'),
+          },
+        ],
       },
       {
         test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,

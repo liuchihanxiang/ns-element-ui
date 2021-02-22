@@ -1,6 +1,80 @@
-body .tox-tinymce-aux {
-  z-index: 2001;
+$color: #386be1;
+
+body {
+  .tox-tinymce-aux {
+    z-index: 2001000;
+  }
+  &.tox-fullscreen .tox.tox-tinymce-aux {
+    z-index: 2001000;
+  }
+  .tox .tox-dialog-wrap__backdrop {
+    background-color: #333;
+    opacity: 0.5;
+  }
+  .tox .tox-tbtn .tox-tbtn__select-label {
+    color: $color;
+  }
+
+  .tox .tox-dialog__header {
+    background-color: #f8f8f8;
+    padding: 8px 16px;
+  }
+
+  .tox .tox-dialog__header .tox-button {
+    color: #909399;
+  }
+  .tox .tox-tbtn svg,
+  .tox .tox-tbtn path,
+  .tox .tox-tbtn:hover svg {
+    fill: $color !important;
+  }
+  .tox .tox-split-button__chevron svg {
+    fill: $color;
+  }
+  .tox .tox-collection--list .tox-collection__item--active {
+    color: $color;
+  }
+  .tox .tox-collection--list .tox-collection__item--enabled {
+    color: #fff !important;
+    background-color: #194bbf94;
+  }
+  .tox .tox-button:not(.tox-button--icon):not(.tox-button--secondary) {
+    background-color: $color !important;
+    border-color: $color !important;
+  }
+
+  .tox .tox-menu.tox-collection.tox-collection--list {
+    // box-shadow: rgb(0 0 0 10%) 0px 3px 8px 0px;
+    border: none;
+  }
+  .tox-button.tox-button--secondary {
+    background-color: #fff;
+    font-weight: normal;
+    border-color: #dcdfe6;
+  }
 }
+
 .ns-editor button.tox-tbtn.tox-tbtn--select.tox-tbtn--bespoke {
   width: 84px;
+}
+.ns-editor {
+  min-height: 350px;
+  ul.label {
+    display: inline-flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    li {
+      padding: 0px 10px;
+      background: #386be1;
+      color: #fff;
+      border-radius: 5px;
+      margin-right: 10px;
+      font-size: 12px;
+      height: 30px;
+      line-height: 30px;
+      cursor: pointer;
+      list-style: none;
+    }
+  }
 }
