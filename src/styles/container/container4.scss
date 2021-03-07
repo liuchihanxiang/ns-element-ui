@@ -1,0 +1,73 @@
+$--corner-postion: -2px;
+$--corner-width: 15px;
+$--corner-point-width: 6px;
+$--corner-width-s: 10px;
+$--corner-point-width-s: 5px;
+$--color-inactive: #a7a7a7;
+$--color-portrait: #00f9ff;
+$-color-portrait-light: #5cb7fe;
+$--color-org-key-word: #ffb61f;
+
+.container4 {
+  border: 1px solid $-color-portrait-light;
+  position: relative;
+  background: linear-gradient(to bottom, #084261 0%, rgba(8, 66, 97, 0.9) 10%, rgba(8, 66, 97, 0.8) 20%, rgba(8, 66, 97, 0.6) 30%, rgba(8, 66, 97, 0.4) 40%, rgba(8, 66, 97, 0.2) 50%, rgba(8, 66, 97, 0.2) 55%, rgba(8, 66, 97, 0.4) 70%, rgba(8, 66, 97, 0.8) 80%, rgba(8, 66, 97, 0.9) 90%, #084261 100%);
+
+  &.mini .corner {
+    width: $--corner-width-s;
+    height: $--corner-width-s;
+    &::before {
+      width: $--corner-point-width-s;
+      height: $--corner-point-width-s;
+      border-radius: 50%;
+    }
+  }
+  .corner {
+    position: absolute;
+    width: $--corner-width;
+    height: $--corner-width;
+    border-color: $--color-portrait;
+    border-style: solid;
+    border-width: 2px 0 0 2px;
+    z-index: 6;
+
+    &::before {
+      content: '';
+      display: block;
+      width: $--corner-point-width;
+      height: $--corner-point-width;
+      background-color: $--color-portrait;
+      position: absolute;
+      top: -4px;
+      left: -4px;
+    }
+    &.corner--top_left {
+      left: $--corner-postion;
+      top: $--corner-postion;
+    }
+    &.corner--top_right {
+      right: $--corner-postion;
+      top: $--corner-postion;
+      transform: rotate(90deg);
+    }
+    &.corner--bottom_left {
+      left: $--corner-postion;
+      bottom: $--corner-postion;
+      transform: rotate(-90deg);
+    }
+    &.corner--bottom_right {
+      right: $--corner-postion;
+      bottom: $--corner-postion;
+      transform: rotate(180deg);
+    }
+  }
+  & > span.title {
+    padding: 5px 35px;
+    color: $--color-portrait;
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    @include bg-image('~@/assets/container/title_bg.png');
+  }
+}

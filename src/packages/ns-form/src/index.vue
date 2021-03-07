@@ -250,6 +250,41 @@
                 :clearable="getDefaultVal(column.clearable, clearable)"
                 v-model="formModel[column.prop]"
                 :props="getCascaderProps(column)"></el-cascader>
+
+              <el-upload v-else-if="column.type === 'upload'"
+                action="#"
+                ref="img"
+                :multiple="false"
+                :file-list="imgList"
+                :on-change="(file, fileList) => changeFiles(fileList,column)"
+                :accept="getDefaultVal(column.accept, '.jpg, .jpeg, .png')"
+                :on-remove="(file, fileList) => changeFiles(fileList,column)"
+                :list-type="getDefaultVal(column.listType, 'picture-card')"
+                :auto-upload="false"
+                @hook:mounted="handleUploadMounted">
+                <div slot="file"
+                  slot-scope="{ file }"
+                  v-if="file.url"
+                  class="item-wraps">
+                  <img class="el-upload-list__item-thumbnail"
+                    :src="file.url"
+                    alt />
+                  <span class="el-upload-list__item-actions">
+                    <span title="删除"
+                      class="el-upload-list__item-delete"
+                      @click="handleRemoveImg(0, file)">
+                      <i class="el-icon-delete"></i>
+                    </span>
+                  </span>
+                </div>
+                <div slot="tip"
+                  class="el-upload__tip">
+                  <p v-for="(imgItem,imgIndex) in column.tipList"
+                    :key="imgIndex">{{imgIndex+1}}、{{imgItem}}</p>
+                </div>
+                <i slot="default"
+                  class="el-icon-plus"></i>
+              </el-upload>
               <ns-editor v-else-if="column.type === 'editor'"
                 ref="nsEditor"
                 :init="column.init || {}"
@@ -290,13 +325,18 @@
                 :icon="getDefaultVal(searchBtn.icon, 'el-icon-search')"
                 class="btn-confirm"
                 :size="searchBtn && searchBtn.size">
-                {{searchBtn && searchBtn.text? getInternationalValue(searchBtn.text): '查询'}}</el-button>
+                <template v-if="searchBtn.onlyShowIcon===undefined|| !searchBtn.onlyShowIcon">
+                  {{searchBtn && searchBtn.text? getInternationalValue(searchBtn.text): '查询'}}
+                </template>
+              </el-button>
               <el-button @click="handlerReset"
                 v-if="showResetBtn"
                 class="btn-cancel"
                 :icon="getDefaultVal(resetBtn.icon, 'el-icon-delete')"
                 :size="getDefaultVal(resetBtn.size, actualSize)">
-                {{resetBtn && resetBtn.text? getInternationalValue(resetBtn.text): '重置'}}
+                <template v-if="resetBtn.onlyShowIcon===undefined|| !resetBtn.onlyShowIcon">
+                  {{resetBtn && resetBtn.text? getInternationalValue(resetBtn.text): '重置'}}
+                </template>
               </el-button>
             </slot>
           </template>
@@ -339,7 +379,9 @@ export default {
       defaultFormModel: {},
       dickeyList: [],
       dicUrlList: [],
-      outFormItemList: ['outItemSlot', 'groupLine', 'groupLineSlot'] // formitem外部选项类型集合
+      outFormItemList: ['outItemSlot', 'groupLine', 'groupLineSlot'], // formitem外部选项类型集合
+      imgList: [],
+      uploadProp: ''
     }
   },
   created() {

@@ -1,6 +1,12 @@
 <template>
-  <el-checkbox-group v-model="text" v-bind="$attrs" v-on="$listeners" @change="handleChange">
-    <el-checkbox v-for="item in formatterDicData" :key="item[dicValueKey]" :label="item[dicValueKey]">{{ item[dicLabelKey] }}</el-checkbox>
+  <el-checkbox-group v-model="text"
+    v-bind="$attrs"
+    v-on="$listeners"
+    @change="handleChange">
+    <el-checkbox v-for="item in formatterDicData"
+      :key="item[dicValueKey]"
+      :label="item[dicValueKey]"
+      :disabled="item.disabled">{{ item[dicLabelKey] }}</el-checkbox>
   </el-checkbox-group>
 </template>
 
@@ -12,22 +18,22 @@ export default {
   props: {
     value: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     dicData: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   data() {
     return {
-      text: this.value,
+      text: this.value
     }
   },
   methods: {
     handleChange(val) {
       this.$emit('input', val)
-    },
+    }
   },
   watch: {
     value: {
@@ -36,8 +42,8 @@ export default {
           this.text = val
         }
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   computed: {
     formatterDicData() {
@@ -46,13 +52,13 @@ export default {
         return dicData.map((item) => {
           return {
             [dicLabelKey]: item,
-            [dicValueKey]: item,
+            [dicValueKey]: item
           }
         })
       } else {
         return dicData || []
       }
-    },
-  },
+    }
+  }
 }
 </script>

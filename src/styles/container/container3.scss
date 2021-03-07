@@ -1,0 +1,70 @@
+$-border-width: 20px;
+$-title-width: 60px;
+$-npm-border-color: #57e6ff;
+.container3 {
+  position: relative;
+  background-color: #fff;
+  height: 100%;
+  overflow: hidden;
+  & > div.content {
+    padding: 0;
+  }
+
+  & > .header {
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(0deg, #57e6ff40, #fff);
+    border-bottom: 1px solid $-npm-border-color;
+    position: relative;
+    margin-bottom: 20px;
+    min-height: 20px;
+    .border-bottom {
+      height: 2px;
+      position: absolute;
+      bottom: 0;
+      background: #fff;
+      width: 100%;
+    }
+    span.bg {
+      display: block;
+      width: 248px;
+      max-width: 21%;
+      height: 20px;
+      position: absolute;
+      top: $-border-width - 1px;
+      &.left {
+        @include bg-image('~@/assets/container/npm_header_left.png');
+        left: 0;
+      }
+      &.right {
+        @include bg-image('~@/assets/container/npm_header_right.png');
+        right: 0;
+      }
+    }
+    .title {
+      position: relative;
+      width: $-title-width + (2 * $-border-width)+15px;
+      height: $-border-width;
+      line-height: $-border-width;
+      text-align: center;
+      font-weight: bold;
+      & > span {
+        position: relative;
+        z-index: 2;
+        color: #21b7d0;
+        top: 10px;
+        font-size: 16px;
+      }
+      & > div {
+        position: absolute;
+        @include trapezium($-title-width, $-border-width, $-npm-border-color);
+        width: $-title-width + 15px;
+        top: -($-border-width + $-title-width);
+        &.trapezium2 {
+          border-color: transparent transparent #fff transparent;
+          top: -($-border-width + $-title-width - 1px);
+        }
+      }
+    }
+  }
+}

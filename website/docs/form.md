@@ -8,7 +8,12 @@
 
 ```html
 <template> 
-  <ns-form v-model="formModel" :label-width="120" :form-list="formList" ></ns-form>
+  <ns-form ref="nsForm" v-model="formModel" :label-width="120" :form-list="formList" >
+    <template slot="submit">
+        <el-button type="primary" @click="submit">提交</el-button>
+        <el-button type="primary" plain @click="setData">赋值</el-button>
+    </template>
+  </ns-form>
 </template>
 <script>
   export default {
@@ -39,12 +44,41 @@
           prop:'name4',
           autosize:{ minRows: 4, maxRows: 8},
           placeholder:'请输入'
-        }]
+        },{
+          type:'upload',
+          label:'头像',
+          prop:'uploadImg',
+          size:100,
+          tipList:[
+            '构图提示：重要图文内容请在横幅顶部下方210px 高度、宽度1200px 内设计，效果更佳。',
+            '图片大小： 不超过300Kb；图片尺寸： 1920px * 320px (宽*高）；支持格式：jpeg,jpg, png。'
+            ]
+        },{
+          type:'outItemSlot',
+          slotName:'submit',
+          label:'头像',
+          prop:'submit',
+         },
+        ]
       }
     },
     methods:{
       change(val){
         console.log(`值改变了${val}`)
+      },
+      submit(){
+        let data = this.$refs.nsForm.formDataParam()
+        console.log(data)
+      },
+      setData(){
+          this.formModel = {
+            name:1,
+            name2:2,
+            name3:3,
+            name4:4,
+            ageRange:[5,6],
+            uploadImg:'/assets/images/plant-1.png'
+          }
       }
     }
   }
@@ -140,6 +174,54 @@
 ```
 :::
 
+
+### 时间相关类
+
+:::demo
+
+```html
+<template> 
+  <ns-form v-model="formModel" :label-width="120" :form-list="formList" ></ns-form>
+</template>
+<script>
+  export default {
+    data(){
+      return {
+        formModel:{},
+        formList:[{
+          type:'datetime',
+          label:'日期选择',
+          prop:'datetime',
+          default:'请选择'
+        },{
+          type:'datetimerange',
+          label:'日期范围',
+          prop:'datetimerange',
+          default:'请选择'
+        },{
+          type:'monthrange',
+          label:'月份范围',
+          prop:'monthrange',
+          default:'请选择'
+        },{
+          type:'timePicker',
+          label:'时间选择',
+          prop:'timePicker',
+          default:'请选择'
+        }]
+      }
+    },
+    methods:{
+      change(val){
+        console.log(`值改变了${val}`)
+      }
+    }
+  }
+</script>
+```
+
+:::
+
 ### 富文本
 
 :::demo
@@ -190,7 +272,7 @@
 ### FormList Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| type     | 表单类型           | String | input,number,email,password,textarea,inputNumber,autocomplete,select,checkbox,radio,switch,timePicker,year, month, date, dates, week, datetime, datetimerange, daterange | input |
+| type     | 表单类型           | String | input,number,email,password,textarea,inputNumber,autocomplete,select,checkbox,radio,switch,timePicker,year, month, date, dates, week, datetime, datetimerange, daterange,upload | input |
 | label | 标签文本 | string | - | - |
 | placeholder | 输入框占位文本 | string | - | - |
 | default | 初始默认值 | * | - | - |
@@ -200,7 +282,10 @@
 | slotName | 插槽名称,当type为slot、outItemSlot、groupLineSlot时 对应的插槽的名称 | string | - | - |
 | labelSlot | 标签文本是否使用插槽 如果使用插槽 默认插槽名称为表单项prop字段和Label的拼接，例如prop为name 则插槽名称为:nameLabel | string | - | - |
 | dicData | 当type为select、radio、checkbox时对应渲染的数据集合 | Array | - | [] |
-| size | 用于控制该表单内组件的尺寸	 | string | medium / small / mini | — |
+| size | 用于控制该表单内组件的尺寸（如果type=‘upload’的话，size表示图片大小。单位是K）	 | string（type="upload"时，类型为number） | medium / small / mini | — |
+| tipList | type="upload"图片上传时，规则的描述 | array | - | - |
+
+
 ### Slot
 
 | Name | Description |
@@ -212,3 +297,7 @@
 | 事件名称 | 说明 | 回调参数 |
 |---------- |-------- |---------- |
 | close | 关闭alert时触发的事件 | — |
+| beforeFormData | formData参数组装之前，调用参数，返回值为data | data |
+| formDataParam | formData表单的值，返回值为formData参数 | form |
+
+

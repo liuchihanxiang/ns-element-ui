@@ -25,6 +25,7 @@
           label:'选项2',
           value:2
         },{
+          disabled:true,
           label:'选项3',
           value:3
         },{
@@ -51,6 +52,7 @@
 | dic-data     | 字典数据           | Array | — | [] |
 | labelKey     |    字典数据中要显示的字段        | string | — | label |
 | valueKey     | 作为 value 唯一标识的键名，绑定值为对象类型时必填  | string | — | value |
+| disabled     | 是否禁用  | boolean | — | false |
 | size | 选择器尺寸 | string | medium/small/mini | — |
 | text-color | 	按钮形式的 Radio 激活时的文本颜色 | string | — | #ffffff|
 | fill | 按钮形式的 Radio 激活时的填充色和边框色	 | string | — | #409EFF |

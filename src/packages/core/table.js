@@ -161,6 +161,9 @@ export default {
       } else {
         this.filterData()
       }
+      this.$nextTick(()=>{
+        this.$emit('handlerSearch')
+      })
     },
     // 请求数据
     initServe(formParams = {}) {
@@ -211,6 +214,7 @@ export default {
               let totalValue = getValueByPath(res, realDataFieldConfig.totalKey) // 总页数
               this.total = totalValue || 0
               let maxPage = Math.ceil(this.total / this.pageSize)
+              // 此处判断属于删除数据后，总页数错误，需要重新请求数据
               if (this.page > maxPage && maxPage !== 0) {
                 this.handleCurrentChange(maxPage)
                 return false

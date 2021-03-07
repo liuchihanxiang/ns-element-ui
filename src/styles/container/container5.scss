@@ -1,0 +1,67 @@
+$--bmf-color: #8be3d1;
+.container5 {
+  border: 1px solid $--bmf-color;
+  padding: 15px 15px 25px 15px;
+  position: relative;
+  .header_wraps {
+    margin-top: -16px;
+    position: relative;
+    @include bg-image('~@/assets/container/line_bg.png', auto, 100%, no-repeat, 100px);
+    .growup_btn {
+      position: absolute;
+      right: 1.5%;
+      padding: 3px 15px;
+      z-index: 6;
+      top: 5px;
+      z-index: 1;
+    }
+
+    .bottom {
+      position: absolute;
+      width: 89%;
+      height: 1px;
+      background: $--bmf-color;
+      bottom: 0;
+      left: 0;
+      @include point-line(3px, $--bmf-color);
+    }
+    .title {
+      position: relative;
+      width: 90px;
+      line-height: 1;
+      text-align: center;
+      .name {
+        font-size: 16px;
+        position: relative;
+        color: #386be1;
+        top: -5px;
+        font-weight: bold;
+      }
+      .top {
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background: #fff;
+        top: 0;
+        left: 0;
+        @include point-line(3px, $--bmf-color);
+      }
+    }
+  }
+  .trapezoid_line {
+    position: absolute;
+    @include bg-image('~@/assets/container/trapezoid_line.png', 100%, 100%, no-repeat);
+    width: 80px;
+    height: 75px;
+    top: -1px;
+    right: -1px;
+    z-index: 1;
+    &.bottom-left {
+      left: -1px;
+      right: auto;
+      top: auto;
+      bottom: -1px;
+      transform: rotate(180deg);
+    }
+  }
+}

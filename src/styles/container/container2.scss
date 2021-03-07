@@ -1,0 +1,63 @@
+/** @format */
+
+$--color-portrait: #00f9ff;
+$-trapezium-border-width: 15px;
+$-panorama-title-width: 74px;
+
+.container2 {
+  background: #262561;
+  color: #fff;
+  padding: 20px;
+
+  .header {
+    border-top: 1px solid $--color-portrait;
+    position: relative;
+    margin-top: -5px;
+    margin-bottom: 15px;
+    &::before,
+    &::after {
+      content: '';
+      width: 248px;
+      height: 20px;
+      position: absolute;
+      max-width: 20%;
+      left: 0;
+      top: -2px;
+      @include bg-image('~@/assets/container/npm_header_left.png');
+    }
+    &::after {
+      right: 0;
+      left: auto;
+      @include bg-image('~@/assets/container/npm_header_right.png');
+    }
+    .title {
+      width: $-panorama-title-width + (2 * $-trapezium-border-width)+15px;
+      height: $-trapezium-border-width;
+      line-height: $-trapezium-border-width;
+      color: $--color-portrait;
+      position: relative;
+      margin: 0 auto;
+      & > span.name {
+        position: absolute;
+        font-size: 16px;
+        left: 0;
+        right: 0;
+        top: -3px;
+        z-index: 1;
+        text-align: center;
+      }
+      .trapezium {
+        @include trapezium($-panorama-title-width, $-trapezium-border-width, $--color-portrait, top);
+        width: $-panorama-title-width + 15px;
+        position: absolute;
+        top: 0;
+        &.trapezium1 {
+          border-color: #030417 transparent transparent transparent;
+          width: $-panorama-title-width + 13px;
+          top: -1px;
+          left: 1px;
+        }
+      }
+    }
+  }
+}

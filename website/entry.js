@@ -10,6 +10,10 @@ import MainHeader from './components/header';
 import SideNav from './components/side-nav';
 import FooterNav from './components/footer-nav';
 import title from './i18n/title';
+import 'xe-utils'
+import VXETable from 'vxe-table'
+import 'vxe-table/lib/index.css'
+
 
 import 'element-ui/lib/theme-chalk/index.css'
 import './demo-styles/index.scss';
@@ -18,7 +22,7 @@ import './assets/styles/fonts/style.css';
 import icon from './icon.json';
 import nsUi from './../src/index'
 import './../src/styles/index.scss'
-
+Vue.use(VXETable)
 Vue.use(Element,{
   size: 'medium'
 });

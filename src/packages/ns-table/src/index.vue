@@ -3,6 +3,7 @@
   <div :class="{'ns-table ns-table-container':true,'fullScreen':isFullScreen}">
     <!-- 查询表单 -->
     <div :class="{'header_wraps':true,'header_wraps-inline':!btnListAlone}">
+      <slot name="headerExtraWrap" />
       <ns-form class="form_wraps"
         ref="serchForm"
         type="searchForm"
@@ -33,6 +34,7 @@
         <table-btns :btn-list="btnList"
           :columns="filterColumns"
           :showClomnuIndex="showClomnuIndex"
+          :toolbar="toolbar"
           @changeClomnus="changeClomnus"
           @toggleFullScreen="toggleFullScreen"
           :permit="permit">

@@ -4,5 +4,6 @@
 build/
 node_modules/
 test/
+website/
 docs/
 assets/

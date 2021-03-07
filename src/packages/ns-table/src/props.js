@@ -1,5 +1,14 @@
 export const tableProps = {
   treeLoad: Function,
+  toolbar:{
+    type:Object,
+    default:()=>{
+      return {
+        zoom:false,
+        custom:false
+      }
+    }
+  },
   lazy: {
     type: Boolean,
     default: false

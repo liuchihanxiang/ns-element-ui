@@ -8,6 +8,8 @@ import NsSelect from './packages/ns-select'
 import NsCheckbox from './packages/ns-checkbox'
 import NsRadio from './packages/ns-radio'
 import NsGrid from './packages/ns-grid'
+import NsImport from './packages/ns-import'
+// import NsContainer from './packages/ns-container'
 const components = [
   NsForm,
   NsTable,
@@ -18,7 +20,9 @@ const components = [
   NsSelect,
   NsCheckbox,
   NsRadio,
-  NsGrid
+  NsGrid,
+  NsImport,
+  // NsContainer
 ]
 
 const install = function (Vue, opts = {}) {

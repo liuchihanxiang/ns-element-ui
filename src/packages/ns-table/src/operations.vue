@@ -10,7 +10,7 @@
           :key="operationIndex"
           class="operation-text no-choose-row"
           :type="operationItem.btnType?operationItem.btnType:'text'"
-          size="mini">{{getInternationalValue(operationItem.text)}}</el-button>
+          :size="operationItem.size||'mini'">{{getInternationalValue(operationItem.text)}}</el-button>
         <!-- 操作按钮只显示图标 -->
         <el-tooltip v-else-if="realOperationsConfig.onlyShowIcon && operationItem.icon"
           class="item"
@@ -37,7 +37,7 @@
             @click="rowOperation[n-1].click(rowOperation[n-1].type,row,$event,rowIndex)"
             :key="numIndex"
             :type="rowOperation.btnType?rowOperation.btnType:'text'"
-            size="mini">{{getInternationalValue(rowOperation[n-1].text)}}</el-button>
+            :size="rowOperation[n-1].size||'mini'">{{getInternationalValue(rowOperation[n-1].text)}}</el-button>
         </template>
         <!-- 操作按钮只显示图标 -->
         <template v-if="realOperationsConfig.onlyShowIcon && rowOperation[n-1].icon">

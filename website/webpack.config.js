@@ -9,6 +9,9 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const jsexclude = /node_modules|utils\/popper\.js|utils\/date\.js/;
 
+function resolve(dir) {
+  return path.join(__dirname, '..', dir);
+}
 const isProd = process.env.NODE_ENV === 'production';
 const isPlay = !!process.env.PLAY_ENV;
 const basePath='/website/';
@@ -24,7 +27,11 @@ const webpackConfig = {
     chunkFilename: isProd ? '[name].[hash:7].js' : '[name].js'
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.scss', '.json'],
+    alias: {
+      'vue': 'vue/dist/vue.esm.js',
+      '@': resolve('src')
+    },
     modules: ['node_modules']
   },
   devServer: {

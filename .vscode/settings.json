@@ -53,8 +53,6 @@
     "vue-html": "html",
     "vue": "html"
   },
-  "terminal.integrated.rendererType": "dom",
-  "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe",
   "editor.wordSeparators": "`~!@#%^&*()=+[{]}\\|;:'\",.<>/?",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true

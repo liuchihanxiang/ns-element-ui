@@ -21,6 +21,7 @@
           <el-button v-else
             :key="btnIndex"
             :disabled="btnItem.disabled"
+            :plain="getDefaultVal(btnItem.plain, false)"
             :class="`table-btn_item ${btnItem.class||''}`"
             @click="btnItem.click?btnItem.click(btnItem.code):''"
             :type="btnItem.type?btnItem.type:'primary'">{{getBtnText(btnItem)}}
@@ -55,10 +56,12 @@
 
         </template>
       </template>
-      <el-button :icon="isFullScreen?'icon-exit-full-screen':'icon-full-screen'"
+      <el-button v-if='toolbar.zoom'
+        :icon="isFullScreen?'icon-exit-full-screen':'icon-full-screen'"
         @click="toggleFullScreen"
         class="tools-btn"></el-button>
-      <el-dropdown :hide-on-click="false"
+      <el-dropdown v-if='toolbar.custom'
+        :hide-on-click="false"
         class="cloumns-switch">
         <span class="el-dropdown-link">
           <el-button icon="icon-config"
@@ -79,7 +82,8 @@
 </template>
 
 <script>
-import { getInternationalValue } from './../../../utils'
+import { getInternationalValue, getDefaultVal } from './../../../utils'
+
 export default {
   props: {
     btnList: {
@@ -89,6 +93,12 @@ export default {
     columns: {
       type: Array,
       default: () => []
+    },
+    toolbar: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     // eslint-disable-next-line vue/require-default-prop
     permit: Function
@@ -103,6 +113,7 @@ export default {
   methods: {
     // 处理国际化
     getInternationalValue,
+    getDefaultVal,
     isShowBtn({ code, text, type, show }) {
       let isShow = show === undefined || show
       if (this.permit && Object.prototype.toString.call(this.permit) === '[object Function]') {

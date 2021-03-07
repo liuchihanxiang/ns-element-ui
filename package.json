@@ -13,8 +13,8 @@
     "tinymce": "^5.2.2",
     "vue": "^2.6.11",
     "vue-highlight.js": "^2.2.0",
-    "vxe-table": "^2.9.17",
-    "xe-utils": "^2.7.8"
+    "vxe-table": "^2.10.14",
+    "xe-utils": "^2.8.3"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

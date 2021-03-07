@@ -1,0 +1,24 @@
+$--apm-p-color: #00adfd;
+.container1 {
+  flex: 1;
+  border: 1px solid $--apm-p-color;
+  padding: 20px;
+  position: relative;
+  margin: 0;
+  .border_top-left {
+    height: 3px;
+    width: 26px;
+    position: absolute;
+    left: -5px;
+    top: -2px;
+    background: $--apm-p-color;
+  }
+  .border-left {
+    position: absolute;
+    height: 99%;
+    width: 3px;
+    background: #f2fdfa;
+    left: -2px;
+    top: -2px;
+  }
+}

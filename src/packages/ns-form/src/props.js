@@ -112,5 +112,7 @@ export default {
   // 提交前 处理form表单数据的钩子
   formFormat: Function,
   // 提交处理
-  handlerSubmit: Function
+  handlerSubmit: Function,
+  // formData格式化数据之前
+  beforeFormData: Function,
 }

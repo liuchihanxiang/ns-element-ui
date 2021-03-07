@@ -1,8 +1,12 @@
 $namespace: 'ns';
+$--apm-a-color: #fd8b38;
+$--apm-p-color: #0686ec;
+$--apm-m-color: #25bda2;
+
 /* BEM
  -------------------------- */
 @mixin b($block) {
-  $B: $namespace+'-'+$block !global;
+  $B: $namespace + '-' + $block !global;
 
   .#{$B} {
     @content;
@@ -12,11 +16,149 @@ $namespace: 'ns';
 @mixin clearfix() {
   &:before,
   &:after {
-      content: "";
-      display: table;
+    content: '';
+    display: table;
   }
   &:after {
-      clear: both;
+    clear: both;
   }
 }
 
+@mixin flex($direction: row, $justify-content: center, $align-items: center, $flex-wrap: nowrap) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-wrap: $flex-wrap;
+}
+
+@mixin bg-image($url, $sizeX: 100%, $sizeY: 100%, $repeat: no-repeat, $position: center) {
+  background-image: url($url);
+  background-size: $sizeX $sizeY;
+  background-repeat: $repeat;
+  background-position: $position;
+}
+
+//三角形
+@mixin triangle($width, $height, $color, $direction) {
+  $width: $width/2;
+  $color-border-style: $height solid $color;
+  $transparent-border-style: $width solid transparent;
+  height: 0;
+  width: 0;
+  @if $direction==up {
+    border-bottom: $color-border-style;
+    border-left: $transparent-border-style;
+    border-right: $transparent-border-style;
+  } @else if $direction==right {
+    border-left: $color-border-style;
+    border-top: $transparent-border-style;
+    border-bottom: $transparent-border-style;
+  } @else if $direction==down {
+    border-top: $color-border-style;
+    border-left: $transparent-border-style;
+    border-right: $transparent-border-style;
+  } @else if $direction==left {
+    border-right: $color-border-style;
+    border-top: $transparent-border-style;
+    border-bottom: $transparent-border-style;
+  }
+}
+
+//梯形
+@mixin trapezium($width, $height, $color, $direction: bottom) {
+  box-sizing: content-box;
+  width: $width;
+  height: $width;
+  border: $height solid;
+  @if $direction==top {
+    border-color: $color transparent transparent transparent;
+  } @else if $direction==right {
+    border-color: transparent $color transparent transparent;
+  } @else if $direction==bottom {
+    border-color: transparent transparent $color transparent;
+  } @else if $direction==left {
+    border-color: transparent transparent transparent $color;
+  }
+}
+
+// container组件样式
+// apm 能力素质模块三级指标外部样式
+@mixin container($type, $color) {
+  &.dim_#{$type} {
+    border-color: $color;
+    & > div.title-header {
+      @include bg-image('~@/assets/container/#{$type}_dim_title.png');
+    }
+    .canvas_wraps {
+      border-bottom: 1px dashed $color;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+    .border {
+      &.border_top-left {
+        width: 44px;
+        top: -3px;
+        left: -3px;
+        @include bg-image('~@/assets/container/#{$type}_angle_top_left.png');
+      }
+      &.border_top-right {
+        top: -3px;
+        right: -3px;
+        @include bg-image('~@/assets/container/#{$type}_angle.png');
+      }
+      &.border_bottom-right {
+        bottom: -3px;
+        right: -3px;
+        transform: rotate3d(1, 0, 0, 180deg);
+        @include bg-image('~@/assets/container/#{$type}_angle.png');
+      }
+      &.border_bottom-left {
+        bottom: -3px;
+        left: -3px;
+        transform: rotate(-180deg);
+        @include bg-image('~@/assets/container/#{$type}_angle.png');
+      }
+    }
+    .title {
+      color: $color;
+    }
+
+    .title_list {
+      color: $color;
+      &::before {
+        border-right-color: $color;
+      }
+      &::after {
+        border-left-color: $color;
+      }
+    }
+  }
+  &.dim_a .title_item_active {
+    color: $--apm-a-color;
+  }
+  &.dim_p .title_item_active {
+    color: $--apm-p-color;
+  }
+  &.dim_m .title_item_active {
+    color: $--apm-m-color;
+  }
+}
+
+// 自定义分割线 两边带点
+@mixin point-line($width: 3px, $color: '') {
+  &::before,
+  &::after {
+    content: '';
+    width: $width;
+    display: block;
+    height: $width;
+    margin-top: -1px;
+    border-radius: 50%;
+    background: $color;
+  }
+  &::after {
+    margin-left: 100%;
+    margin-top: -3px;
+  }
+}

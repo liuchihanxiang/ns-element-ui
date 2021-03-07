@@ -230,6 +230,9 @@ export default {
             })
           } else {
             this.defaultFormModel[ele.prop] = ''
+            if(ele.type === 'upload'){
+              this.uploadProp = ele.prop
+            }
           }
           if (ele.default !== undefined) {
             this.defaultFormModel[ele.prop] = ele.default
@@ -242,6 +245,7 @@ export default {
     setFormVal () {
       if (JSON.stringify(this.value) === '{}') {
         this.formModel = JSON.parse(JSON.stringify(this.defaultFormModel))
+        this.changeFiles([])
       } else if (this.value) {
         Object.keys(this.value).forEach(key => {
           if (
@@ -252,6 +256,89 @@ export default {
             this.formModel[key] = this.value[key]
           }
         })
+      }
+      let imgList = []
+      if(this.uploadProp && this.value[this.uploadProp]){
+        imgList.push({ name: this.value[this.uploadProp], url: '/website/' + this.value[this.uploadProp] + '?' + new Date().valueOf() })
+      }
+      this.changeFiles(imgList)
+    },
+
+    
+    // 删除图片
+    handleRemoveImg() {
+      this.imgList = []
+      this.changeFiles([])
+    },
+    
+    // 上传组件挂载后 如果有图片回显隐藏添加图片模块
+    handleUploadMounted() {
+      const $actionEle = this.$refs['img'][0].$el.getElementsByClassName('el-upload')[0]
+      if (this.imgList.length) {
+        $actionEle.style.display = 'none'
+      }
+    },
+
+    // change选择图片
+    changeFiles(fileList,column) {
+      let fileList1 = JSON.parse(JSON.stringify(fileList))
+      // 第一个split是处理文件后缀的
+      // 第二个split是处理编辑时，回显的参数
+      let fileName = fileList1[0] ? fileList1[0].name.split('?')[0].split('.') : []
+      fileName = fileName.length ? fileName.pop().toLocaleLowerCase() : []
+
+      let msg1 = column && column.msg1 ? column.msg1 : '照片要求格式为jpg、jpeg或png'
+      let msg2 = column && column.msg2 ? column.msg2 : '图片大小：不超过300Kb；图片尺寸：1920px * 320px（宽*高）。'
+      let fileSize = column &&  column.size ? column.size :300
+      let fileType = ['png', 'jpeg', 'jpg']
+      if (fileName.length && !fileType.includes(fileName)) {
+        this.$message({
+          message: msg1,
+          type: 'error'
+        })
+        this.handleRemoveImg()
+        return false
+      } else {
+        if (fileList[0] && fileList[0].size / 1024 > fileSize) {
+          this.$message({
+            message: msg2,
+            type: 'error'
+          })
+          this.handleRemoveImg()
+          return false
+        } else {
+          this.imgList = fileList
+        }
+      }
+      if (this.$refs['img']) {
+        const $actionEle = this.$refs['img'][0].$el.getElementsByClassName('el-upload')[0]
+        $actionEle.style.display = fileList.length === 1 ? 'none' : 'block'
+      }
+    },
+
+    formDataParam(){
+      let copyValue = JSON.parse(JSON.stringify(this.value))
+      let uploadFiles = this.$refs.img[0].uploadFiles
+      let imgFile = uploadFiles[0] ? uploadFiles[0].raw:''
+      let data = this.beforeFormData ? this.beforeFormData(copyValue) : copyValue
+
+      if(data){
+        console.log
+        var form = new FormData()
+        imgFile && form.append(this.uploadProp, imgFile)
+
+        Object.keys(data).forEach((key) => {
+          if (data[key] instanceof Array) {
+            data[key].forEach((item, index) => {
+              Object.keys(item).forEach((cKey, cIndex) => {
+                form.append(`${key}[${index}].${cKey}`, item[cKey])
+              })
+            })
+          } else {
+            form.append(key, data[key])
+          }
+        })
+        return form
       }
     }
   }
