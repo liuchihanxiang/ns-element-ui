@@ -35,7 +35,7 @@
     },
     {
       "name": "dialog",
-      "title": "Dialog表格"
+      "title": "Dialog弹窗"
     },
     {
       "name": "drawer",
@@ -45,10 +45,10 @@
       "name": "import",
       "title": "Import 导入"
     },
-    {
-      "name": "container",
-      "title": "container 盒子"
-    },
+    // {
+    //   "name": "container",
+    //   "title": "container 盒子"
+    // },
   ]
 
 
