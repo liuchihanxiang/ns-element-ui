@@ -192,22 +192,31 @@
           type:'datetime',
           label:'日期选择',
           prop:'datetime',
-          default:'请选择'
+          valueFormat:'yyyy-MM-dd HH:mm:ss',
+          format: 'yyyy-MM-dd HH:mm:ss',
+          placeholder:'请选择时间'
         },{
           type:'datetimerange',
           label:'日期范围',
           prop:'datetimerange',
-          default:'请选择'
+          startPlaceholder:'请选择结束时间',
+           endPlaceholder:'请选择结束时间'
         },{
           type:'monthrange',
           label:'月份范围',
           prop:'monthrange',
-          default:'请选择'
+          startPlaceholder:'请选择结束月份',
+           endPlaceholder:'请选择结束月份'
         },{
           type:'timePicker',
           label:'时间选择',
           prop:'timePicker',
-          default:'请选择'
+          placeholder:'请选择'
+        },{
+          type:'timeselect',
+          label:'时间下拉选择',
+          prop:'timeselect',
+          placeholder:'时间'
         }]
       }
     },

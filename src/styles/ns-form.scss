@@ -1,3 +1,5 @@
+/** @format */
+
 @import 'mixins/mixins';
 @include b(form) {
   .el-select,
@@ -45,4 +47,7 @@
 }
 .el-date-picker.el-popper .el-button--text {
   display: none;
+}
+.time-select .el-picker-panel__content {
+  margin-bottom: 0;
 }

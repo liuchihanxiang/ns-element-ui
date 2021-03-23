@@ -12,6 +12,9 @@
     :close-on-press-escape="closeOnPressEscape"
     :close-on-click-modal="closeOnClickModal"
     :before-close="beforeClose"
+    :lock-scroll="lockScroll"
+    :modal="modal"
+    v-el-drag-dialog
     :class="{'ns-dialog--center':isCenter,'ns-dialog ns-scroll-dialog':true}"
     :width="area instanceof Array?area[0]:'auto'">
     <div slot="title">

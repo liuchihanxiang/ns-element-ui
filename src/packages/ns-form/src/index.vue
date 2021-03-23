@@ -194,6 +194,16 @@
                 :value-format="column.valueFormat"
                 :prefix-icon="column.datePrefixIcon"
                 :clear-icon="column.clearIcon" />
+
+              <el-time-select v-else-if="column.type === 'timeselect'"
+                :placeholder="getPlaceholder(type, column)"
+                :readonly="column.readonly"
+                :editable="column.editable"
+                :disabled="column.disabled"
+                v-model="formModel[column.prop]"
+                :picker-options="column.pickerOptions">
+              </el-time-select>
+
               <!-- 日期选择器     -->
               <el-date-picker v-else-if="isDatePicker(column.type)"
                 v-model="formModel[column.prop]"

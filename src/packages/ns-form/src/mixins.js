@@ -16,7 +16,7 @@ export default {
     },
 
     getPlaceholder (type, column) {
-      let selectTypeList = ['select', 'cascader']
+      let selectTypeList = ['select', 'cascader','timeselect']
       let text = selectTypeList.includes(column.type) ? '请选择' : '请输入'
       if (column.noPreText) { text = '' }
       if (type === 'searchForm') { text = '' }
@@ -216,6 +216,7 @@ export default {
             ele.type === 'checkbox' ||
             (ele.type === 'select' && ele.multiple) ||
             ele.type === 'datetimerange' ||
+            ele.type==='timeselectrange'||
             ele.type === 'daterange'  ||
             ele.type === 'numberRange'
           ) {

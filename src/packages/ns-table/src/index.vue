@@ -182,7 +182,7 @@
         :width="realOperationsConfig.width"
         :min-width="realOperationsConfig.minWidth"
         :align="realOperationsConfig.align"
-        v-if="operations&&operations instanceof Array&&operations.length"
+        v-if="operations&&operations instanceof Array&&operations.length&&realOperationsConfig.show"
         :class-name="realOperationsConfig.className">
         <template slot-scope="scope">
           <table-operations :row="scope.row"

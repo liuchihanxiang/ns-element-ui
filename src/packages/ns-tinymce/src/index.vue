@@ -77,8 +77,7 @@ export default {
         min_width: 700,
         min_height: 350,
         ax_wordlimit_num: 40,
-        toolbar_mode: 'sliding',
-        removed_menuitems: 'fullscreen,preview'
+        toolbar_mode: 'sliding'
       },
       colorList: ['#F3704D', '#39E7CC', '#1C92E4', '#94D857', '#18D413', '#F3AB4D', '#EDD252']
     }

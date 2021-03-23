@@ -297,6 +297,7 @@ export default {
         className: '',
         onlyShowIcon: false,
         autoDropdown: true,
+        show:true,
         dropdownDefaultShowNum: 2,
         dropdownMaxNum: 4
       }
