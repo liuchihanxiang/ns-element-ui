@@ -82,11 +82,9 @@
       </div>
       <div v-if="!(tplSwitchList.length===1 && !downloadUrlList[activeTpl].url)"
         class="ns-upload-right">
-
         <div class="ns-upload-switch"
           v-show="tplSwitchList.length > 1">
           <div class="ns-upload-title">导入选择</div>
-
           <!-- 大于 tplSwitchMax的值时使用下拉框展示 -->
           <el-radio-group v-if="tplSwitchList.length <= tplSwitchMax"
             v-model="activeTpl"

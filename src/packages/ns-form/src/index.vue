@@ -39,7 +39,7 @@
               <template slot="label">
                 <slot :name="column.prop + 'Label'"
                   :column="column">
-                  {{ type === 'searchForm' ? '' : column.label }}
+                  <span>{{ type === 'searchForm' ? '' : column.label }}</span>
                   <el-tooltip v-if="type !== 'searchForm' && column.tips"
                     effect="dark">
                     <div slot="content"
