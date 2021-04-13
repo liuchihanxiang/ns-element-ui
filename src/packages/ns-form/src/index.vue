@@ -250,8 +250,9 @@
                 :inactive-color="column.inactiveColor"
                 @change="column.change ? column.change($event) : ''"
                 :inactive-text="getInternationalValue(column.inactiveText)" />
+
               <el-cascader v-else-if="column.type === 'cascader'"
-                :options="filterDic(column.dicData,dicList[column.dicData || column.prop])"
+                :options="column.props&&(column.props.lazy||column.props.lazy===undefined)&&filterDic(column.dicData,dicList[column.dicData || column.prop])"
                 :size="column.size"
                 :show-all-levels="getDefaultVal(column.showAllLevels, false)"
                 :placeholder="getPlaceholder(type, column)"
