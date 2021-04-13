@@ -2,7 +2,7 @@ export default {
   methods: {
     // 回显选中行
     toggleRowSelection (list) {
-      let key = this.rowKey || 'id'
+      const key = this.rowKey || 'id'
       if (!(list instanceof Array)) {
         list = [list]
       }
@@ -40,7 +40,7 @@ export default {
 
     // 清空所选
     clearSelect () {
-      this.$refs['elBaseTable'].clearSelection()
+      this.$refs.elBaseTable.clearSelection()
     },
 
     // 清空表格数据

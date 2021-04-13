@@ -33,7 +33,7 @@
       <slot name="btnList">
         <table-btns :btn-list="btnList"
           :columns="filterColumns"
-          :showClomnuIndex="showClomnuIndex"
+          :show-clomnu-index="showClomnuIndex"
           :toolbar="toolbar"
           @changeClomnus="changeClomnus"
           @toggleFullScreen="toggleFullScreen"
@@ -243,7 +243,7 @@ export default {
       if (!searchFormListKey.length) {
         this.currentData = JSON.parse(JSON.stringify(this.cachData))
       } else {
-        let data = JSON.parse(JSON.stringify(this.cachData))
+        const data = JSON.parse(JSON.stringify(this.cachData))
         if (this.treeTable) {
           this.currentData = this.treeFilter(this.filterTree(data, searchFormListKey))
         } else {
@@ -255,7 +255,7 @@ export default {
     },
     isIncludesObj(obj, keyList) {
       return keyList.every((key) => {
-        let val = this.searchFormModel[key]
+        const val = this.searchFormModel[key]
         const itemVal = obj[key]
         return itemVal && itemVal.includes(val)
       })
@@ -305,7 +305,7 @@ export default {
         ids = [ids]
       }
       for (let i = 0; i < this.selection.length; i++) {
-        let item = this.selection[i]
+        const item = this.selection[i]
         if (ids.includes(item[this.uniqueId])) {
           this.selection.splice(i, 1)
           i--

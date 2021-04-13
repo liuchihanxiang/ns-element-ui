@@ -1,7 +1,7 @@
 <template>
   <div class="ns-grid">
     <!-- 查询表单 -->
-    <div class="header_wraps">
+    <div :class="{'header_wraps':true,'header_wraps-inline':!btnListAlone}">
       <ns-form class="form_wraps"
         ref="serchForm"
         type="searchForm"
@@ -26,27 +26,10 @@
         </template>
       </ns-form>
       <slot name="btnList">
-        <div v-if="btnList.length"
-          class="btn_wraps">
-          <template v-for="(btnItem,btnIndex) in btnList">
-            <template v-if="btnItem.code&&permit">
-              <el-button v-if="permit(btnItem.code)"
-                :key="btnIndex"
-                :disabled="btnItem.disabled"
-                :class="btnItem.class"
-                @click="btnItem.click?btnItem.click(btnItem.code):''"
-                :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(permit(btnItem.code))}}</el-button>
-            </template>
-            <template v-else>
-              <el-button v-if="btnItem.text"
-                :key="btnIndex"
-                :disabled="btnItem.disabled"
-                :class="btnItem.class"
-                @click="btnItem.click?btnItem.click():''"
-                :type="btnItem.type?btnItem.type:'primary'">{{getInternationalValue(btnItem.text)}}</el-button>
-            </template>
-          </template>
-        </div>
+        <table-btns :btn-list="btnList"
+          :permit="permit">
+          <slot name="btnItem"></slot>
+        </table-btns>
       </slot>
     </div>
     <!-- <vxe-toolbar custom></vxe-toolbar> -->
@@ -56,6 +39,7 @@
       highlight-hover-row
       :data="currentData"
       v-bind="gridConfig"
+      v-on="$listeners"
       class="ns-base-table">
       <!-- 正常显示列 -->
       <template v-for="(column,columnIndex) in tableColumns">
@@ -134,10 +118,11 @@ import tableCommon from './../../core/table'
 import VxeColumn from './vxe-column'
 import cloneDeep from 'lodash/cloneDeep'
 import TableOperations from './operations'
+import TableBtns from './table-btns'
 export default {
   name: 'NsGrid',
   mixins: [tableCommon],
-  components: { VxeColumn, TableOperations },
+  components: { VxeColumn, TableOperations, TableBtns },
   props: {
     gridConfig: {
       type: Object,
@@ -157,9 +142,9 @@ export default {
     getDefaultVal,
     formatterColumns(data) {
       function getList(listData) {
-        let list = []
+        const list = []
         listData.map((item) => {
-          let { type, children, show, prop, label } = item
+          const { type, children, show, prop, label } = item
           let isShow = true
           if (show === undefined) {
             isShow = true
@@ -213,17 +198,8 @@ export default {
 
   computed: {
     tableColumns() {
-      let copyColumns = cloneDeep(this.columns)
-      let columns = this.formatterColumns(copyColumns)
-      // let operationColumns = {
-      //   title: '操作',
-      //   slots: {
-      //     default: 'opration'
-      //   }
-      // }
-      // if (this.operations.length) {
-      //   columns.push(operationColumns)
-      // }
+      const copyColumns = cloneDeep(this.columns)
+      const columns = this.formatterColumns(copyColumns)
       return columns
     }
   }

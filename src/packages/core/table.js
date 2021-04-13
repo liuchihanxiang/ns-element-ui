@@ -110,8 +110,8 @@ export default {
   methods: {
     // 处理前端分页
     paginationData(data) {
-      let { pageSize, page } = this
-      let totalValue = data.length // 这里不必判断总页数为0 能进到这个函数就必须有数据
+      const { pageSize, page } = this
+      const totalValue = data.length // 这里不必判断总页数为0 能进到这个函数就必须有数据
       this.total = totalValue
       this.currentData = data.filter((v, i) => {
         if (i >= (page - 1) * pageSize && i < page * pageSize) {
@@ -161,18 +161,18 @@ export default {
       } else {
         this.filterData()
       }
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.$emit('handlerSearch')
       })
     },
     // 请求数据
     initServe(formParams = {}) {
       this.loading = true
-      let tableParams = this.$NS.tableParams
-      let { fetch, url, $http, pagination, realDataFieldConfig, sidePagination, page, pageSize, queryParams, httpMethod } = this
+      const tableParams = this.$NS.tableParams
+      const { fetch, url, $http, pagination, realDataFieldConfig, sidePagination, page, pageSize, queryParams, httpMethod } = this
       let params = {} // 请求参数
-      let copyFormParams = JSON.parse(JSON.stringify(formParams))
-      let obj = Object.assign(copyFormParams, tableParams)
+      const copyFormParams = JSON.parse(JSON.stringify(formParams))
+      const obj = Object.assign(copyFormParams, tableParams)
       // 请求之前处理参数
       if (queryParams && typeof queryParams === 'function') {
         params = queryParams(obj, copyFormParams)
@@ -194,26 +194,26 @@ export default {
       if (fetch) {
         uestObject = fetch(params)
       } else {
-        let defaultMethod = this.$NS.httpMethod
-        let method = httpMethod ? httpMethod.toLowerCase() : defaultMethod
+        const defaultMethod = this.$NS.httpMethod
+        const method = httpMethod ? httpMethod.toLowerCase() : defaultMethod
         if (method === 'get') {
-          uestObject = $http[method](url, { params })
+          uestObject = $http[method](url, { params }, { headers: { formData: true } })
         } else {
-          uestObject = $http[method](url, params)
+          uestObject = $http[method](url, params, { headers: { formData: true } })
         }
       }
       // 开始请求数据
       uestObject
         .then((res) => {
           if (res) {
-            let list = res.data && res.data instanceof Array ? res.data : getValueByPath(res, realDataFieldConfig.listKey)
+            const list = res.data && res.data instanceof Array ? res.data : getValueByPath(res, realDataFieldConfig.listKey)
             // 前端分页 要处理数据
             if (pagination && sidePagination === 'client') {
               this.paginationData(list)
             } else if (pagination && sidePagination === 'server') {
-              let totalValue = getValueByPath(res, realDataFieldConfig.totalKey) // 总页数
+              const totalValue = getValueByPath(res, realDataFieldConfig.totalKey) // 总页数
               this.total = totalValue || 0
-              let maxPage = Math.ceil(this.total / this.pageSize)
+              const maxPage = Math.ceil(this.total / this.pageSize)
               // 此处判断属于删除数据后，总页数错误，需要重新请求数据
               if (this.page > maxPage && maxPage !== 0) {
                 this.handleCurrentChange(maxPage)
@@ -249,7 +249,7 @@ export default {
      * 若是后台分页 则不存数据到tableData 直接赋值给currentData
      */
     initData() {
-      let { tableData, url, fetch } = this
+      const { tableData, url, fetch } = this
       //  数据从哪里拿前台还是后台
       if (!tableData.length && (url || fetch)) {
         //  数据从后台拿  必须满足 url和fetch字少有一个 并且没有从后台拿过数据
@@ -260,8 +260,8 @@ export default {
     },
     // 处理传来的静态数据
     handleLocalData() {
-      let { pagination, tableData } = this
-      let cachData = JSON.parse(JSON.stringify(tableData))
+      const { pagination, tableData } = this
+      const cachData = JSON.parse(JSON.stringify(tableData))
       this.cachData = JSON.parse(JSON.stringify(tableData))
       if (pagination) {
         this.paginationData(cachData)
@@ -283,13 +283,13 @@ export default {
   },
   computed: {
     realIsInternational() {
-      let { isInternational } = this.$NS
+      const { isInternational } = this.$NS
       return isExist(this.isInternational) ? this.isInternational : isInternational
     },
 
     realOperationsConfig() {
-      let { operationsConfig } = this.$NS
-      let defaultConfig = {
+      const { operationsConfig } = this.$NS
+      const defaultConfig = {
         fixed: 'right',
         title: '操作',
         align: 'left',
@@ -297,7 +297,7 @@ export default {
         className: '',
         onlyShowIcon: false,
         autoDropdown: true,
-        show:true,
+        show: true,
         dropdownDefaultShowNum: 2,
         dropdownMaxNum: 4
       }
@@ -305,8 +305,8 @@ export default {
     },
 
     realDataFieldConfig() {
-      let { dataFieldConfig } = this.$NS
-      let defaultConfig = {
+      const { dataFieldConfig } = this.$NS
+      const defaultConfig = {
         listKey: 'data.data',
         pageSizeKey: 'pageSize',
         pageIndexKey: 'currentPage',
@@ -315,8 +315,7 @@ export default {
       return Object.assign({}, defaultConfig, dataFieldConfig, this.dataFieldConfig)
     },
     realReserveSelection() {
-      let { reserveSelection } = this.$NS
-      console.log(this.reserveSelection)
+      const { reserveSelection } = this.$NS
       return typeof this.reserveSelection === 'boolean' ? this.reserveSelection : reserveSelection
     }
 

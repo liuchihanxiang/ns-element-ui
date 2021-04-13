@@ -21,7 +21,7 @@ const components = [
   NsCheckbox,
   NsRadio,
   NsGrid,
-  NsImport,
+  NsImport
   // NsContainer
 ]
 
@@ -29,12 +29,14 @@ const install = function (Vue, opts = {}) {
   components.map(component => {
     Vue.component(component.name, component)
   })
-  let defaultOpts = {
+  const defaultOpts = {
     size: 'medium',
     isInternational: false,
     showSearchForm: true,
     httpMethod: 'post',
+    dictHttpMethod: 'get',
     reserveSelection: false,
+    formOnlyShowIcon: false,
     operationsConfig: {},
     dataFieldConfig: {},
     tableParams: {

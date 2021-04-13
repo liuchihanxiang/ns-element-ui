@@ -45,6 +45,7 @@ export default {
     type: Number,
     default: 80
   },
+  formOnlyShowIcon: false,
   // 表单域标签的后缀
   labelSuffix: {
     type: String
@@ -114,5 +115,5 @@ export default {
   // 提交处理
   handlerSubmit: Function,
   // formData格式化数据之前
-  beforeFormData: Function,
+  beforeFormData: Function
 }

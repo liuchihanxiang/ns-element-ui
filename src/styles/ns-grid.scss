@@ -19,6 +19,25 @@
       }
     }
   }
+
+  .header_wraps {
+    @include clearfix;
+    // margin-bottom: 10px;
+    &.header_wraps-inline {
+      .form_wraps {
+        float: left;
+      }
+      .btn_wraps {
+        float: right;
+        margin-left: 20px;
+        margin-top: 0;
+        margin-bottom: 10px;
+      }
+    }
+    .el-form-item {
+      margin-bottom: 10px;
+    }
+  }
 }
 .operation-dropdown_prop {
   min-width: 100px;

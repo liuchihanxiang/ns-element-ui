@@ -84,8 +84,8 @@ export default {
   },
   methods: {
     insertEditor(index, item) {
-      let $editor = this.$refs.editor
-      let itemColor = this.colorList[index % this.colorList.length]
+      const $editor = this.$refs.editor
+      const itemColor = this.colorList[index % this.colorList.length]
       $editor.editor.insertContent(`<span class="mceNonEditable" style="background-color:${itemColor};">${item.label || item}</span>`)
     }
   },

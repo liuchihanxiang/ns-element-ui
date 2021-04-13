@@ -28,3 +28,7 @@
     }
   }
 }
+
+body .el-image-viewer__wrapper {
+  z-index: 3000 !important;
+}

@@ -17,6 +17,14 @@ export default {
       type: Boolean,
       default: true
     },
+    lockScroll: {
+      type: Boolean,
+      default: true
+    },
+    modal: {
+      type: Boolean,
+      default: true
+    },
     showClose: {
       type: Boolean,
       default: true
@@ -31,7 +39,7 @@ export default {
     },
     closeOnClickModal: {
       type: Boolean,
-      default: true
+      default: false
     },
     customClass: {
       type: String,
@@ -73,6 +81,7 @@ export default {
     confirmBtn: {
       type: Boolean,
       default: true
-    }  },
+    }
+  },
   computed: { }
 }

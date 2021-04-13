@@ -1,7 +1,7 @@
 export default {
   methods: {
     getLabel (item, labelKey) {
-      let key = item.labelkey || labelKey || this.dicLabelKey
+      const key = item.labelkey || labelKey || this.dicLabelKey
       return this.getInternationalValue(item[key])
     },
 
@@ -16,11 +16,11 @@ export default {
     },
 
     getPlaceholder (type, column) {
-      let selectTypeList = ['select', 'cascader','timeselect']
+      const selectTypeList = ['select', 'cascader']
       let text = selectTypeList.includes(column.type) ? '请选择' : '请输入'
       if (column.noPreText) { text = '' }
       if (type === 'searchForm') { text = '' }
-      let placeholder = (type === 'searchForm' || this.placeholder) ? (column.placeholder || text + column.label) : column.placeholder ? (column.placeholder) : ''
+      const placeholder = (type === 'searchForm' || this.placeholder) ? (column.placeholder || text + column.label) : column.placeholder ? (column.placeholder) : ''
       return this.getInternationalValue(placeholder || '')
     },
 
@@ -33,7 +33,7 @@ export default {
       dataPath = dataPath || 'data.list'
       levelkey = levelkey || 'level'
       leafKey = leafKey || 'leaf'
-      let lazyLoad = (node, resolve) => {
+      const lazyLoad = (node, resolve) => {
         const { level, data } = node
         const parentCode = (data && data[codeKey]) || superCodeVal
         let params = { level, parentCode }
@@ -53,9 +53,10 @@ export default {
           resolve(list)
         })
       }
-      let lazy = props && props.lazy !== undefined ? props.lazy : true
-      let multiple = props && props.multiple !== undefined ? props.multiple : false
-      let checkStrictly = props && props.checkStrictly !== undefined ? props.checkStrictly : false
+      const lazy = props && props.lazy !== undefined ? props.lazy : true
+      const multiple = props && props.multiple !== undefined ? props.multiple : false
+      const checkStrictly = props && props.checkStrictly !== undefined ? props.checkStrictly : false
+      console.log(leafKey, lazy)
       return {
         lazy: lazy,
         value: valueKey,
@@ -73,10 +74,10 @@ export default {
      */
     getAllDic () {
       return new Promise(resolve => {
-        let result = [] // 存放请求数据字典的序列函数
-        let dicList = {} // 存获取的数据字典的集合
-        let locaDic = this.dicData || {} // 前端数据字典集合
-        let list = this.dickeyList // 当前表单中 数据字典后端地址或前台key值的集合
+        const result = [] // 存放请求数据字典的序列函数
+        const dicList = {} // 存获取的数据字典的集合
+        const locaDic = this.dicData || {} // 前端数据字典集合
+        const list = this.dickeyList // 当前表单中 数据字典后端地址或前台key值的集合
         // if (!this.notEmptyArray(list)) {
         //   return
         // }
@@ -89,16 +90,16 @@ export default {
             })
           )
         })
-        // 循环list 为key时直接前台获取返回  为url时再去通过地址请求数据 后 返回
+        // 循环list 为key时直接前台获取返回  为url时再去通过地址请求数据后返回
         this.dicUrlList.forEach(ele => {
           result.push(
             new Promise((resolve, reject) => {
               if (ele.url && typeof ele.url === 'string') {
                 list.push(ele.dicKey)
-                let dicUrl = this.dicUrl ? this.dicUrl + '/' + ele.url : ele.url
-                let ajaxData = ele.ajaxData || null
-                let method = ele.method || 'get'
-                let listKey = ele.listKey || 'data.list'
+                const dicUrl = this.dicUrl ? this.dicUrl + '/' + ele.url : ele.url
+                const ajaxData = ele.ajaxData || null
+                const method = ele.method || this.$NS.dictHttpMethod || 'get'
+                const listKey = ele.listKey || 'data.list'
                 this.getDicItem(dicUrl, ajaxData, method, listKey).then(
                   function (res) {
                     resolve(res)
@@ -122,14 +123,14 @@ export default {
         return column.fetchSuggestions(queryString, callback)
       } else if (column.url) {
         return ((queryString, callback) => {
-          let key = column.fetchKey || 'name'
-          let params = {
+          const key = column.fetchKey || 'name'
+          const params = {
             [key]: queryString,
             ...(column.params || {})
           }
           if (queryString !== '') {
             this.$http.post(column.url, params).then(res => {
-              let listKey = column.listKey || 'data'
+              const listKey = column.listKey || 'data'
               let list = this.getValueByPath(res, listKey)
               if (column.beforeCB) {
                 list = column.beforeCB(list)
@@ -154,7 +155,7 @@ export default {
           }
         }
       }
-      let pickerOptions = column.pickerOptions || {}
+      const pickerOptions = column.pickerOptions || {}
       return Object.assign({}, { disabledDate }, pickerOptions)
     },
 
@@ -183,17 +184,16 @@ export default {
      * 当为混合表单时会根据isSearch和isNormal去区分，公用的两个都不声明即可，某个单独用的声明另一个为false即可
      */
     filterFormList (list) {
-      let arr = []
+      const arr = []
       // 表格上方查询表单
       if (!this.mixins) {
         return list
       }
       if (list && list.length) {
         list.forEach(ele => {
-          let isBothUndefined =
-          ele.isNormal === undefined && ele.isSearch === undefined
+          const isBothUndefined = ele.isNormal === undefined && ele.isSearch === undefined
           if (this.type === 'searchForm') {
-            if (isBothUndefined || !ele.isNormal) {
+            if ((isBothUndefined || !ele.isNormal) && ele.type !== 'groupLine') {
               arr.push(ele)
             }
           } else {
@@ -208,32 +208,21 @@ export default {
 
     // 表单数据初始化
     setDefaultFormModel (list) {
-      let slotTypeList = ['slot', 'outItemSlot']
+      const slotTypeList = ['slot', 'outItemSlot']
+      const arrayTypeList = ['checkbox', 'datetimerange', 'daterange', 'numberRange']
       // 表格上方查询表单
       list.forEach(ele => {
         if (ele.prop || slotTypeList.includes(ele.type)) {
-          if (
-            ele.type === 'checkbox' ||
-            (ele.type === 'select' && ele.multiple) ||
-            ele.type === 'datetimerange' ||
-            ele.type==='timeselectrange'||
-            ele.type === 'daterange'  ||
-            ele.type === 'numberRange'
-          ) {
+          if ((ele.type === 'select' && ele.multiple) || arrayTypeList.includes(ele.type)) {
             this.defaultFormModel[ele.prop] = []
-          } else if (
-            slotTypeList.includes(ele.type) &&
-            ele.form &&
-            JSON.stringify(ele.form) !== '{}'
-          ) {
+          } else if (slotTypeList.includes(ele.type) && ele.form && JSON.stringify(ele.form) !== '{}') {
             Object.keys(ele.form).forEach(key => {
               this.defaultFormModel[key] = ele.form[key]
             })
+          } else if (ele.type === 'upload') {
+            this.uploadProp = ele.prop
           } else {
             this.defaultFormModel[ele.prop] = ''
-            if(ele.type === 'upload'){
-              this.uploadProp = ele.prop
-            }
           }
           if (ele.default !== undefined) {
             this.defaultFormModel[ele.prop] = ele.default
@@ -258,40 +247,39 @@ export default {
           }
         })
       }
-      let imgList = []
-      if(this.uploadProp && this.value[this.uploadProp]){
-        imgList.push({ name: this.value[this.uploadProp], url: '/website/' + this.value[this.uploadProp] + '?' + new Date().valueOf() })
+      const imgList = []
+      if (this.uploadProp && this.value[this.uploadProp]) {
+        imgList.push({ name: this.value[this.uploadProp], url: this.value[this.uploadProp] + '?' + new Date().valueOf() })
       }
       this.changeFiles(imgList)
     },
 
-    
     // 删除图片
     handleRemoveImg() {
       this.imgList = []
       this.changeFiles([])
     },
-    
+
     // 上传组件挂载后 如果有图片回显隐藏添加图片模块
     handleUploadMounted() {
-      const $actionEle = this.$refs['img'][0].$el.getElementsByClassName('el-upload')[0]
+      const $actionEle = this.$refs.img[0].$el.getElementsByClassName('el-upload')[0]
       if (this.imgList.length) {
         $actionEle.style.display = 'none'
       }
     },
 
     // change选择图片
-    changeFiles(fileList,column) {
-      let fileList1 = JSON.parse(JSON.stringify(fileList))
+    changeFiles(fileList, column) {
+      const fileList1 = JSON.parse(JSON.stringify(fileList))
       // 第一个split是处理文件后缀的
       // 第二个split是处理编辑时，回显的参数
       let fileName = fileList1[0] ? fileList1[0].name.split('?')[0].split('.') : []
       fileName = fileName.length ? fileName.pop().toLocaleLowerCase() : []
 
-      let msg1 = column && column.msg1 ? column.msg1 : '照片要求格式为jpg、jpeg或png'
-      let msg2 = column && column.msg2 ? column.msg2 : '图片大小：不超过300Kb；图片尺寸：1920px * 320px（宽*高）。'
-      let fileSize = column &&  column.size ? column.size :300
-      let fileType = ['png', 'jpeg', 'jpg']
+      const msg1 = column && column.msg1 ? column.msg1 : '照片要求格式为jpg、jpeg或png'
+      const msg2 = column && column.msg2 ? column.msg2 : '图片大小：不超过300Kb；图片尺寸：1920px * 320px（宽*高）。'
+      const fileSize = column && column.size ? column.size : 300
+      const fileType = ['png', 'jpeg', 'jpg']
       if (fileName.length && !fileType.includes(fileName)) {
         this.$message({
           message: msg1,
@@ -311,20 +299,19 @@ export default {
           this.imgList = fileList
         }
       }
-      if (this.$refs['img']) {
-        const $actionEle = this.$refs['img'][0].$el.getElementsByClassName('el-upload')[0]
+      if (this.$refs.img && this.$refs.img.length) {
+        const $actionEle = this.$refs.img[0].$el.getElementsByClassName('el-upload')[0]
         $actionEle.style.display = fileList.length === 1 ? 'none' : 'block'
       }
     },
 
-    formDataParam(){
-      let copyValue = JSON.parse(JSON.stringify(this.value))
-      let uploadFiles = this.$refs.img[0].uploadFiles
-      let imgFile = uploadFiles[0] ? uploadFiles[0].raw:''
-      let data = this.beforeFormData ? this.beforeFormData(copyValue) : copyValue
+    formDataParam(jsonData) {
+      const copyValue = JSON.parse(JSON.stringify(jsonData || this.value))
+      const uploadFiles = this.$refs.img[0].uploadFiles
+      const imgFile = uploadFiles[0] ? uploadFiles[0].raw : ''
+      const data = this.beforeFormData ? this.beforeFormData(copyValue) : copyValue
 
-      if(data){
-        console.log
+      if (data) {
         var form = new FormData()
         imgFile && form.append(this.uploadProp, imgFile)
 

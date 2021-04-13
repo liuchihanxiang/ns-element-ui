@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     formatterDicData() {
-      let { dicData, dicLabelKey, dicValueKey } = this
+      const { dicData, dicLabelKey, dicValueKey } = this
       if (dicData.length && (typeof dicData[0] === 'number' || typeof dicData[0] === 'string')) {
         return dicData.map((item) => {
           return {

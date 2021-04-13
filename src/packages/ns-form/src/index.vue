@@ -1,5 +1,5 @@
 <template>
-  <div class="ns-form">
+  <div :class="['ns-form',type==='searchForm'?'ns-form--search':'ns-form--normal']">
     <el-form ref="form"
       :model="formModel"
       v-if="notEmptyArray(actualFormList)"
@@ -251,7 +251,7 @@
                 @change="column.change ? column.change($event) : ''"
                 :inactive-text="getInternationalValue(column.inactiveText)" />
               <el-cascader v-else-if="column.type === 'cascader'"
-                :options="column.options"
+                :options="filterDic(column.dicData,dicList[column.dicData || column.prop])"
                 :size="column.size"
                 :show-all-levels="getDefaultVal(column.showAllLevels, false)"
                 :placeholder="getPlaceholder(type, column)"
@@ -276,16 +276,25 @@
                   slot-scope="{ file }"
                   v-if="file.url"
                   class="item-wraps">
-                  <img class="el-upload-list__item-thumbnail"
+                  <el-image style="width: 100%; height: 100%"
                     :src="file.url"
-                    alt />
-                  <span class="el-upload-list__item-actions">
-                    <span title="删除"
-                      class="el-upload-list__item-delete"
-                      @click="handleRemoveImg(0, file)">
-                      <i class="el-icon-delete"></i>
-                    </span>
+                    :preview-src-list="[file.url]">
+                  </el-image>
+                  <!-- <img class="el-upload-list__item-thumbnail"
+                    :src="file.url"
+                    alt /> -->
+                  <span title="删除"
+                    class="el-upload-delete"
+                    @click="handleRemoveImg(0, file)">
+                    <i class="el-icon-close"></i>
                   </span>
+                  <!-- <span class="el-upload-list__item-actions">
+                    <span title="查看"
+                      class="el-upload-list__item-look"
+                      @click="handleRemoveImg(0, file)">
+                      <i class="el-icon-view"></i>
+                    </span>
+                  </span> -->
                 </div>
                 <div slot="tip"
                   class="el-upload__tip">
@@ -335,16 +344,16 @@
                 :icon="getDefaultVal(searchBtn.icon, 'el-icon-search')"
                 class="btn-confirm"
                 :size="searchBtn && searchBtn.size">
-                <template v-if="searchBtn.onlyShowIcon===undefined|| !searchBtn.onlyShowIcon">
+                <template v-if="realFormOnlyShowIcon===undefined || !realFormOnlyShowIcon">
                   {{searchBtn && searchBtn.text? getInternationalValue(searchBtn.text): '查询'}}
                 </template>
               </el-button>
               <el-button @click="handlerReset"
                 v-if="showResetBtn"
                 class="btn-cancel"
-                :icon="getDefaultVal(resetBtn.icon, 'el-icon-delete')"
+                :icon="getDefaultVal(resetBtn.icon, 'el-icon-refresh')"
                 :size="getDefaultVal(resetBtn.size, actualSize)">
-                <template v-if="resetBtn.onlyShowIcon===undefined|| !resetBtn.onlyShowIcon">
+                <template v-if="realFormOnlyShowIcon===undefined || !realFormOnlyShowIcon">
                   {{resetBtn && resetBtn.text? getInternationalValue(resetBtn.text): '重置'}}
                 </template>
               </el-button>
@@ -443,7 +452,7 @@ export default {
     handlerSearch() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          let params = this.formFormat ? this.formFormat(this.fromModel) : this.fromModel
+          const params = this.formFormat ? this.formFormat(this.fromModel) : this.fromModel
           this.handlerSubmit(params)
         }
       })
@@ -505,6 +514,10 @@ export default {
     },
     dicValueKey() {
       return this.$NS.nsFormDefault.dicValueKey
+    },
+    realFormOnlyShowIcon() {
+      const { formOnlyShowIcon } = this.$NS
+      return typeof this.formOnlyShowIcon === 'boolean' ? this.formOnlyShowIcon : formOnlyShowIcon
     }
   },
   watch: {

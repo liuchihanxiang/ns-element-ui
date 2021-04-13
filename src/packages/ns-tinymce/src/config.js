@@ -5,7 +5,7 @@ export const toolbar = 'fullscreen preview removeformat code | fontselect | font
 export const plugins = ['advlist code image nonbreaking  autolink  code indent2em  fullscreen wordcount imagetools importcss  link lists noneditable  paste preview  table  textpattern visualblocks visualchars lineheight']
 
 // 编辑器字体大小配置
-export const fontsizeFormats = '12px 14px 16px 18px 22px 26px 30px 36px'
+export const fontsizeFormats = '12px 14px 16px 18px 20px 22px 24px 26px 30px 36px'
 
 // 编辑器 字体下拉配置项
 export const fontFormats = `
@@ -22,7 +22,7 @@ Times New Roman=Times New Roman;
 Courier New=Courier New
 `
 
-export const blockFormats = `正文=p;一级标题=h1;二级标题=h2;三级标题=h3`
+export const blockFormats = '正文=p;一级标题=h1;二级标题=h2;三级标题=h3'
 
 // 编辑器自定义样式
 export const contentStyle = `
