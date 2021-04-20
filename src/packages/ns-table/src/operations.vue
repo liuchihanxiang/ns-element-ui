@@ -105,7 +105,15 @@ export default {
         let judgesObj = item.judges
         if (item.code) {
           if (permit) {
-            item.text = permit(item.code)
+            if (item.alias && permit(item.code)) {
+              if (Object.prototype.toString.apply(item.alias) === '[object Function]') {
+                item.text = item.alias(row, item)
+              } else {
+                item.text = item.alias
+              }
+            } else {
+              item.text = permit(item.code)
+            }
           }
           item.type = item.code
         }

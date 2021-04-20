@@ -20,7 +20,8 @@
         :submit-loading="loading"
         :search-btn="formOption.searchBtn"
         :reset-btn="formOption.resetBtn"
-        :handler-submit="handlerSearch">
+        :handler-submit="handlerSearch"
+        @handlerReset="handlerReset">
         <template slot="extraBtn">
           <slot name="searchBtn" />
         </template>
